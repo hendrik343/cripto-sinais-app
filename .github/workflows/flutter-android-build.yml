@@ -7,12 +7,11 @@ on:
 
 jobs:
   build:
-    name: Build APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -22,11 +21,11 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build APK
+      - name: Build APK (release)
         run: flutter build apk --release
 
-      - name: Upload artifact
+      - name: Upload release APK
         uses: actions/upload-artifact@v3
         with:
-          name: app-release.apk
+          name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
