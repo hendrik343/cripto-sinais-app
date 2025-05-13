@@ -1,0 +1,154 @@
+// lib/main.dart
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'screens/login_screen.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(CryptoSignalsApp());
+}
+
+class CryptoSignalsApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'CriptoSinais',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.indigo,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.grey[900],
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      home: LoginScreen(),
+    );
+  }
+}
+
+// lib/screens/dashboard_screen.dart
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
+
+class DashboardScreen extends StatefulWidget {
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  Map<String, dynamic>? coinData;
+  List<String> pumpCoins = [];
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCoinGeckoData();
+    fetchPumpSignals();
+    Timer.periodic(Duration(minutes: 5), (timer) {
+      fetchCoinGeckoData();
+      fetchPumpSignals();
+    });
+  }
+
+  Future<void> fetchCoinGeckoData() async {
+    final url = Uri.parse(
+        'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,pepe,dogecoin,shiba-inu,floki&vs_currencies=usd&include_24hr_change=true');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        setState(() {
+          coinData = json.decode(response.body);
+          loading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
+  Future<void> fetchPumpSignals() async {
+    final url = Uri.parse('http://localhost:5001/pump-signals');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        setState(() {
+          pumpCoins = List<String>.from(data.map((coin) => coin['coin']));
+        });
+      }
+    } catch (e) {
+      print('Erro ao buscar sinais de pump: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Dashboard CriptoSinais')),
+      body: loading
+          ? Center(child: CircularProgressIndicator())
+          : ListView(
+              padding: EdgeInsets.all(16),
+              children: coinData!.entries.map((entry) {
+                final name = entry.key;
+                final price = entry.value['usd'];
+                final change = entry.value['usd_24h_change']?.toDouble() ?? 0;
+                final isPositive = change >= 0;
+                final isPump = change >= 10.0 || pumpCoins.contains(name);
+
+                return Card(
+                  margin: EdgeInsets.symmetric(vertical: 8),
+                  color: Colors.grey[900],
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        Text(
+                          name.toUpperCase(),
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(width: 8),
+                        if (isPump)
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.orange,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              '🚀 PUMP DETECTADO',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                    subtitle: Text(
+                        '\$${price.toString()} • ${change.toStringAsFixed(2)}%'),
+                    trailing: Icon(
+                      isPositive ? Icons.trending_up : Icons.trending_down,
+                      color: isPositive ? Colors.green : Colors.red,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+    );
+  }
+}

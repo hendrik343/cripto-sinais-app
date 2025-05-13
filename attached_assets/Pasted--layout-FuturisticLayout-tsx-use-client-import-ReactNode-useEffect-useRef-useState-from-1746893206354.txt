@@ -1,0 +1,150 @@
+// layout/FuturisticLayout.tsx
+
+"use client"
+
+import { ReactNode, useEffect, useRef, useState } from "react"
+import { Hexagon, Moon, Sun, Bell, Search } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
+export default function FuturisticLayout({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<"dark" | "light">("dark")
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark")
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
+    canvas.width = canvas.offsetWidth
+    canvas.height = canvas.offsetHeight
+    const particles = []
+    const particleCount = 100
+
+    class Particle {
+      x: number
+      y: number
+      size: number
+      speedX: number
+      speedY: number
+      color: string
+      constructor() {
+        this.x = Math.random() * canvas.width
+        this.y = Math.random() * canvas.height
+        this.size = Math.random() * 3 + 1
+        this.speedX = (Math.random() - 0.5) * 0.5
+        this.speedY = (Math.random() - 0.5) * 0.5
+        this.color = `rgba(${Math.floor(Math.random() * 100) + 100}, ${Math.floor(
+          Math.random() * 100
+        ) + 150}, ${Math.floor(Math.random() * 55) + 200}, ${Math.random() * 0.5 + 0.2})`
+      }
+      update() {
+        this.x += this.speedX
+        this.y += this.speedY
+        if (this.x > canvas.width) this.x = 0
+        if (this.x < 0) this.x = canvas.width
+        if (this.y > canvas.height) this.y = 0
+        if (this.y < 0) this.y = canvas.height
+      }
+      draw() {
+        ctx.fillStyle = this.color
+        ctx.beginPath()
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+        ctx.fill()
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle())
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      for (const particle of particles) {
+        particle.update()
+        particle.draw()
+      }
+      requestAnimationFrame(animate)
+    }
+
+    animate()
+
+    const handleResize = () => {
+      canvas.width = canvas.offsetWidth
+      canvas.height = canvas.offsetHeight
+    }
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  return (
+    <div className={`${theme} min-h-screen bg-gradient-to-br from-black to-slate-900 text-slate-100 relative overflow-hidden`}>
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-30" />
+
+      <header className="flex items-center justify-between py-4 px-6 border-b border-slate-700/50 z-20 relative">
+        <div className="flex items-center space-x-2">
+          <Hexagon className="h-8 w-8 text-cyan-500" />
+          <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+            CRIPTOSINAIS
+          </span>
+        </div>
+
+        <div className="flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-1 bg-slate-800/50 rounded-full px-3 py-1.5 border border-slate-700/50 backdrop-blur-sm">
+            <Search className="h-4 w-4 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Procurar..."
+              className="bg-transparent border-none focus:outline-none text-sm w-40 placeholder:text-slate-500"
+            />
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" className="relative text-slate-400 hover:text-slate-100">
+                    <Bell className="h-5 w-5" />
+                    <span className="absolute -top-1 -right-1 h-2 w-2 bg-cyan-500 rounded-full animate-pulse"></span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Notificações</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={toggleTheme}
+                    className="text-slate-400 hover:text-slate-100"
+                  >
+                    {theme === "dark" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Alternar tema</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <Avatar>
+              <AvatarImage src="/placeholder.svg?height=40&width=40" alt="User" />
+              <AvatarFallback className="bg-slate-700 text-cyan-500">CS</AvatarFallback>
+            </Avatar>
+          </div>
+        </div>
+      </header>
+
+      <main className="relative z-10 container mx-auto px-6 py-8">{children}</main>
+    </div>
+  )
+}

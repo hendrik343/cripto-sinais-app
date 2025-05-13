@@ -1,0 +1,68 @@
+/* Custom styles for Crypto Price Monitor */
+
+.monitor-status {
+    padding: 0.35rem 0.65rem;
+}
+
+.price-up {
+    color: #28a745;
+}
+
+.price-down {
+    color: #dc3545;
+}
+
+.crypto-row:hover {
+    background-color: var(--bs-primary-bg-subtle);
+    transition: background-color 0.2s;
+}
+
+.alert-card {
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--bs-primary);
+    background-color: var(--bs-dark);
+}
+
+.alert-card.price-up {
+    border-left-color: #28a745;
+}
+
+.alert-card.price-down {
+    border-left-color: #dc3545;
+}
+
+.alert-symbol {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.alert-timestamp {
+    font-size: 0.8rem;
+    color: var(--bs-secondary-color);
+}
+
+.alert-price {
+    font-weight: bold;
+}
+
+.alert-change {
+    font-weight: bold;
+}
+
+/* Loading animation */
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+.placeholder-row {
+    animation: pulse 1.5s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table-responsive {
+        border: 0;
+    }
+}

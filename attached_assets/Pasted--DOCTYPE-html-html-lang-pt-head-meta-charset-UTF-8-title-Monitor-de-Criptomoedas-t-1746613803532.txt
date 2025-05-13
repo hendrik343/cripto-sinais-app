@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Monitor de Criptomoedas</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <div class="max-w-6xl mx-auto py-10 px-6">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-4xl font-extrabold text-green-400 flex items-center gap-2">
+        <i class="ph ph-chart-line"></i> <span id="titulo">Monitor de Criptomoedas</span>
+      </h1>
+      <select id="lang" onchange="setLanguage(this.value)" class="bg-gray-800 text-white border border-gray-600 rounded px-2 py-1">
+        <option value="pt">🇵🇹 Português</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="en">🇬🇧 English</option>
+      </select>
+    </div>
+
+    <div class="bg-gray-800 rounded-xl shadow-lg p-4 mb-6">
+      <p id="explicacao" class="text-sm text-gray-300">
+        Esta tabela mostra as principais criptomoedas, os seus preços em tempo real, a variação percentual, a tendência baseada em indicadores técnicos (como RSI e MACD), a ação recomendada (compra, venda ou aguardar), e o momento da última atualização.
+      </p>
+    </div>
+
+    <div class="bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
+      <p id="indicadores" class="text-sm text-gray-400 mb-3">⚙️ Monitorização baseada nos indicadores técnicos: <strong>RSI</strong>, <strong>MACD</strong>, <strong>Volume</strong>, <strong>Variação de Preço</strong> e <strong>Sentimento de Mercado</strong>.</p>
+      <div class="flex justify-between items-center mb-4">
+        <h2 id="precos-recomendacoes" class="text-2xl font-bold">📈 Atualização de Preços com Recomendações</h2>
+        <button onclick="location.reload()" class="text-sm px-4 py-1 bg-green-600 hover:bg-green-700 rounded-xl" id="btn-refresh">🔄 Atualizar</button>
+      </div>
+      <table class="w-full table-auto text-sm" id="price-table">
+        <thead class="text-green-300 border-b border-gray-700">
+          <tr>
+            <th id="th-moeda" class="text-left py-2">Moeda</th>
+            <th id="th-preco" class="text-left py-2">Preço (USD)</th>
+            <th id="th-variacao" class="text-left py-2">Variação</th>
+            <th id="th-tendencia" class="text-left py-2">Tendência</th>
+            <th id="th-acao" class="text-left py-2">Ação</th>
+            <th id="th-ultima" class="text-left py-2">Última Atualização</th>
+          </tr>
+        </thead>
+        <tbody id="alert-body">
+          <tr>
+            <td colspan="6" class="text-center py-6 text-gray-400" id="carregando">A carregar alertas...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="text-center text-sm text-gray-500">
+      <span id="dados-fornecidos">Dados fornecidos pela CoinGecko API</span><br>
+      <span id="ultima-atualizacao">Última atualização:</span> <span id="last-updated">--/--/---- --:--:--</span>
+    </footer>
+  </div>
+
+  <script>
+    const translations = {
+      pt: {
+        titulo: "Monitor de Criptomoedas",
+        explicacao: "Esta tabela mostra as principais criptomoedas, os seus preços em tempo real, a variação percentual, a tendência baseada em indicadores técnicos (como RSI e MACD), a ação recomendada (compra, venda ou aguardar), e o momento da última atualização.",
+        indicadores: "⚙️ Monitorização baseada nos indicadores técnicos: <strong>RSI</strong>, <strong>MACD</strong>, <strong>Volume</strong>, <strong>Variação de Preço</strong> e <strong>Sentimento de Mercado</strong>.",
+        precosRecomendacoes: "📈 Atualização de Preços com Recomendações",
+        refresh: "🔄 Atualizar",
+        th: ["Moeda", "Preço (USD)", "Variação", "Tendência", "Ação", "Última Atualização"],
+        carregando: "A carregar alertas...",
+        dadosFornecidos: "Dados fornecidos pela CoinGecko API",
+        ultimaAtualizacao: "Última atualização:"
+      },
+      fr: {
+        titulo: "Moniteur de Cryptomonnaies",
+        explicacao: "Ce tableau montre les principales cryptomonnaies, leurs prix en temps réel, la variation en pourcentage, la tendance basée sur des indicateurs techniques (comme le RSI et le MACD), l'action recommandée (acheter, vendre ou attendre) et l'heure de la dernière mise à jour.",
+        indicadores: "⚙️ Surveillance basée sur des indicateurs techniques : <strong>RSI</strong>, <strong>MACD</strong>, <strong>Volume</strong>, <strong>Variation de prix</strong> et <strong>Sentiment du marché</strong>.",
+        precosRecomendacoes: "📈 Mise à jour des prix avec recommandations",
+        refresh: "🔄 Rafraîchir",
+        th: ["Monnaie", "Prix (USD)", "Variation", "Tendance", "Action", "Dernière mise à jour"],
+        carregando: "Chargement des alertes...",
+        dadosFornecidos: "Données fournies par l'API CoinGecko",
+        ultimaAtualizacao: "Dernière mise à jour:"
+      },
+      en: {
+        titulo: "Cryptocurrency Monitor",
+        explicacao: "This table shows key cryptocurrencies, their real-time prices, percentage variation, trend based on technical indicators (such as RSI and MACD), recommended action (buy, sell, or wait), and the time of the last update.",
+        indicadores: "⚙️ Monitoring based on technical indicators: <strong>RSI</strong>, <strong>MACD</strong>, <strong>Volume</strong>, <strong>Price Variation</strong>, and <strong>Market Sentiment</strong>.",
+        precosRecomendacoes: "📈 Price Updates with Recommendations",
+        refresh: "🔄 Refresh",
+        th: ["Coin", "Price (USD)", "Variation", "Trend", "Action", "Last Update"],
+        carregando: "Loading alerts...",
+        dadosFornecidos: "Data provided by CoinGecko API",
+        ultimaAtualizacao: "Last update:"
+      }
+    };
+
+    function setLanguage(lang) {
+      const t = translations[lang];
+      document.getElementById("titulo").innerHTML = t.titulo;
+      document.getElementById("explicacao").innerHTML = t.explicacao;
+      document.getElementById("indicadores").innerHTML = t.indicadores;
+      document.getElementById("precos-recomendacoes").innerHTML = t.precosRecomendacoes;
+      document.getElementById("btn-refresh").innerHTML = t.refresh;
+      const ths = document.querySelectorAll("thead th");
+      ths.forEach((th, i) => th.innerHTML = t.th[i]);
+      document.getElementById("carregando").innerHTML = t.carregando;
+      document.getElementById("dados-fornecidos").innerHTML = t.dadosFornecidos;
+      document.getElementById("ultima-atualizacao").innerHTML = t.ultimaAtualizacao;
+    }
+
+    setLanguage('pt');
+    window.onload = loadAlerts;
+    setInterval(loadAlerts, 120000);
+
+    function loadAlerts() {
+      fetch('/alerts')
+        .then(res => res.json())
+        .then(data => {
+          const tbody = document.getElementById('alert-body');
+          const now = new Date();
+          const dateFormatted = now.toLocaleDateString('pt-PT') + ' ' + now.toLocaleTimeString('pt-PT');
+          document.getElementById('last-updated').textContent = dateFormatted;
+
+          if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-gray-400">Nenhum alerta por enquanto.</td></tr>';
+            return;
+          }
+
+          tbody.innerHTML = data.map(row => `
+            <tr class="border-b border-gray-700">
+              <td class="py-2">${row.symbol}</td>
+              <td class="py-2">$${parseFloat(row.price).toFixed(5)}</td>
+              <td class="py-2">${row.change}</td>
+              <td class="py-2">${row.tendencia}</td>
+              <td class="py-2">${row.acao}</td>
+              <td class="py-2">${row.time}</td>
+            </tr>
+          `).join('');
+        })
+        .catch(() => {
+          const tbody = document.getElementById('alert-body');
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-red-400">Não foi possível carregar a lista de criptomoedas. Por favor, atualize a página.</td></tr>';
+        });
+    }
+  </script>
+</body>
+</html>

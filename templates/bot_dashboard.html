@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard de Sinais do Bot</title>
+  <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --neon-blue: #00f0ff;
+      --neon-purple: #8a2be2;
+      --neon-pink: #ff00ff;
+      --neon-green: #00ff9f;
+      --neon-red: #ff0044;
+      --neon-yellow: #ffd700;
+      --cyber-dark: #0a0a1e;
+      --cyber-darker: #050510;
+      --cyber-black: #000004;
+    }
+    
+    body {
+      background: radial-gradient(ellipse at top, var(--cyber-dark) 0%, var(--cyber-darker) 50%, var(--cyber-black) 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    /* Cyber grid effect */
+    .cyber-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(30, 30, 70, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 30, 70, 0.05) 1px, transparent 1px);
+      background-size: 25px 25px;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .card {
+      background: rgba(10, 10, 30, 0.5);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+    
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.8), transparent);
+      z-index: 1;
+    }
+    
+    .neon-text {
+      text-shadow: 0 0 5px rgba(0, 240, 255, 0.7), 0 0 10px rgba(0, 240, 255, 0.5);
+      color: var(--neon-blue);
+    }
+    
+    .table-cyber {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      border: 1px solid rgba(0, 240, 255, 0.2);
+    }
+    
+    .table-cyber th {
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--neon-blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+    }
+    
+    .table-cyber td {
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+      font-size: 0.95rem;
+    }
+    
+    .table-cyber tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .table-cyber tr:hover td {
+      background: rgba(0, 240, 255, 0.05);
+    }
+    
+    .badge-buy {
+      background-color: rgba(0, 255, 159, 0.2);
+      color: var(--neon-green);
+      border: 1px solid rgba(0, 255, 159, 0.3);
+    }
+    
+    .badge-sell {
+      background-color: rgba(255, 0, 68, 0.2);
+      color: var(--neon-red);
+      border: 1px solid rgba(255, 0, 68, 0.3);
+    }
+    
+    .badge-hold {
+      background-color: rgba(255, 215, 0, 0.2);
+      color: var(--neon-yellow);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .positivo {
+      color: var(--neon-green);
+    }
+    
+    .negativo {
+      color: var(--neon-red);
+    }
+    
+    .neutro {
+      color: var(--neon-blue);
+    }
+    
+    /* Efeito de pulso para indicar atualização em tempo real */
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7);
+      }
+      
+      70% {
+        box-shadow: 0 0 0 10px rgba(0, 240, 255, 0);
+      }
+      
+      100% {
+        box-shadow: 0 0 0 0 rgba(0, 240, 255, 0);
+      }
+    }
+    
+    /* Efeito de terminador de texto */
+    .typewriter {
+      overflow: hidden;
+      border-right: .15em solid var(--neon-blue);
+      white-space: nowrap;
+      margin: 0 auto;
+      letter-spacing: .15em;
+      animation: 
+        typing 3.5s steps(40, end),
+        blink-caret .75s step-end infinite;
+    }
+    
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: var(--neon-blue); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Grid background -->
+  <div class="cyber-grid"></div>
+
+  <!-- Header -->
+  <header class="py-4 mb-5">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <div class="pulse me-3" style="width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--neon-blue); display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-robot text-info"></i>
+          </div>
+          <h1 class="neon-text fs-4 mb-0">CRIPTOBOT DASHBOARD</h1>
+        </div>
+        <div>
+          <span class="badge" style="background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3);">
+            <i class="fas fa-clock me-1"></i> Atualizado: <span id="ultimo-update">Carregando...</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-md-12">
+        <div class="card p-4 mb-4">
+          <h5 class="neon-text mb-3">
+            <i class="fas fa-chart-line me-2"></i>Sinais em Tempo Real
+          </h5>
+          <div class="table-responsive">
+            <table class="table table-cyber">
+              <thead>
+                <tr>
+                  <th>Moeda</th>
+                  <th>Preço</th>
+                  <th>Variação</th>
+                  <th>RSI</th>
+                  <th>Tendência</th>
+                  <th>Sinal</th>
+                  <th>Confiança</th>
+                  <th>Atualização</th>
+                </tr>
+              </thead>
+              <tbody id="tabela-sinais">
+                <tr>
+                  <td colspan="8" class="text-center">Carregando dados...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h5 class="neon-text mb-3">
+            <i class="fas fa-fire me-2"></i>Top Moedas
+          </h5>
+          <div class="table-responsive">
+            <table class="table table-cyber">
+              <thead>
+                <tr>
+                  <th>Moeda</th>
+                  <th>Var%</th>
+                  <th>Sinal</th>
+                </tr>
+              </thead>
+              <tbody id="top-moedas">
+                <tr>
+                  <td colspan="3" class="text-center">Carregando...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h5 class="neon-text mb-3">
+            <i class="fas fa-signal me-2"></i>Resumo do Mercado
+          </h5>
+          <div id="mercado-stats">
+            <div class="d-flex justify-content-between mb-3">
+              <div>Sinais de Compra:</div>
+              <div id="sinais-compra" class="positivo">0</div>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <div>Sinais de Venda:</div>
+              <div id="sinais-venda" class="negativo">0</div>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <div>Moedas em Neutro:</div>
+              <div id="sinais-hold" class="neutro">0</div>
+            </div>
+            <div class="border-top border-info border-opacity-25 pt-3 mt-3">
+              <div class="d-flex justify-content-between mb-2">
+                <div>Sentimento do Mercado:</div>
+                <div id="sentimento-mercado">Neutro</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h5 class="neon-text mb-3">
+            <i class="fas fa-bolt me-2"></i>Alertas Recentes
+          </h5>
+          <ul class="list-group list-group-flush" id="alertas-recentes">
+            <li class="list-group-item bg-transparent border-info border-opacity-25">Carregando alertas...</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-top border-info border-opacity-25 py-4 mt-5">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <span class="neon-text">CRIPTOSINAIS</span>
+          <small class="text-muted d-block">© 2025 Todos os direitos reservados</small>
+        </div>
+        <div>
+          <a href="/" class="btn btn-sm me-2" style="background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); color: var(--neon-blue);">
+            <i class="fas fa-home"></i> Voltar para Home
+          </a>
+          <a href="/bot-dashboard-simple" class="btn btn-sm" style="background: rgba(0, 255, 159, 0.1); border: 1px solid rgba(0, 255, 159, 0.3); color: var(--neon-green);">
+            <i class="fas fa-mobile-alt"></i> Versão Simples
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Formatador de data/hora
+    function formatarDataHora(isoString) {
+      if (!isoString) return 'N/A';
+      const data = new Date(isoString);
+      return data.toLocaleTimeString('pt-BR', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        second: '2-digit'
+      });
+    }
+    
+    // Formatar hora atual
+    function atualizarHoraAtual() {
+      const agora = new Date();
+      const horaFormatada = agora.toLocaleString('pt-BR', { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+      document.getElementById('ultimo-update').textContent = horaFormatada;
+    }
+    
+    // Função para obter classes CSS baseadas no sinal
+    function getSignalClass(signal) {
+      if (signal === 'BUY') return 'badge-buy';
+      if (signal === 'SELL') return 'badge-sell';
+      return 'badge-hold';
+    }
+    
+    // Função para obter classes CSS baseadas na variação
+    function getChangeClass(change) {
+      if (!change) return 'neutro';
+      const numChange = parseFloat(change.replace('%', ''));
+      if (numChange > 0) return 'positivo';
+      if (numChange < 0) return 'negativo';
+      return 'neutro';
+    }
+    
+    // Função para criar o conteúdo de um alerta
+    function createAlertItem(coin, signal, change) {
+      const now = new Date();
+      const time = now.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
+      
+      let icon, message;
+      
+      if (signal === 'BUY') {
+        icon = '<i class="fas fa-arrow-up text-success me-2"></i>';
+        message = `Oportunidade de COMPRA para ${coin} (${change})`;
+      } else if (signal === 'SELL') {
+        icon = '<i class="fas fa-arrow-down text-danger me-2"></i>';
+        message = `Sinal de VENDA para ${coin} (${change})`;
+      } else {
+        icon = '<i class="fas fa-minus text-warning me-2"></i>';
+        message = `${coin} em observação (${change})`;
+      }
+      
+      return `
+        <li class="list-group-item bg-transparent border-info border-opacity-25">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>${icon} ${message}</div>
+            <small class="text-muted">${time}</small>
+          </div>
+        </li>
+      `;
+    }
+    
+    // Função principal para atualizar o dashboard
+    async function atualizarDashboard() {
+      try {
+        // Atualizar relógio
+        atualizarHoraAtual();
+        
+        // Buscar dados da API
+        const response = await fetch('/api/crypto-signals');
+        const dados = await response.json();
+        
+        if (!dados || !Array.isArray(dados)) {
+          console.error('Formato de dados inválido:', dados);
+          return;
+        }
+        
+        // Processar dados
+        const tbody = document.getElementById('tabela-sinais');
+        tbody.innerHTML = '';
+        
+        // Ordenar por variação (decrescente)
+        const dadosOrdenados = [...dados].sort((a, b) => {
+          const changeA = parseFloat(a.change.replace('%', '')) || 0;
+          const changeB = parseFloat(b.change.replace('%', '')) || 0;
+          return changeB - changeA;
+        });
+        
+        // Contadores para o resumo
+        let buyCount = 0;
+        let sellCount = 0;
+        let holdCount = 0;
+        
+        // Preencher tabela
+        dadosOrdenados.forEach(moeda => {
+          // Atualizar contadores
+          if (moeda.signal === 'BUY') buyCount++;
+          else if (moeda.signal === 'SELL') sellCount++;
+          else holdCount++;
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><strong>${moeda.symbol}</strong></td>
+            <td>${moeda.price}</td>
+            <td class="${getChangeClass(moeda.change)}">${moeda.change}</td>
+            <td>${moeda.rsi}</td>
+            <td>${moeda.trend}</td>
+            <td><span class="badge ${getSignalClass(moeda.signal)}">${moeda.signal}</span></td>
+            <td>${moeda.confidence}%</td>
+            <td>${formatarDataHora(moeda.timestamp)}</td>
+          `;
+          tbody.appendChild(row);
+        });
+        
+        // Atualizar contadores no painel de resumo
+        document.getElementById('sinais-compra').textContent = buyCount;
+        document.getElementById('sinais-venda').textContent = sellCount;
+        document.getElementById('sinais-hold').textContent = holdCount;
+        
+        // Determinar sentimento do mercado
+        let sentimento = 'Neutro';
+        let sentimentoClass = 'neutro';
+        
+        if (buyCount > sellCount && buyCount > holdCount) {
+          sentimento = 'Bullish';
+          sentimentoClass = 'positivo';
+        } else if (sellCount > buyCount && sellCount > holdCount) {
+          sentimento = 'Bearish';
+          sentimentoClass = 'negativo';
+        }
+        
+        const sentimentoEl = document.getElementById('sentimento-mercado');
+        sentimentoEl.textContent = sentimento;
+        sentimentoEl.className = sentimentoClass;
+        
+        // Preencher top 5 moedas
+        const topMoedasEl = document.getElementById('top-moedas');
+        topMoedasEl.innerHTML = '';
+        
+        dadosOrdenados.slice(0, 5).forEach(moeda => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><strong>${moeda.symbol}</strong></td>
+            <td class="${getChangeClass(moeda.change)}">${moeda.change}</td>
+            <td><span class="badge ${getSignalClass(moeda.signal)}">${moeda.signal}</span></td>
+          `;
+          topMoedasEl.appendChild(row);
+        });
+        
+        // Atualizar alertas recentes (apenas para sinais não-neutros ou grandes movimentos)
+        const alertasEl = document.getElementById('alertas-recentes');
+        
+        // Manter alertas existentes, mas limitar a 5
+        const alertasAtuais = alertasEl.innerHTML;
+        let novosAlertas = '';
+        
+        dadosOrdenados.forEach(moeda => {
+          const changeValue = parseFloat(moeda.change.replace('%', '')) || 0;
+          
+          // Adicionar alerta para sinais de compra/venda ou grandes movimentos
+          if (moeda.signal === 'BUY' || moeda.signal === 'SELL' || Math.abs(changeValue) > 2.0) {
+            novosAlertas += createAlertItem(moeda.symbol, moeda.signal, moeda.change);
+          }
+        });
+        
+        // Se temos novos alertas, atualizamos o painel
+        if (novosAlertas) {
+          alertasEl.innerHTML = novosAlertas;
+        } else if (alertasAtuais.includes('Carregando alertas...')) {
+          // Se não temos alertas e ainda mostra "carregando", atualizamos 
+          alertasEl.innerHTML = `
+            <li class="list-group-item bg-transparent border-info border-opacity-25">
+              Nenhum alerta significativo no momento
+            </li>
+          `;
+        }
+        
+      } catch (error) {
+        console.error('Erro ao atualizar dashboard:', error);
+      }
+    }
+
+    // Atualizar dashboard imediatamente
+    atualizarDashboard();
+    
+    // Atualizar a cada 10 segundos
+    setInterval(atualizarDashboard, 10000);
+  </script>
+</body>
+</html>

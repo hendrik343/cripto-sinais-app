@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pré-Visualização Premium | Criptosinais</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .hero-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+    }
+    .locked {
+      position: relative;
+      filter: blur(2px);
+      transition: all 0.3s ease;
+    }
+    .locked::after {
+      content: "🔒 Acesso Premium";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+    .lang-pt { display: none; }
+    .lang-en { display: none; }
+    .lang-fr { display: none; }
+    .lang-active { display: block; }
+    
+    /* Estilo para o logo centralizado */
+    .logo-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 0;
+    }
+    .hero-text {
+      font-size: 1.75rem;
+      font-weight: bold;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .subtext {
+      font-size: 0.95rem;
+      color: #9ca3af;
+      opacity: 0.8;
+    }
+    
+    /* Botão CTA com efeito de brilho */
+    .btn-premium {
+      background: linear-gradient(90deg, #eab308 0%, #f59e0b 100%);
+      color: #000;
+      font-weight: bold;
+      padding: 1rem 2rem;
+      border-radius: 9999px;
+      display: inline-block;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(234, 179, 8, 0.3);
+    }
+    .btn-premium:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 20px rgba(234, 179, 8, 0.4);
+    }
+    .btn-premium::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+      transform: rotate(30deg);
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    .btn-premium:hover::after {
+      opacity: 1;
+      animation: shine 1.5s infinite;
+    }
+    @keyframes shine {
+      0% { left: -100%; opacity: 0; }
+      20% { opacity: 0.1; }
+      100% { left: 100%; opacity: 0; }
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <header class="flex items-center justify-between px-6 py-4 bg-black border-b border-gray-800 shadow-md">
+    <div class="flex items-center space-x-3">
+      {% include 'includes/logo.html' %}
+      <h1 class="text-2xl font-bold text-green-400 tracking-wide">Criptosinais</h1>
+    </div>
+
+    <!-- Navegação e seletor de idioma no centro -->
+    <div class="flex-grow flex justify-center">
+      <nav>
+        <ul class="flex space-x-6 text-sm font-medium">
+          <li>
+            <a href="/landing" class="hover:text-green-300 transition-colors">
+              <span class="lang-pt">Início</span>
+              <span class="lang-en">Home</span>
+              <span class="lang-fr">Accueil</span>
+            </a>
+          </li>
+          <li>
+            <a href="/charts" class="hover:text-green-300 transition-colors">
+              <span class="lang-pt">Gráficos</span>
+              <span class="lang-en">Charts</span>
+              <span class="lang-fr">Graphiques</span>
+            </a>
+          </li>
+          <li>
+            <a href="/dashboard" class="hover:text-green-300 transition-colors">
+              <span class="lang-pt">Dashboard</span>
+              <span class="lang-en">Dashboard</span>
+              <span class="lang-fr">Tableau de Bord</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Idiomas e ícones sociais -->
+    <div class="flex items-center space-x-4">
+      <select id="languageSelect" class="bg-gray-800 text-white text-xs rounded-lg px-2 py-1 border border-gray-700">
+        <option value="pt" selected>Português</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+
+      <!-- Ícones Sociais (visível apenas em md+) -->
+      <div class="hidden md:flex space-x-4 text-gray-400">
+        <a href="https://instagram.com/criptosinais77" target="_blank" class="hover:text-pink-400 transition" aria-label="Instagram">
+          <i class="fab fa-instagram text-lg"></i>
+        </a>
+        <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" class="hover:text-blue-400 transition" aria-label="Telegram">
+          <i class="fab fa-telegram-plane text-lg"></i>
+        </a>
+        <a href="#" class="hover:text-blue-500 opacity-40 cursor-not-allowed transition" aria-label="LinkedIn (em breve)">
+          <i class="fab fa-linkedin text-lg"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="container mx-auto px-4 py-16 text-center">
+    <!-- Logo centralizado com estilo conforme o design compartilhado -->
+    <div class="logo-center mb-10">
+      <div class="flex justify-center">
+        {% include 'includes/logo.html' %}
+      </div>
+      <p class="hero-text mt-4">
+        <span class="lang-pt">Acesso Premium - <span class="text-green-500">$1.99</span></span>
+        <span class="lang-en">Premium Access - <span class="text-green-500">$1.99</span></span>
+        <span class="lang-fr">Accès Premium - <span class="text-green-500">$1.99</span></span>
+      </p>
+      <p class="subtext">
+        <span class="lang-pt">Pagamento único • Acesso vitalício</span>
+        <span class="lang-en">One-time payment • Lifetime access</span>
+        <span class="lang-fr">Paiement unique • Accès à vie</span>
+      </p>
+    </div>
+    
+    <h2 class="text-4xl font-bold mb-4 text-green-400">
+      <span class="lang-pt">💎 Área Premium</span>
+      <span class="lang-en">💎 Premium Area</span>
+      <span class="lang-fr">💎 Espace Premium</span>
+    </h2>
+    <p class="text-gray-300 mb-10">
+      <span class="lang-pt">Visualize o que vai receber ao assinar — desbloqueie já para acessar tudo!</span>
+      <span class="lang-en">Preview what you'll receive when subscribing — unlock now to access everything!</span>
+      <span class="lang-fr">Visualisez ce que vous recevrez en vous abonnant — débloquez maintenant pour tout accéder!</span>
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <a href="/premium" class="block">
+        <div class="bg-gray-800 p-6 rounded-xl text-center locked">
+          <i class="fas fa-bell text-3xl text-green-400 mb-2"></i>
+          <h3 class="text-xl font-bold mb-2">
+            <span class="lang-pt">Sinais em Tempo Real</span>
+            <span class="lang-en">Real-Time Signals</span>
+            <span class="lang-fr">Signaux en Temps Réel</span>
+          </h3>
+          <p class="text-gray-400">
+            <span class="lang-pt">Alertas de compra e venda com precisão profissional.</span>
+            <span class="lang-en">Buy and sell alerts with professional precision.</span>
+            <span class="lang-fr">Alertes d'achat et de vente avec une précision professionnelle.</span>
+          </p>
+        </div>
+      </a>
+      <a href="/premium" class="block">
+        <div class="bg-gray-800 p-6 rounded-xl text-center locked">
+          <i class="fas fa-chart-line text-3xl text-green-400 mb-2"></i>
+          <h3 class="text-xl font-bold mb-2">
+            <span class="lang-pt">Análises Técnicas</span>
+            <span class="lang-en">Technical Analysis</span>
+            <span class="lang-fr">Analyses Techniques</span>
+          </h3>
+          <p class="text-gray-400">
+            <span class="lang-pt">RSI, MACD, Volume e muito mais.</span>
+            <span class="lang-en">RSI, MACD, Volume and much more.</span>
+            <span class="lang-fr">RSI, MACD, Volume et bien plus.</span>
+          </p>
+        </div>
+      </a>
+      <a href="/premium" class="block">
+        <div class="bg-gray-800 p-6 rounded-xl text-center locked">
+          <i class="fab fa-telegram text-3xl text-green-400 mb-2"></i>
+          <h3 class="text-xl font-bold mb-2">
+            <span class="lang-pt">Grupo VIP Telegram</span>
+            <span class="lang-en">VIP Telegram Group</span>
+            <span class="lang-fr">Groupe Telegram VIP</span>
+          </h3>
+          <p class="text-gray-400">
+            <span class="lang-pt">Acesso ao nosso grupo fechado com sinais exclusivos.</span>
+            <span class="lang-en">Access to our closed group with exclusive signals.</span>
+            <span class="lang-fr">Accès à notre groupe fermé avec des signaux exclusifs.</span>
+          </p>
+        </div>
+      </a>
+    </div>
+
+    <!-- Exemplo de Alerta Bloqueado -->
+    <div class="mt-16 mb-16">
+      <h3 class="text-2xl font-bold mb-6">
+        <span class="lang-pt">Exemplo de Alerta Premium</span>
+        <span class="lang-en">Premium Alert Example</span>
+        <span class="lang-fr">Exemple d'Alerte Premium</span>
+      </h3>
+      
+      <div class="bg-gray-800 p-6 rounded-xl mx-auto max-w-2xl locked">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center">
+            <div class="bg-green-900 p-2 rounded-full mr-3">
+              <i class="fas fa-arrow-trend-up text-green-400"></i>
+            </div>
+            <h4 class="font-bold text-xl">BITCOIN (BTC)</h4>
+          </div>
+          <span class="text-xs bg-green-500 text-black px-2 py-1 rounded">COMPRA</span>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <p class="text-gray-400 text-sm">Preço Atual</p>
+            <p class="text-xl font-mono">$68,243.75</p>
+          </div>
+          <div>
+            <p class="text-gray-400 text-sm">Alvo de Preço</p>
+            <p class="text-xl font-mono">$72,950.00</p>
+          </div>
+          <div>
+            <p class="text-gray-400 text-sm">Stop Loss</p>
+            <p class="text-xl font-mono">$66,800.00</p>
+          </div>
+          <div>
+            <p class="text-gray-400 text-sm">Potencial</p>
+            <p class="text-xl font-mono text-green-500">+6.9%</p>
+          </div>
+        </div>
+        
+        <div class="text-left bg-gray-900 p-4 rounded">
+          <p class="text-sm">
+            <span class="lang-pt">RSI está em 52 e subindo, cruzando acima da média móvel. MACD mostra momentum positivo e volume está aumentando. Recomendação de compra com alta confiança.</span>
+            <span class="lang-en">RSI at 52 and rising, crossing above moving average. MACD shows positive momentum and volume is increasing. Buy recommendation with high confidence.</span>
+            <span class="lang-fr">RSI à 52 et en hausse, croisant au-dessus de la moyenne mobile. MACD montre un momentum positif et le volume augmente. Recommandation d'achat avec haute confiance.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-14 mb-10">
+      <a href="/premium" class="btn-premium text-lg">
+        <span class="lang-pt">Obter Acesso Premium - $1.99</span>
+        <span class="lang-en">Get Premium Access - $1.99</span>
+        <span class="lang-fr">Obtenir l'Accès Premium - $1.99</span>
+      </a>
+      <p class="mt-4 text-gray-400 text-sm">
+        <span class="lang-pt">Pagamento único • Acesso vitalício</span>
+        <span class="lang-en">One-time payment • Lifetime access</span>
+        <span class="lang-fr">Paiement unique • Accès à vie</span>
+      </p>
+    </div>
+  </section>
+
+  <footer class="px-6 py-8 text-center text-gray-500 text-sm bg-black border-t border-gray-800 mt-12">
+    <div class="flex items-center justify-center space-x-6 mb-4">
+      <!-- Instagram -->
+      <a href="https://instagram.com/criptosinais77" target="_blank" class="hover:text-pink-400 transition text-xl" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <!-- Telegram -->
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" class="hover:text-blue-400 transition text-xl" aria-label="Telegram">
+        <i class="fab fa-telegram-plane"></i>
+      </a>
+      <!-- LinkedIn (Em Breve) -->
+      <a href="#" class="hover:text-blue-500 transition text-xl opacity-40 cursor-not-allowed" aria-label="LinkedIn (em breve)">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </div>
+    <p class="text-gray-500">
+      <span class="lang-pt">© 2025 Criptosinais. Todos os direitos reservados.</span>
+      <span class="lang-en">© 2025 Criptosinais. All rights reserved.</span>
+      <span class="lang-fr">© 2025 Criptosinais. Tous droits réservés.</span>
+    </p>
+  </footer>
+
+  <script>
+    // Funções para lidar com múltiplos idiomas
+    document.addEventListener('DOMContentLoaded', function() {
+      // Detectar idioma do navegador
+      const browserLang = navigator.language.split('-')[0];
+      if(['pt', 'en', 'fr'].includes(browserLang)) {
+        setLanguage(browserLang);
+        document.getElementById('languageSelect').value = browserLang;
+      } else {
+        setLanguage('pt'); // Default para português
+      }
+      
+      // Mudar idioma quando selecionado
+      document.getElementById('languageSelect').addEventListener('change', function() {
+        setLanguage(this.value);
+      });
+    });
+    
+    function setLanguage(lang) {
+      document.querySelectorAll('.lang-pt, .lang-en, .lang-fr').forEach(el => {
+        el.classList.remove('lang-active');
+      });
+      
+      document.querySelectorAll(`.lang-${lang}`).forEach(el => {
+        el.classList.add('lang-active');
+      });
+      
+      // Atualizar o atributo lang do HTML
+      document.documentElement.lang = lang;
+    }
+  </script>
+</body>
+</html>

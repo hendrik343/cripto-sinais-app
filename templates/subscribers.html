@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Assinantes Premium</title>
+  <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/bold/style.css" />
+  <style>
+    .table-container {
+      overflow-x: auto;
+    }
+    .table {
+      border-radius: 0.5rem;
+    }
+    .premium-badge {
+      background-color: #198754;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="bg-dark text-light min-vh-100">
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h2 mb-0 text-success"><i class="ph-bold ph-user-circle me-2"></i>Assinantes Premium Ativos</h1>
+      
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-outline-light" onclick="setLanguage('pt')">PT</button>
+        <button class="btn btn-sm btn-outline-light" onclick="setLanguage('fr')">FR</button>
+        <button class="btn btn-sm btn-outline-light" onclick="setLanguage('en')">EN</button>
+      </div>
+    </div>
+
+    <div class="card bg-dark border-secondary mb-4">
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table table-dark table-hover">
+            <thead class="text-success border-bottom border-secondary">
+              <tr>
+                <th id="header-nome" class="py-3">Nome</th>
+                <th id="header-email" class="py-3">Email</th>
+                <th id="header-data" class="py-3">Data de Pagamento</th>
+                <th id="header-status" class="py-3">Status</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-assinantes">
+              <!-- Os dados dos assinantes serão inseridos aqui dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between mb-4">
+      <a href="/" class="btn btn-outline-secondary"><i class="ph-bold ph-house me-1"></i><span id="btn-home">Dashboard</span></a>
+      <a href="/premium" class="btn btn-success"><i class="ph-bold ph-chart-line me-1"></i><span id="btn-premium">Área Premium</span></a>
+    </div>
+
+    <footer class="text-center text-secondary mt-5">
+      <p id="copyright">© 2025 CryptoSignals Premium. Todos os direitos reservados.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Suporte para múltiplos idiomas
+    const translations = {
+      pt: {
+        titulo: "Assinantes Premium Ativos",
+        headerNome: "Nome",
+        headerEmail: "Email",
+        headerData: "Data de Pagamento",
+        headerStatus: "Status",
+        btnHome: "Dashboard",
+        btnPremium: "Área Premium",
+        statusAtivo: "Ativo",
+        copyright: "© 2025 CryptoSignals Premium. Todos os direitos reservados."
+      },
+      fr: {
+        titulo: "Abonnés Premium Actifs",
+        headerNome: "Nom",
+        headerEmail: "Email",
+        headerData: "Date de Paiement",
+        headerStatus: "Statut",
+        btnHome: "Tableau de Bord",
+        btnPremium: "Zone Premium",
+        statusAtivo: "Actif",
+        copyright: "© 2025 CryptoSignals Premium. Tous droits réservés."
+      },
+      en: {
+        titulo: "Active Premium Subscribers",
+        headerNome: "Name",
+        headerEmail: "Email",
+        headerData: "Payment Date",
+        headerStatus: "Status",
+        btnHome: "Dashboard",
+        btnPremium: "Premium Area",
+        statusAtivo: "Active",
+        copyright: "© 2025 CryptoSignals Premium. All rights reserved."
+      }
+    };
+
+    function setLanguage(lang) {
+      const t = translations[lang];
+      
+      // Atualizar cabeçalhos
+      document.querySelector('h1').innerHTML = `<i class="ph-bold ph-user-circle me-2"></i>${t.titulo}`;
+      document.getElementById("header-nome").textContent = t.headerNome;
+      document.getElementById("header-email").textContent = t.headerEmail;
+      document.getElementById("header-data").textContent = t.headerData;
+      document.getElementById("header-status").textContent = t.headerStatus;
+      
+      // Atualizar botões
+      document.getElementById("btn-home").textContent = t.btnHome;
+      document.getElementById("btn-premium").textContent = t.btnPremium;
+      
+      // Atualizar copyright
+      document.getElementById("copyright").textContent = t.copyright;
+      
+      // Atualizar status dos assinantes
+      const statusCells = document.querySelectorAll('.status-cell');
+      statusCells.forEach(cell => {
+        cell.textContent = t.statusAtivo;
+      });
+    }
+
+    window.onload = function() {
+      // Simulando dados de assinantes (seria conectado a uma base de dados real em produção)
+      const assinantes = [
+        { nome: "Hugo Oliveira", email: "hugo@email.com", data: "07/05/2025", status: "Ativo" },
+        { nome: "Maria Lopes", email: "maria@email.com", data: "06/05/2025", status: "Ativo" },
+        { nome: "Carlos Mendes", email: "carlos@email.com", data: "06/05/2025", status: "Ativo" }
+      ];
+
+      const tabela = document.getElementById("tabela-assinantes");
+      
+      // Preencher tabela com dados dos assinantes
+      assinantes.forEach(user => {
+        const linha = document.createElement('tr');
+        linha.innerHTML = `
+          <td class="py-3">${user.nome}</td>
+          <td class="py-3">${user.email}</td>
+          <td class="py-3">${user.data}</td>
+          <td class="py-3"><span class="premium-badge status-cell">${user.status}</span></td>
+        `;
+        tabela.appendChild(linha);
+      });
+
+      // Detectar idioma do navegador ou usar padrão português
+      const userLang = navigator.language || navigator.userLanguage;
+      if (userLang.startsWith('fr')) {
+        setLanguage('fr');
+      } else if (userLang.startsWith('en')) {
+        setLanguage('en');
+      } else {
+        setLanguage('pt'); // Padrão para português
+      }
+    };
+  </script>
+</body>
+</html>

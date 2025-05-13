@@ -1,0 +1,195 @@
+// lib/main.dart
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'screens/login_screen.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(CryptoSignalsApp());
+}
+
+class CryptoSignalsApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'CriptoSinais',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.indigo,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.grey[900],
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      home: LoginScreen(),
+    );
+  }
+}
+
+// lib/screens/login_screen.dart
+import 'package:flutter/material.dart';
+import 'dashboard_screen.dart';
+import 'register_screen.dart';
+
+class LoginScreen extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Bem-vindo ao CriptoSinais',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 24),
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(labelText: 'Email'),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: passwordController,
+              decoration: InputDecoration(labelText: 'Palavra-passe'),
+              obscureText: true,
+            ),
+            SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => DashboardScreen()),
+                );
+              },
+              child: Text('Entrar'),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            SizedBox(height: 12),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => RegisterScreen()),
+                );
+              },
+              child: Text('Não tens conta? Regista-te aqui'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// lib/screens/dashboard_screen.dart
+import 'package:flutter/material.dart';
+
+class DashboardScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Dashboard CriptoSinais'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '📊 Sinais em Tempo Real',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            CircularProgressIndicator(),
+            SizedBox(height: 10),
+            Text('A carregar dados da API CoinGecko...'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// lib/screens/register_screen.dart
+import 'package:flutter/material.dart';
+import 'dashboard_screen.dart';
+
+class RegisterScreen extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(title: Text('Criar Conta')),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Regista-te no CriptoSinais',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 24),
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(labelText: 'Email'),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: passwordController,
+              decoration: InputDecoration(labelText: 'Palavra-passe'),
+              obscureText: true,
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: confirmPasswordController,
+              decoration: InputDecoration(labelText: 'Confirmar palavra-passe'),
+              obscureText: true,
+            ),
+            SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                // TODO: lógica de registo Firebase
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => DashboardScreen()),
+                );
+              },
+              child: Text('Criar Conta'),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

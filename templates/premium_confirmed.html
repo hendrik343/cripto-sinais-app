@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acesso Premium Confirmado</title>
+  <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/bold/style.css" />
+  <script>
+    // Proteção básica via URL
+    const url = new URL(window.location.href);
+    const confirmado = url.searchParams.get("confirm");
+
+    if (confirmado !== "true") {
+      window.location.href = "/"; // Página pública
+    }
+
+    // Suporte para múltiplos idiomas
+    const translations = {
+      pt: {
+        titulo: "🎉 Acesso Premium Ativado!",
+        bemvindo: "Bem-vindo à zona de elite. Aqui você tem acesso exclusivo às ferramentas que os profissionais usam para lucrar com antecedência.",
+        painelTitulo: "📊 Painel de Sinais Antecipados",
+        painelDescricao: "Atualizações baseadas em RSI, MACD, Volume e Sentimento de Mercado.",
+        painelBotao: "Acessar o Painel",
+        telegramTitulo: "📩 Entrar no Bot Telegram VIP",
+        telegramDescricao: "Receba sinais antes de todos diretamente no seu Telegram.",
+        telegramBotao: "Entrar no Telegram",
+        relatorioTitulo: "📁 Relatório Técnico Semanal",
+        relatorioDescricao: "Download exclusivo do relatório PDF com as melhores oportunidades da semana.",
+        relatorioBotao: "⬇️ Baixar PDF",
+
+        copyright: "© 2025 CryptoSignals Premium. Todos os direitos reservados."
+      },
+      fr: {
+        titulo: "🎉 Accès Premium Activé!",
+        bemvindo: "Bienvenue dans la zone d'élite. Vous avez ici un accès exclusif aux outils que les professionnels utilisent pour profiter à l'avance.",
+        painelTitulo: "📊 Tableau de Signaux Avancés",
+        painelDescricao: "Mises à jour basées sur RSI, MACD, Volume et Sentiment du Marché.",
+        painelBotao: "Accéder au Tableau",
+        telegramTitulo: "📩 Rejoindre le Bot Telegram VIP",
+        telegramDescricao: "Recevez des signaux avant tout le monde directement sur votre Telegram.",
+        telegramBotao: "Rejoindre Telegram",
+        relatorioTitulo: "📁 Rapport Technique Hebdomadaire",
+        relatorioDescricao: "Téléchargement exclusif du rapport PDF avec les meilleures opportunités de la semaine.",
+        relatorioBotao: "⬇️ Télécharger PDF",
+
+        copyright: "© 2025 CryptoSignals Premium. Tous droits réservés."
+      },
+      en: {
+        titulo: "🎉 Premium Access Activated!",
+        bemvindo: "Welcome to the elite zone. Here you have exclusive access to the tools professionals use to profit in advance.",
+        painelTitulo: "📊 Advanced Signals Dashboard",
+        painelDescricao: "Updates based on RSI, MACD, Volume and Market Sentiment.",
+        painelBotao: "Access Dashboard",
+        telegramTitulo: "📩 Join VIP Telegram Bot",
+        telegramDescricao: "Receive signals before everyone else directly on your Telegram.",
+        telegramBotao: "Join Telegram",
+        relatorioTitulo: "📁 Weekly Technical Report",
+        relatorioDescricao: "Exclusive download of the PDF report with the best opportunities of the week.",
+        relatorioBotao: "⬇️ Download PDF",
+
+        copyright: "© 2025 CryptoSignals Premium. All rights reserved."
+      }
+    };
+
+    function setLanguage(lang) {
+      const t = translations[lang];
+      document.getElementById("titulo").innerHTML = t.titulo;
+      document.getElementById("bemvindo").innerHTML = t.bemvindo;
+      document.getElementById("painel-titulo").innerHTML = t.painelTitulo;
+      document.getElementById("painel-descricao").innerHTML = t.painelDescricao;
+      document.getElementById("painel-botao").innerHTML = t.painelBotao;
+      document.getElementById("telegram-titulo").innerHTML = t.telegramTitulo;
+      document.getElementById("telegram-descricao").innerHTML = t.telegramDescricao;
+      document.getElementById("telegram-botao").innerHTML = t.telegramBotao;
+      document.getElementById("relatorio-titulo").innerHTML = t.relatorioTitulo;
+      document.getElementById("relatorio-descricao").innerHTML = t.relatorioDescricao;
+      document.getElementById("relatorio-botao").innerHTML = t.relatorioBotao;
+      document.getElementById("copyright").innerHTML = t.copyright;
+    }
+
+    window.onload = function() {
+      // Detectar idioma do navegador ou usar padrão
+      const userLang = navigator.language || navigator.userLanguage;
+      if (userLang.startsWith('fr')) {
+        setLanguage('fr');
+      } else if (userLang.startsWith('en')) {
+        setLanguage('en');
+      } else {
+        setLanguage('pt'); // Padrão para português
+      }
+    };
+  </script>
+</head>
+<body class="bg-dark text-light min-vh-100">
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <h1 class="display-4 fw-bold text-success" id="titulo">🎉 Acesso Premium Ativado!</h1>
+      <p class="lead mb-4" id="bemvindo">Bem-vindo à zona de elite. Aqui você tem acesso exclusivo às ferramentas que os profissionais usam para lucrar com antecedência.</p>
+      
+      <div class="d-flex justify-content-center gap-2 mb-4">
+        <button class="btn btn-sm btn-outline-light" onclick="setLanguage('pt')">PT</button>
+        <button class="btn btn-sm btn-outline-light" onclick="setLanguage('fr')">FR</button>
+        <button class="btn btn-sm btn-outline-light" onclick="setLanguage('en')">EN</button>
+      </div>
+    </div>
+
+    <!-- Conteúdo Premium -->
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card bg-dark border-secondary h-100">
+          <div class="card-body">
+            <h2 class="card-title h5 fw-bold" id="painel-titulo">📊 Painel de Sinais Antecipados</h2>
+            <p class="card-text text-secondary mb-4" id="painel-descricao">Atualizações baseadas em RSI, MACD, Volume e Sentimento de Mercado.</p>
+            <a href="/premium" class="btn btn-primary" id="painel-botao">Acessar o Painel</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card bg-dark border-secondary h-100">
+          <div class="card-body">
+            <h2 class="card-title h5 fw-bold" id="telegram-titulo">📩 Entrar no Bot Telegram VIP</h2>
+            <p class="card-text text-secondary mb-4" id="telegram-descricao">Receba sinais antes de todos diretamente no seu Telegram.</p>
+            <a href="https://t.me/cryptosignalshendrik_bot" class="btn btn-purple" target="_blank" id="telegram-botao" style="background-color: #8A2BE2; color: white;">Entrar no Telegram</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card bg-dark border-secondary h-100">
+          <div class="card-body">
+            <h2 class="card-title h5 fw-bold" id="relatorio-titulo">📁 Relatório Técnico Semanal</h2>
+            <p class="card-text text-secondary mb-4" id="relatorio-descricao">Download exclusivo do relatório PDF com as melhores oportunidades da semana.</p>
+            <a href="#" class="btn btn-warning text-dark" id="relatorio-botao">⬇️ Baixar PDF</a>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="d-flex justify-content-between mt-5">
+      <a href="/" class="btn btn-outline-secondary"><i class="ph-bold ph-house me-1"></i> Home</a>
+      <a href="/premium" class="btn btn-outline-primary"><i class="ph-bold ph-chart-line me-1"></i> Dashboard</a>
+    </div>
+
+    <footer class="text-center mt-5 text-secondary">
+      <p id="copyright">© 2025 CryptoSignals Premium. Todos os direitos reservados.</p>
+    </footer>
+  </div>
+</body>
+</html>

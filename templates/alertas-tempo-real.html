@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criptosinais | Alertas em Tempo Real</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .hero-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+    }
+    .alert-card {
+      transition: all 0.3s ease;
+    }
+    .alert-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+    .alert-buy {
+      border-left: 4px solid #10b981;
+    }
+    .alert-sell {
+      border-left: 4px solid #ef4444;
+    }
+    .alert-neutral {
+      border-left: 4px solid #f59e0b;
+    }
+    .lang-pt { display: none; }
+    .lang-en { display: none; }
+    .lang-fr { display: none; }
+    .lang-active { display: block; }
+    .notification-dot {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 10px;
+      height: 10px;
+      background-color: #ef4444;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    .feature-item {
+      transition: all 0.3s ease;
+      background: rgba(16, 185, 129, 0.05);
+      border: 1px solid transparent;
+    }
+    .feature-item:hover {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      transform: translateY(-3px);
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-5 border-b border-gray-800 bg-black shadow-md">
+    <div class="flex items-center">
+      <img src="/static/images/logo.svg" alt="Logo Criptosinais" class="h-10 w-10 rounded-full mr-2">
+      <h1 class="text-2xl font-extrabold text-green-400 tracking-wide">Criptosinais</h1>
+    </div>
+    <div class="flex items-center">
+      <select id="languageSelect" class="bg-gray-800 text-white text-xs rounded-lg px-2 py-1 border border-gray-700 mr-4">
+        <option value="pt" selected>Português</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+      <nav class="space-x-4 text-sm">
+        <a href="/landing" class="hover:text-green-300 transition">
+          <span class="lang-pt">Início</span>
+          <span class="lang-en">Home</span>
+          <span class="lang-fr">Accueil</span>
+        </a>
+        <a href="/analise-tecnica" class="hover:text-green-300 transition">
+          <span class="lang-pt">Análise Técnica</span>
+          <span class="lang-en">Technical Analysis</span>
+          <span class="lang-fr">Analyse Technique</span>
+        </a>
+        <a href="/grupo-vip" class="hover:text-green-300 transition">
+          <span class="lang-pt">Grupo VIP</span>
+          <span class="lang-en">VIP Group</span>
+          <span class="lang-fr">Groupe VIP</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-gradient text-center px-6 py-16">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-5xl font-bold mb-6">
+        <span class="lang-pt">🚨 Alertas em Tempo Real</span>
+        <span class="lang-en">🚨 Real-Time Alerts</span>
+        <span class="lang-fr">🚨 Alertes en Temps Réel</span>
+      </h2>
+      <p class="text-gray-300 mb-8 text-lg">
+        <span class="lang-pt">Receba sinais imediatos de compra e venda com base em análise técnica e movimentos de mercado.</span>
+        <span class="lang-en">Receive immediate buy and sell signals based on technical analysis and market movements.</span>
+        <span class="lang-fr">Recevez des signaux immédiats d'achat et de vente basés sur l'analyse technique et les mouvements du marché.</span>
+      </p>
+      <a href="https://tinyurl.com/2aqcbv5x" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-full inline-block">
+        <span class="lang-pt">Aderir Agora</span>
+        <span class="lang-en">Join Now</span>
+        <span class="lang-fr">Adhérer Maintenant</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Recursos de Alertas -->
+  <section class="px-6 py-16 max-w-6xl mx-auto">
+    <h3 class="text-3xl font-bold mb-10 text-center">
+      <span class="lang-pt">Recursos Exclusivos</span>
+      <span class="lang-en">Exclusive Features</span>
+      <span class="lang-fr">Fonctionnalités Exclusives</span>
+    </h3>
+    
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="feature-item p-6 rounded-xl">
+        <div class="flex items-center mb-4">
+          <span class="w-12 h-12 rounded-full bg-green-900 flex items-center justify-center mr-4">
+            <i class="fas fa-bolt text-green-400 text-xl"></i>
+          </span>
+          <h4 class="text-xl font-bold">
+            <span class="lang-pt">Alertas Instantâneos</span>
+            <span class="lang-en">Instant Alerts</span>
+            <span class="lang-fr">Alertes Instantanées</span>
+          </h4>
+        </div>
+        <p class="text-gray-400">
+          <span class="lang-pt">Receba notificações em tempo real quando o mercado apresentar oportunidades de compra ou venda.</span>
+          <span class="lang-en">Receive real-time notifications when the market presents buying or selling opportunities.</span>
+          <span class="lang-fr">Recevez des notifications en temps réel lorsque le marché présente des opportunités d'achat ou de vente.</span>
+        </p>
+      </div>
+      
+      <div class="feature-item p-6 rounded-xl">
+        <div class="flex items-center mb-4">
+          <span class="w-12 h-12 rounded-full bg-green-900 flex items-center justify-center mr-4">
+            <i class="fas fa-chart-simple text-green-400 text-xl"></i>
+          </span>
+          <h4 class="text-xl font-bold">
+            <span class="lang-pt">Baseado em Análise</span>
+            <span class="lang-en">Based on Analysis</span>
+            <span class="lang-fr">Basé sur l'Analyse</span>
+          </h4>
+        </div>
+        <p class="text-gray-400">
+          <span class="lang-pt">Sinais gerados a partir de indicadores avançados como RSI, MACD, cruzamento de médias móveis e mais.</span>
+          <span class="lang-en">Signals generated from advanced indicators such as RSI, MACD, moving average crossovers and more.</span>
+          <span class="lang-fr">Signaux générés à partir d'indicateurs avancés tels que RSI, MACD, croisements de moyennes mobiles et plus.</span>
+        </p>
+      </div>
+      
+      <div class="feature-item p-6 rounded-xl">
+        <div class="flex items-center mb-4">
+          <span class="w-12 h-12 rounded-full bg-green-900 flex items-center justify-center mr-4">
+            <i class="fab fa-telegram text-green-400 text-xl"></i>
+          </span>
+          <h4 class="text-xl font-bold">
+            <span class="lang-pt">Integração Telegram</span>
+            <span class="lang-en">Telegram Integration</span>
+            <span class="lang-fr">Intégration Telegram</span>
+          </h4>
+        </div>
+        <p class="text-gray-400">
+          <span class="lang-pt">Receba todos os alertas diretamente no seu telefone através do nosso bot do Telegram dedicado.</span>
+          <span class="lang-en">Receive all alerts directly on your phone through our dedicated Telegram bot.</span>
+          <span class="lang-fr">Recevez toutes les alertes directement sur votre téléphone via notre bot Telegram dédié.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Status das Moedas -->
+  <section class="px-6 py-8 max-w-6xl mx-auto">
+    <div class="flex flex-wrap items-center justify-between mb-8">
+      <h3 class="text-2xl font-semibold">
+        <span class="lang-pt">Status Atual</span>
+        <span class="lang-en">Current Status</span>
+        <span class="lang-fr">Statut Actuel</span>
+      </h3>
+      <div class="flex items-center">
+        <span class="text-sm text-gray-400 mr-2">
+          <span class="lang-pt">Última atualização:</span>
+          <span class="lang-en">Last update:</span>
+          <span class="lang-fr">Dernière mise à jour:</span>
+        </span>
+        <span id="lastUpdate" class="text-sm text-yellow-400">--:--</span>
+        <button id="refreshButton" class="ml-4 bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-full">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabela de Moedas -->
+    <div class="bg-gray-900 rounded-xl overflow-hidden shadow-lg mb-12">
+      <table class="w-full text-left">
+        <thead class="bg-gray-800 text-gray-400">
+          <tr>
+            <th class="px-6 py-3 text-xs font-medium uppercase tracking-wider">
+              <span class="lang-pt">Moeda</span>
+              <span class="lang-en">Coin</span>
+              <span class="lang-fr">Monnaie</span>
+            </th>
+            <th class="px-6 py-3 text-xs font-medium uppercase tracking-wider">
+              <span class="lang-pt">Preço</span>
+              <span class="lang-en">Price</span>
+              <span class="lang-fr">Prix</span>
+            </th>
+            <th class="px-6 py-3 text-xs font-medium uppercase tracking-wider">
+              <span class="lang-pt">Variação</span>
+              <span class="lang-en">Change</span>
+              <span class="lang-fr">Variation</span>
+            </th>
+            <th class="px-6 py-3 text-xs font-medium uppercase tracking-wider">
+              <span class="lang-pt">Sinal</span>
+              <span class="lang-en">Signal</span>
+              <span class="lang-fr">Signal</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="cryptoTable" class="divide-y divide-gray-800">
+          <!-- Rows serão preenchidas via JavaScript -->
+          <tr>
+            <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+              <span class="lang-pt">Carregando dados...</span>
+              <span class="lang-en">Loading data...</span>
+              <span class="lang-fr">Chargement des données...</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Alertas Recentes -->
+  <section class="px-6 py-8 max-w-6xl mx-auto mb-16">
+    <div class="flex items-center justify-between mb-8">
+      <h3 class="text-2xl font-semibold">
+        <span class="lang-pt">Alertas Recentes</span>
+        <span class="lang-en">Recent Alerts</span>
+        <span class="lang-fr">Alertes Récentes</span>
+      </h3>
+      <div class="relative">
+        <button id="notificationButton" class="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-full">
+          <i class="fas fa-bell"></i>
+          <span class="notification-dot"></span>
+        </button>
+      </div>
+    </div>
+
+    <div id="alertsContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Alertas serão preenchidos via JavaScript -->
+    </div>
+  </section>
+
+  <!-- Plano VIP -->
+  <section class="px-6 py-16 hero-gradient text-center">
+    <div class="max-w-4xl mx-auto">
+      <h3 class="text-3xl font-bold mb-6">
+        <span class="lang-pt">Acesse Alertas Premium</span>
+        <span class="lang-en">Access Premium Alerts</span>
+        <span class="lang-fr">Accédez aux Alertes Premium</span>
+      </h3>
+      <p class="text-gray-300 mb-8 text-lg max-w-3xl mx-auto">
+        <span class="lang-pt">Os membros premium recebem alertas antes de todos os outros, com análises mais aprofundadas e recomendações personalizadas.</span>
+        <span class="lang-en">Premium members receive alerts before everyone else, with deeper analysis and personalized recommendations.</span>
+        <span class="lang-fr">Les membres premium reçoivent des alertes avant tout le monde, avec des analyses plus approfondies et des recommandations personnalisées.</span>
+      </p>
+      <div class="inline-block bg-gray-800 p-8 rounded-xl border border-green-500 shadow-xl mb-8">
+        <div class="flex items-center justify-center mb-2">
+          <span class="text-4xl font-bold text-green-400">$1.99</span>
+          <span class="text-gray-400 ml-2">
+            <span class="lang-pt">pagamento único</span>
+            <span class="lang-en">one-time payment</span>
+            <span class="lang-fr">paiement unique</span>
+          </span>
+        </div>
+        <ul class="text-left mb-8 space-y-3">
+          <li class="flex items-center">
+            <i class="fas fa-check text-green-500 mr-2"></i>
+            <span class="lang-pt">Acesso vitalício a todos os alertas</span>
+            <span class="lang-en">Lifetime access to all alerts</span>
+            <span class="lang-fr">Accès à vie à toutes les alertes</span>
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-check text-green-500 mr-2"></i>
+            <span class="lang-pt">Prioridade em sinais e oportunidades</span>
+            <span class="lang-en">Priority on signals and opportunities</span>
+            <span class="lang-fr">Priorité sur les signaux et opportunités</span>
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-check text-green-500 mr-2"></i>
+            <span class="lang-pt">Grupo exclusivo no Telegram</span>
+            <span class="lang-en">Exclusive Telegram group</span>
+            <span class="lang-fr">Groupe Telegram exclusif</span>
+          </li>
+        </ul>
+        <a href="https://tinyurl.com/2aqcbv5x" class="bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-3 rounded-full inline-block">
+          <span class="lang-pt">Tornar-se Premium</span>
+          <span class="lang-en">Become Premium</span>
+          <span class="lang-fr">Devenir Premium</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Telegram Subscription -->
+  <section class="px-6 py-12 bg-gray-900 text-center">
+    <h3 class="text-2xl font-bold mb-4">
+      <span class="lang-pt">Receba Alertas no Telegram</span>
+      <span class="lang-en">Receive Alerts on Telegram</span>
+      <span class="lang-fr">Recevez des Alertes sur Telegram</span>
+    </h3>
+    <p class="text-gray-300 mb-6 max-w-2xl mx-auto">
+      <span class="lang-pt">Nunca perca uma oportunidade de trading. Conecte-se ao nosso bot do Telegram para receber sinais diretamente no seu telefone.</span>
+      <span class="lang-en">Never miss a trading opportunity. Connect to our Telegram bot to receive signals directly on your phone.</span>
+      <span class="lang-fr">Ne manquez jamais une opportunité de trading. Connectez-vous à notre bot Telegram pour recevoir des signaux directement sur votre téléphone.</span>
+    </p>
+    <a href="https://t.me/cryptosignalshendrik_bot" class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-full">
+      <i class="fab fa-telegram mr-2 text-lg"></i>
+      <span class="lang-pt">Seguir no Telegram</span>
+      <span class="lang-en">Follow on Telegram</span>
+      <span class="lang-fr">Suivre sur Telegram</span>
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="px-6 py-12 text-center text-gray-500 text-sm bg-black border-t border-gray-800">
+    <div class="flex items-center justify-center space-x-4 mb-4 social-links">
+      <a href="https://twitter.com/seuTwitter" target="_blank" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" aria-label="Telegram">
+        <i class="fab fa-telegram"></i>
+      </a>
+      <a href="https://instagram.com/criptosinais77" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+    <p>
+      <span class="lang-pt">© 2025 Criptosinais. Todos os direitos reservados.</span>
+      <span class="lang-en">© 2025 Criptosinais. All rights reserved.</span>
+      <span class="lang-fr">© 2025 Criptosinais. Tous droits réservés.</span>
+    </p>
+  </footer>
+
+  <script>
+    // Funções para lidar com múltiplos idiomas
+    document.addEventListener('DOMContentLoaded', function() {
+      // Detectar idioma do navegador
+      const browserLang = navigator.language.split('-')[0];
+      if(['pt', 'en', 'fr'].includes(browserLang)) {
+        setLanguage(browserLang);
+        document.getElementById('languageSelect').value = browserLang;
+      } else {
+        setLanguage('pt'); // Default para português
+      }
+      
+      // Mudar idioma quando selecionado
+      document.getElementById('languageSelect').addEventListener('change', function() {
+        setLanguage(this.value);
+      });
+
+      // Carregar dados iniciais
+      fetchCurrentPrices();
+      fetchRecentAlerts();
+
+      // Event listeners
+      document.getElementById('refreshButton').addEventListener('click', fetchCurrentPrices);
+      document.getElementById('notificationButton').addEventListener('click', markAlertsAsRead);
+    });
+    
+    function setLanguage(lang) {
+      document.querySelectorAll('.lang-pt, .lang-en, .lang-fr').forEach(el => {
+        el.classList.remove('lang-active');
+      });
+      
+      document.querySelectorAll(`.lang-${lang}`).forEach(el => {
+        el.classList.add('lang-active');
+      });
+      
+      // Atualizar o atributo lang do HTML
+      document.documentElement.lang = lang;
+    }
+
+    // Buscar preços atuais
+    async function fetchCurrentPrices() {
+      try {
+        const response = await fetch('/api/current_prices');
+        const data = await response.json();
+        updateCryptoTable(data);
+        updateLastUpdate();
+      } catch (error) {
+        console.error('Erro ao buscar preços:', error);
+        showError('Não foi possível carregar os preços atuais. Tente novamente mais tarde.');
+      }
+    }
+
+    // Buscar alertas recentes
+    async function fetchRecentAlerts() {
+      try {
+        const response = await fetch('/api/alerts');
+        const data = await response.json();
+        updateAlertsContainer(data);
+      } catch (error) {
+        console.error('Erro ao buscar alertas:', error);
+      }
+    }
+
+    // Atualizar a tabela de criptomoedas
+    function updateCryptoTable(data) {
+      const tableBody = document.getElementById('cryptoTable');
+      tableBody.innerHTML = '';
+      
+      if (!data || data.length === 0) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+              <span class="lang-pt lang-active">Nenhum dado disponível</span>
+              <span class="lang-en">No data available</span>
+              <span class="lang-fr">Aucune donnée disponible</span>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      data.forEach(coin => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-800 transition-colors';
+        
+        // Determinar a classe e ícone baseado na recomendação
+        let recommendationClass, recommendationIcon, recommendationText;
+        if (coin.recommendation === 'COMPRA' || coin.recommendation === 'BUY') {
+          recommendationClass = 'text-green-500';
+          recommendationIcon = '<i class="fas fa-arrow-up mr-1"></i>';
+          recommendationText = {
+            pt: 'COMPRA',
+            en: 'BUY',
+            fr: 'ACHAT'
+          };
+        } else if (coin.recommendation === 'VENDA' || coin.recommendation === 'SELL') {
+          recommendationClass = 'text-red-500';
+          recommendationIcon = '<i class="fas fa-arrow-down mr-1"></i>';
+          recommendationText = {
+            pt: 'VENDA',
+            en: 'SELL',
+            fr: 'VENTE'
+          };
+        } else {
+          recommendationClass = 'text-yellow-500';
+          recommendationIcon = '<i class="fas fa-pause mr-1"></i>';
+          recommendationText = {
+            pt: 'AGUARDAR',
+            en: 'WAIT',
+            fr: 'ATTENDRE'
+          };
+        }
+        
+        // Determinar a cor da variação
+        const changeClass = coin.percent_change > 0 ? 'text-green-500' : coin.percent_change < 0 ? 'text-red-500' : 'text-yellow-500';
+        const changeSign = coin.percent_change > 0 ? '+' : '';
+        
+        row.innerHTML = `
+          <td class="px-6 py-4">
+            <div class="flex items-center">
+              <span class="font-medium">${coin.symbol}</span>
+            </div>
+          </td>
+          <td class="px-6 py-4 font-mono">$${formatPrice(coin.price)}</td>
+          <td class="px-6 py-4 ${changeClass}">
+            ${changeSign}${coin.percent_change ? coin.percent_change.toFixed(2) : '0.00'}%
+          </td>
+          <td class="px-6 py-4 ${recommendationClass} font-semibold">
+            ${recommendationIcon}
+            <span class="lang-pt lang-active">${recommendationText.pt}</span>
+            <span class="lang-en">${recommendationText.en}</span>
+            <span class="lang-fr">${recommendationText.fr}</span>
+          </td>
+        `;
+        
+        tableBody.appendChild(row);
+      });
+      
+      // Reativar os elementos de idioma atual
+      const currentLang = document.documentElement.lang;
+      setLanguage(currentLang);
+    }
+
+    // Atualizar o container de alertas
+    function updateAlertsContainer(alerts) {
+      const container = document.getElementById('alertsContainer');
+      container.innerHTML = '';
+      
+      if (!alerts || alerts.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12 text-gray-500">
+            <i class="fas fa-bell-slash text-4xl mb-4"></i>
+            <p class="lang-pt lang-active">Nenhum alerta recente</p>
+            <p class="lang-en">No recent alerts</p>
+            <p class="lang-fr">Aucune alerte récente</p>
+          </div>
+        `;
+        return;
+      }
+      
+      alerts.forEach(alert => {
+        const card = document.createElement('div');
+        
+        // Determinar o tipo de alerta
+        let alertClass, alertIcon, alertTitle;
+        if (alert.type === 'buy' || alert.recommendation === 'COMPRA' || alert.recommendation === 'BUY') {
+          alertClass = 'alert-buy';
+          alertIcon = 'fa-arrow-trend-up';
+          alertTitle = {
+            pt: 'Sinal de Compra',
+            en: 'Buy Signal',
+            fr: 'Signal d\'Achat'
+          };
+        } else if (alert.type === 'sell' || alert.recommendation === 'VENDA' || alert.recommendation === 'SELL') {
+          alertClass = 'alert-sell';
+          alertIcon = 'fa-arrow-trend-down';
+          alertTitle = {
+            pt: 'Sinal de Venda',
+            en: 'Sell Signal',
+            fr: 'Signal de Vente'
+          };
+        } else {
+          alertClass = 'alert-neutral';
+          alertIcon = 'fa-arrow-right-arrow-left';
+          alertTitle = {
+            pt: 'Movimento Significativo',
+            en: 'Significant Movement',
+            fr: 'Mouvement Significatif'
+          };
+        }
+        
+        let timeAgo;
+        if (alert.timestamp) {
+          timeAgo = getTimeAgo(new Date(alert.timestamp));
+        } else {
+          timeAgo = {
+            pt: 'Recentemente',
+            en: 'Recently',
+            fr: 'Récemment'
+          };
+        }
+        
+        card.className = `bg-gray-800 rounded-lg p-5 shadow-lg alert-card ${alertClass}`;
+        card.innerHTML = `
+          <div class="flex items-center justify-between mb-3">
+            <h4 class="font-semibold">
+              <span class="lang-pt lang-active">${alertTitle.pt}</span>
+              <span class="lang-en">${alertTitle.en}</span>
+              <span class="lang-fr">${alertTitle.fr}</span>
+            </h4>
+            <span class="text-xs text-gray-400">
+              <span class="lang-pt lang-active">${timeAgo.pt}</span>
+              <span class="lang-en">${timeAgo.en}</span>
+              <span class="lang-fr">${timeAgo.fr}</span>
+            </span>
+          </div>
+          <div class="flex items-center mb-2">
+            <i class="fas ${alertIcon} mr-2 text-lg"></i>
+            <span class="text-xl font-bold">${alert.symbol}</span>
+          </div>
+          <p class="text-gray-300">
+            <span class="lang-pt lang-active">${alert.message_pt || alert.message || 'Sem descrição disponível'}</span>
+            <span class="lang-en">${alert.message_en || alert.message || 'No description available'}</span>
+            <span class="lang-fr">${alert.message_fr || alert.message || 'Aucune description disponible'}</span>
+          </p>
+        `;
+        
+        container.appendChild(card);
+      });
+      
+      // Reativar os elementos de idioma atual
+      const currentLang = document.documentElement.lang;
+      setLanguage(currentLang);
+    }
+
+    // Formatar preço
+    function formatPrice(price) {
+      if (price === null || price === undefined) return '0.00';
+      
+      // Check if price is extremely small (like SHIB)
+      if (price < 0.0001) {
+        return price.toExponential(4);
+      }
+      
+      // For regular prices
+      if (price < 1) {
+        return price.toFixed(6);
+      } else if (price < 10) {
+        return price.toFixed(4);
+      } else if (price < 1000) {
+        return price.toFixed(2);
+      } else {
+        return price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+    }
+
+    // Obter tempo decorrido
+    function getTimeAgo(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      
+      const intervals = {
+        year: 31536000,
+        month: 2592000,
+        week: 604800,
+        day: 86400,
+        hour: 3600,
+        minute: 60
+      };
+      
+      // Traduções
+      const translations = {
+        year: { pt: 'ano', en: 'year', fr: 'an' },
+        years: { pt: 'anos', en: 'years', fr: 'ans' },
+        month: { pt: 'mês', en: 'month', fr: 'mois' },
+        months: { pt: 'meses', en: 'months', fr: 'mois' },
+        week: { pt: 'semana', en: 'week', fr: 'semaine' },
+        weeks: { pt: 'semanas', en: 'weeks', fr: 'semaines' },
+        day: { pt: 'dia', en: 'day', fr: 'jour' },
+        days: { pt: 'dias', en: 'days', fr: 'jours' },
+        hour: { pt: 'hora', en: 'hour', fr: 'heure' },
+        hours: { pt: 'horas', en: 'hours', fr: 'heures' },
+        minute: { pt: 'minuto', en: 'minute', fr: 'minute' },
+        minutes: { pt: 'minutos', en: 'minutes', fr: 'minutes' },
+        now: { pt: 'agora mesmo', en: 'just now', fr: 'à l\'instant' }
+      };
+      
+      for (const [unit, secondsInUnit] of Object.entries(intervals)) {
+        const interval = Math.floor(seconds / secondsInUnit);
+        
+        if (interval >= 1) {
+          const unitKey = interval === 1 ? unit : `${unit}s`;
+          return {
+            pt: `há ${interval} ${translations[unitKey].pt}`,
+            en: `${interval} ${translations[unitKey].en} ago`,
+            fr: `il y a ${interval} ${translations[unitKey].fr}`
+          };
+        }
+      }
+      
+      return translations.now;
+    }
+
+    // Atualizar horário da última atualização
+    function updateLastUpdate() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString();
+      document.getElementById('lastUpdate').textContent = timeString;
+    }
+
+    // Marcar alertas como lidos
+    function markAlertsAsRead() {
+      const dot = document.querySelector('.notification-dot');
+      dot.style.display = 'none';
+    }
+
+    // Exibir mensagem de erro
+    function showError(message) {
+      const tableBody = document.getElementById('cryptoTable');
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="4" class="px-6 py-4 text-center text-red-500">
+            <i class="fas fa-exclamation-circle mr-2"></i> ${message}
+          </td>
+        </tr>
+      `;
+    }
+
+    // Polling para atualizar os dados automaticamente
+    setInterval(fetchCurrentPrices, 60000); // A cada minuto
+    setInterval(fetchRecentAlerts, 90000);  // A cada 1,5 minutos
+  </script>
+</body>
+</html>

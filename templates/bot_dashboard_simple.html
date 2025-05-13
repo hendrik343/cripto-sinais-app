@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Simples do Bot</title>
+  <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --neon-blue: #00f0ff;
+      --neon-purple: #8a2be2;
+      --neon-pink: #ff00ff;
+      --neon-green: #00ff9f;
+      --neon-red: #ff0044;
+      --neon-yellow: #ffd700;
+      --cyber-dark: #0a0a1e;
+      --cyber-darker: #050510;
+      --cyber-black: #000004;
+    }
+    
+    body {
+      background: radial-gradient(ellipse at top, var(--cyber-dark) 0%, var(--cyber-darker) 50%, var(--cyber-black) 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    /* Cyber grid effect */
+    .cyber-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(30, 30, 70, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 30, 70, 0.05) 1px, transparent 1px);
+      background-size: 25px 25px;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .card {
+      background: rgba(10, 10, 30, 0.5);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+    
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.8), transparent);
+      z-index: 1;
+    }
+    
+    .neon-text {
+      text-shadow: 0 0 5px rgba(0, 240, 255, 0.7), 0 0 10px rgba(0, 240, 255, 0.5);
+      color: var(--neon-blue);
+    }
+    
+    .badge-buy {
+      background-color: rgba(0, 255, 159, 0.2);
+      color: var(--neon-green);
+      border: 1px solid rgba(0, 255, 159, 0.3);
+    }
+    
+    .badge-sell {
+      background-color: rgba(255, 0, 68, 0.2);
+      color: var(--neon-red);
+      border: 1px solid rgba(255, 0, 68, 0.3);
+    }
+    
+    .badge-wait {
+      background-color: rgba(255, 215, 0, 0.2);
+      color: var(--neon-yellow);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    /* Efeito de pulso para indicar atualização em tempo real */
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7);
+      }
+      
+      70% {
+        box-shadow: 0 0 0 10px rgba(0, 240, 255, 0);
+      }
+      
+      100% {
+        box-shadow: 0 0 0 0 rgba(0, 240, 255, 0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Grid background -->
+  <div class="cyber-grid"></div>
+
+  <!-- Header -->
+  <header class="py-4 mb-4">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <div class="pulse me-3" style="width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--neon-blue); display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-robot text-info"></i>
+          </div>
+          <h1 class="neon-text fs-4 mb-0">CRIPTOBOT DASHBOARD</h1>
+        </div>
+        <div>
+          <span class="badge bg-dark-subtle border border-info-subtle">
+            Estado: <span id="estado" class="neon-text">Carregando...</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card p-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="neon-text">
+              <i class="fas fa-signal me-2"></i>Sinais em Tempo Real
+            </h5>
+            <span class="text-muted">
+              Última atualização: <span id="hora" class="text-info">--:--</span>
+            </span>
+          </div>
+          
+          <div class="list-group" id="lista-sinais">
+            <div class="list-group-item bg-transparent border-info border-opacity-25 text-center">
+              <span class="spinner-border spinner-border-sm text-info me-2" role="status"></span>
+              Carregando sinais...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-12 text-center">
+        <a href="/" class="btn btn-sm btn-outline-info">
+          <i class="fas fa-home me-2"></i>Voltar para Home
+        </a>
+        <a href="/bot-dashboard" class="btn btn-sm btn-outline-primary ms-2">
+          <i class="fas fa-chart-bar me-2"></i>Dashboard Completo
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Função para obter classe da badge com base no tipo de sinal
+    function getSignalBadgeClass(tipo) {
+      if (tipo === 'BUY') return 'badge-buy';
+      if (tipo === 'SELL') return 'badge-sell';
+      return 'badge-wait';
+    }
+    
+    // Função para atualizar o conteúdo do dashboard
+    async function atualizarConteudo() {
+      try {
+        const resposta = await fetch('/api/status');
+        const dados = await resposta.json();
+
+        // Atualizar o estado e hora
+        document.getElementById('estado').textContent = dados.estado;
+        document.getElementById('hora').textContent = dados.hora;
+
+        // Atualizar a lista de sinais
+        const listaEl = document.getElementById('lista-sinais');
+        
+        if (dados.sinais && dados.sinais.length > 0) {
+          // Limpar lista atual
+          listaEl.innerHTML = '';
+          
+          // Adicionar cada sinal como um item da lista
+          dados.sinais.forEach(sinal => {
+            const badgeClass = getSignalBadgeClass(sinal.tipo);
+            const item = document.createElement('div');
+            item.className = 'list-group-item bg-transparent border-info border-opacity-25 d-flex justify-content-between align-items-center';
+            
+            item.innerHTML = `
+              <div>
+                <strong>${sinal.moeda}</strong>
+                <span class="ms-2 text-muted">${sinal.variacao}</span>
+              </div>
+              <span class="badge ${badgeClass} rounded-pill">${sinal.tipo}</span>
+            `;
+            
+            listaEl.appendChild(item);
+          });
+        } else {
+          listaEl.innerHTML = `
+            <div class="list-group-item bg-transparent border-info border-opacity-25 text-center">
+              Nenhum sinal disponível no momento
+            </div>
+          `;
+        }
+      } catch (e) {
+        console.error('Erro ao atualizar:', e);
+        document.getElementById('estado').textContent = 'Erro';
+      }
+    }
+
+    // Atualizar a cada 10 segundos
+    setInterval(atualizarConteudo, 10000);
+    
+    // Primeira atualização
+    atualizarConteudo();
+  </script>
+</body>
+</html>

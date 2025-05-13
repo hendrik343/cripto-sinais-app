@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta name="description" content="Aceda ao grupo VIP exclusivo da Criptosinais para receber alertas antecipados, relatórios técnicos e interações diretas com especialistas.">
+  <meta name="keywords" content="grupo VIP cripto, telegram premium, alertas de trading, comunidade criptomoedas">
+  <meta property="og:title" content="Grupo VIP Telegram | Criptosinais">
+  <meta property="og:description" content="Junte-se à comunidade premium da Criptosinais e receba os melhores sinais e relatórios técnicos todas as semanas.">
+  <meta property="og:image" content="https://criptosinais.com/static/images/og-banner-vip.png">
+  <meta property="og:url" content="https://criptosinais.com/grupo-vip">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="description" content="Explore indicadores técnicos como RSI, MACD, Médias Móveis e Volume com explicações claras e práticas para decisões de trading confiáveis.">
+  <meta name="keywords" content="análise técnica cripto, RSI, MACD, volume, suporte, resistência, Criptosinais">
+  <meta property="og:title" content="Análise Técnica | Criptosinais">
+  <meta property="og:description" content="Aprofunde os seus conhecimentos com análise técnica baseada em lógica de mercado. Comece agora com acesso Premium!">
+  <meta property="og:image" content="https://criptosinais.com/static/images/og-banner-analise.png">
+  <meta property="og:url" content="https://criptosinais.com/analise-tecnica">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="description" content="Receba alertas em tempo real sobre sinais de compra e venda de criptomoedas com base em indicadores técnicos. Acesso Premium no Telegram com análises exclusivas.">
+  <meta name="keywords" content="alertas cripto, sinais em tempo real, RSI, MACD, trading, Criptosinais">
+  <meta property="og:title" content="Alertas em Tempo Real | Criptosinais">
+  <meta property="og:description" content="Receba alertas de compra e venda instantâneos com base em análise técnica avançada. Aderir ao grupo VIP agora!">
+  <meta property="og:image" content="https://criptosinais.com/static/images/og-banner-alertas.png">
+  <meta property="og:url" content="https://criptosinais.com/alertas-tempo-real">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grupo VIP | Criptosinais</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .hero-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-5 border-b border-gray-800 bg-black shadow-md">
+    <div class="flex items-center">
+      <img src="/static/images/logo.svg" alt="Logo Criptosinais" class="h-10 w-10 rounded-full mr-2">
+      <h1 class="text-2xl font-extrabold text-green-400 tracking-wide">Criptosinais</h1>
+    </div>
+    <nav class="space-x-4 text-sm">
+      <a href="/landing" class="hover:text-green-300 transition">Início</a>
+      <a href="/charts" class="hover:text-green-300 transition">Gráficos</a>
+      <a href="/premium" class="bg-green-500 hover:bg-green-600 text-black font-semibold px-4 py-1 rounded-full text-xs transition">Premium</a>
+    </nav>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <section class="text-center px-6 py-20">
+    <h1 class="text-4xl font-bold text-green-400 mb-4">👑 Grupo VIP no Telegram</h1>
+    <p class="text-gray-300 mb-6 text-lg max-w-2xl mx-auto">Acede ao grupo exclusivo com sinais antecipados, relatórios técnicos semanais e comunidade de traders dedicados.</p>
+    <a href="https://tinyurl.com/2aqcbv5x" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-full text-lg">Aderir Agora</a>
+  </section>
+
+<!-- Contacto -->
+<section class="bg-gray-900 px-6 py-16 text-center">
+  <h2 class="text-2xl font-bold text-green-400 mb-4">📬 Fale Connosco</h2>
+  <p class="text-gray-300 mb-6 max-w-xl mx-auto">Precisa de mais detalhes sobre o grupo VIP? Envie-nos uma mensagem direta e explicaremos tudo.</p>
+  <form action="https://formspree.io/f/meqybqgo" method="POST" class="max-w-xl mx-auto text-left">
+    <input type="text" name="nome" placeholder="Seu nome" required class="w-full mb-4 px-4 py-2 rounded bg-gray-800 border border-gray-600">
+    <input type="email" name="email" placeholder="Seu email" required class="w-full mb-4 px-4 py-2 rounded bg-gray-800 border border-gray-600">
+    <textarea name="mensagem" rows="4" placeholder="Sua mensagem..." required class="w-full mb-4 px-4 py-2 rounded bg-gray-800 border border-gray-600"></textarea>
+    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-2 rounded">Enviar</button>
+  </form>
+</section>
+
+<!-- Contacto -->
+<section class="bg-gray-900 px-6 py-16 text-center">
+  <h2 class="text-2xl font-bold text-green-400 mb-4">📬 Fale Connosco</h2>
+  <p class="text-gray-300 mb-6 max-w-xl mx-auto">Tem dúvidas ou precisa de ajuda personalizada? Envie-nos uma mensagem e teremos o maior prazer em apoiar.</p>
+  <form action="https://formspree.io/f/meqybqgo" method="POST" class="max-w-xl mx-auto text-left">
+    <input type="text" name="nome" placeholder="Seu nome" required class="w-full mb-4 px-4 py-2 rounded bg-gray-800 border border-gray-600">
+    <input type="email" name="email" placeholder="Seu email" required class="w-full mb-4 px-4 py-2 rounded bg-gray-800 border border-gray-600">
+    <textarea name="mensagem" rows="4" placeholder="Sua mensagem..." required class="w-full mb-4 px-4 py-2 rounded bg-gray-800 border border-gray-600"></textarea>
+    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-2 rounded">Enviar</button>
+  </form>
+</section>
+
+<!-- Contacto -->
+<section class="bg-gray-900 px-6 py-16 text-center">
+  <h2 class="text-2xl font-bold text-green-400 mb-4">📬 Fale Connosco</h2>
+  <p class="text-gray-300 mb-6 max-w-xl mx-auto">Tem dúvidas ou quer personalizar o acesso VIP? Envie-nos uma mensagem e responderemos em breve.</p>
+  <form action="https://formspree.io/f/meqybqgo" method="POST" class="max-w-xl mx-auto text-left">
+    <input type="text" name="nome" placeholder="Seu nome" required class="w-full mb-4 px-4 py-2 rounded bg-gray-800 border border-gray-600">
+    <input type="email" name="email" placeholder="Seu email" required class="w-full mb-4 px-4 py-2 rounded bg-gray-800 border border-gray-600">
+    <textarea name="mensagem" rows="4" placeholder="Sua mensagem..." required class="w-full mb-4 px-4 py-2 rounded bg-gray-800 border border-gray-600"></textarea>
+    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-2 rounded">Enviar</button>
+  </form>
+</section>
+
+  <!-- Footer -->
+  <footer class="px-6 py-12 text-center text-gray-500 text-sm bg-black border-t border-gray-800">
+    <div class="flex items-center justify-center space-x-4 mb-4 social-links">
+      <a href="https://twitter.com/seuTwitter" target="_blank" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" aria-label="Telegram">
+        <i class="fab fa-telegram"></i>
+      </a>
+      <a href="https://instagram.com/criptosinais77" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+    <p>© 2025 Criptosinais. Todos os direitos reservados.</p>
+  </footer>
+</body>
+</html>

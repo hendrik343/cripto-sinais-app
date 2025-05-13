@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Área Premium - Sinais Crypto</title>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/dark-theme.css">
+  <style>
+    .premium-card {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .premium-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.3);
+    }
+    .premium-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981, #3b82f6);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .premium-card:hover::before {
+      transform: scaleX(1);
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-5 border-b border-gray-800 bg-gradient-to-r from-gray-900 to-black shadow-xl">
+    <div class="flex items-center">
+      <!-- Logo com efeito de sombra e tamanho maior -->
+      <div class="relative mr-3">
+        <div class="absolute inset-0 bg-green-500 rounded-full opacity-20 blur-md"></div>
+        <img src="/static/images/logo.svg" alt="Logo Criptosinais" class="h-14 w-14 relative z-10">
+      </div>
+      <!-- Título com gradiente -->
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-green-300 to-green-500">Criptosinais</h1>
+        <p class="text-xs text-gray-400">Monitoramento Inteligente de Criptomoedas</p>
+      </div>
+    </div>
+    <div class="flex items-center">
+      <a href="/dashboard" class="mr-4 text-sm text-gray-300 hover:text-green-300 transition">Dashboard</a>
+      <a href="/landing" class="mr-4 text-sm text-gray-300 hover:text-green-300 transition">Página Inicial</a>
+      <a href="/payment" class="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold px-4 py-2 rounded-full text-sm transition shadow-md">Obter Acesso Premium</a>
+    </div>
+  </header>
+
+  <div class="max-w-4xl mx-auto py-10 px-6">
+    <div class="bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl p-8 shadow-xl mb-8 border border-gray-700">
+      <div class="text-center mb-8">
+        <div class="w-20 h-20 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-crown text-3xl text-yellow-400"></i>
+        </div>
+        <h2 class="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-green-300 to-green-500">💎 Acesso Premium - Sinais de Criptomoedas</h2>
+        <p class="text-gray-400 mb-6 text-lg">Um serviço exclusivo para traders que buscam vantagens reais</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <a href="/alertas-tempo-real" class="border border-gray-700 rounded-lg p-6 hover:border-green-500 transition block hover:bg-gray-900 cursor-pointer">
+          <div class="flex justify-center mb-4 text-4xl text-green-500">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3 class="text-lg font-bold mb-2 text-center">Sinais em Tempo Real</h3>
+          <p class="text-gray-400 text-sm text-center">Receba alertas precisos sobre oportunidades de compra e venda.</p>
+        </a>
+
+        <a href="/analise-tecnica" class="border border-gray-700 rounded-lg p-6 hover:border-green-500 transition block hover:bg-gray-900 cursor-pointer">
+          <div class="flex justify-center mb-4 text-4xl text-green-500">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="text-lg font-bold mb-2 text-center">Análises Técnicas</h3>
+          <p class="text-gray-400 text-sm text-center">RSI, MACD e indicadores de Volume analisados em detalhes.</p>
+        </a>
+
+        <a href="/grupo-vip" class="border border-gray-700 rounded-lg p-6 hover:border-green-500 transition block hover:bg-gray-900 cursor-pointer">
+          <div class="flex justify-center mb-4 text-4xl text-green-500">
+            <i class="fab fa-telegram"></i>
+          </div>
+          <h3 class="text-lg font-bold mb-2 text-center">Grupo VIP Telegram</h3>
+          <p class="text-gray-400 text-sm text-center">Comunidade exclusiva para discussões e alertas premium.</p>
+        </a>
+      </div>
+
+      <div class="mt-10 text-center">
+        <a href="/payment" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold px-8 py-3 rounded-lg text-lg">
+          Obter Acesso Premium - $1.99
+        </a>
+        <p class="mt-2 text-gray-400 text-sm">Pagamento único - Acesso vitalício</p>
+      </div>
+    </div>
+
+    <div class="bg-gray-800 rounded-xl p-8 shadow-lg mb-8">
+      <h2 class="text-xl font-bold mb-6">⭐ Depoimentos de Usuários Premium</h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="border border-gray-700 rounded-lg p-6">
+          <div class="flex items-center mb-4">
+            <div class="bg-gray-700 rounded-full h-10 w-10 flex items-center justify-center mr-3">
+              <span class="text-gray-300 font-bold">JP</span>
+            </div>
+            <div>
+              <h4 class="font-bold">João Pedro</h4>
+              <div class="text-yellow-400">★★★★★</div>
+            </div>
+          </div>
+          <p class="text-gray-300">"Os sinais têm sido incrivelmente precisos. Já recuperei o valor investido várias vezes com as dicas de compra e venda."</p>
+        </div>
+
+        <div class="border border-gray-700 rounded-lg p-6">
+          <div class="flex items-center mb-4">
+            <div class="bg-gray-700 rounded-full h-10 w-10 flex items-center justify-center mr-3">
+              <span class="text-gray-300 font-bold">MS</span>
+            </div>
+            <div>
+              <h4 class="font-bold">Maria Silva</h4>
+              <div class="text-yellow-400">★★★★★</div>
+            </div>
+          </div>
+          <p class="text-gray-300">"Como iniciante em criptomoedas, este serviço tem sido fundamental para entender quando comprar e vender. Recomendo fortemente!"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-800 rounded-xl p-8 shadow-lg mb-8">
+      <h2 class="text-xl font-bold mb-6">❓ Perguntas Frequentes</h2>
+      
+      <div class="space-y-4">
+        <div class="border border-gray-700 rounded-lg p-4">
+          <h4 class="font-bold mb-2">Como recebo os sinais depois de pagar?</h4>
+          <p class="text-gray-300 text-sm">Imediatamente após o pagamento, você receberá um email com acesso ao nosso grupo VIP do Telegram onde todos os sinais são enviados.</p>
+        </div>
+        
+        <div class="border border-gray-700 rounded-lg p-4">
+          <h4 class="font-bold mb-2">É um pagamento único ou mensal?</h4>
+          <p class="text-gray-300 text-sm">Pagamento 100% único, sem mensalidades ou cobranças recorrentes. Acesso vitalício por apenas $1.99.</p>
+        </div>
+        
+        <div class="border border-gray-700 rounded-lg p-4">
+          <h4 class="font-bold mb-2">Existe alguma garantia?</h4>
+          <p class="text-gray-300 text-sm">Sim, oferecemos garantia de satisfação de 30 dias. Se não estiver satisfeito, devolvemos o valor integralmente.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="text-center mt-12 text-sm text-gray-500">
+      <p>© 2025 Crypto Signals Premium. Todos os direitos reservados.</p>
+    </footer>
+  </div>
+</body>
+</html>

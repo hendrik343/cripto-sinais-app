@@ -1,0 +1,130 @@
+from flask import Flask, render_template, request, redirect, url_for, session, send_file
+import requests
+import smtplib
+from email.mime.text import MIMEText
+from dotenv import load_dotenv
+import os
+import sqlite3
+from datetime import datetime
+import csv
+
+load_dotenv()
+
+app = Flask(__name__)
+app.secret_key = os.getenv("APP_SECRET_KEY", "sinalvip123")
+EMAIL_USER = os.getenv("EMAIL_USER")
+EMAIL_PASS = os.getenv("EMAIL_PASS")
+
+# Criar a base de dados (se não existir)
+conn = sqlite3.connect("clientes.db")
+c = conn.cursor()
+c.execute('''CREATE TABLE IF NOT EXISTS pagamentos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT,
+    item TEXT,
+    valor REAL,
+    data TEXT,
+    status TEXT
+)''')
+conn.commit()
+conn.close()
+
+@app.route("/")
+def premium():
+    return render_template("premium.html")
+
+@app.route("/success")
+def success():
+    return render_template("success.html")
+
+@app.route("/cancel")
+def cancel():
+    return render_template("cancel.html")
+
+@app.route("/ipn", methods=["POST"])
+def ipn():
+    ipn_data = request.form.to_dict()
+    verify_url = "https://ipnpb.paypal.com/cgi-bin/webscr"
+    verify_payload = {'cmd': '_notify-validate'}
+    verify_payload.update(ipn_data)
+
+    response = requests.post(verify_url, data=verify_payload)
+
+    if response.text == "VERIFIED" and ipn_data.get("payment_status") == "Completed":
+        payer_email = ipn_data.get("payer_email")
+        item = ipn_data.get("item_name")
+        amount = ipn_data.get("mc_gross")
+        date = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+
+        # Guardar no banco de dados
+        conn = sqlite3.connect("clientes.db")
+        c = conn.cursor()
+        c.execute("INSERT INTO pagamentos (email, item, valor, data, status) VALUES (?, ?, ?, ?, ?)",
+                  (payer_email, item, amount, date, "confirmado"))
+        conn.commit()
+        conn.close()
+
+        # Enviar email
+        mensagem = f"Olá!\n\nRecebemos seu pagamento de €{amount} pelo plano: {item}.\n\nAcesse o grupo VIP: https://t.me/cryptosignalshendrik_bot\n\nObrigado por confiar no nosso serviço."
+        send_email(payer_email, "Confirmação de Pagamento - Crypto Signals Premium", mensagem)
+
+    return "OK", 200
+
+@app.route("/admin", methods=["GET", "POST"])
+def admin():
+    if "logged_in" not in session:
+        return redirect(url_for("login"))
+
+    conn = sqlite3.connect("clientes.db")
+    c = conn.cursor()
+    c.execute("SELECT * FROM pagamentos ORDER BY data DESC")
+    registros = c.fetchall()
+    conn.close()
+    return render_template("admin.html", registros=registros)
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        user = request.form.get("username")
+        pw = request.form.get("password")
+        if user == os.getenv("ADMIN_USER", "admin") and pw == os.getenv("ADMIN_PASS", "vip123"):
+            session["logged_in"] = True
+            return redirect(url_for("admin"))
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("logged_in", None)
+    return redirect(url_for("login"))
+
+@app.route("/export")
+def export_csv():
+    if "logged_in" not in session:
+        return redirect(url_for("login"))
+
+    conn = sqlite3.connect("clientes.db")
+    c = conn.cursor()
+    c.execute("SELECT * FROM pagamentos")
+    dados = c.fetchall()
+    conn.close()
+
+    filename = "pagamentos_exportados.csv"
+    with open(filename, "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["ID", "Email", "Item", "Valor", "Data", "Status"])
+        writer.writerows(dados)
+
+    return send_file(filename, as_attachment=True)
+
+def send_email(destino, assunto, mensagem):
+    msg = MIMEText(mensagem)
+    msg["Subject"] = assunto
+    msg["From"] = EMAIL_USER
+    msg["To"] = destino
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(EMAIL_USER, EMAIL_PASS)
+        server.send_message(msg)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)

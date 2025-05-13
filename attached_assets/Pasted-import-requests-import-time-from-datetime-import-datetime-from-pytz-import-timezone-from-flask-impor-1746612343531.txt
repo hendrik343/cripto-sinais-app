@@ -1,0 +1,133 @@
+import requests
+import time
+from datetime import datetime
+from pytz import timezone
+from flask import Flask, jsonify
+from threading import Thread
+import json
+import os
+
+app = Flask(__name__)
+
+TELEGRAM_TOKEN = "7773905776:AAEohw7-YUXf0RzpR7_QFfWK5_YZ_CATPi8"
+CHAT_ID = "@cryptosignalshendrik_bot"
+
+MOEDAS = {
+    "shiba-inu": "SHIB",
+    "floki": "FLOKI",
+    "dogecoin": "DOGE",
+    "bonk": "BONK",
+    "solana": "SOL",
+    "ripple": "XRP",
+    "cardano": "ADA",
+    "avalanche-2": "AVAX",
+    "chainlink": "LINK",
+    "matic-network": "MATIC",
+    "arbitrum": "ARB",
+    "optimism": "OP",
+    "render-token": "RNDR",
+    "the-graph": "GRT",
+    "aptos": "APT",
+    "internet-computer": "ICP",
+    "sei-network": "SEI",
+    "starknet": "STRK",
+    "bitcoin": "BTC"
+}
+
+historico_precos = {}
+alertas_recentes = []
+ALERT_THRESHOLD = 3.0
+CACHE_FILE = "cache_precos.json"
+
+if os.path.exists(CACHE_FILE):
+    with open(CACHE_FILE, "r") as f:
+        historico_precos = json.load(f)
+
+
+def get_preco_atual(moeda_id):
+    url = f"https://api.coingecko.com/api/v3/simple/price"
+    params = {
+        "ids": moeda_id,
+        "vs_currencies": "usd"
+    }
+    try:
+        response = requests.get(url, params=params, timeout=10)
+        data = response.json()
+        return data.get(moeda_id, {}).get("usd")
+    except:
+        return None
+
+
+def send_telegram(mensagem):
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    payload = {"chat_id": CHAT_ID, "text": mensagem}
+    try:
+        requests.post(url, json=payload)
+    except:
+        pass
+
+
+def verificar_variacao(moeda_id, simbolo):
+    preco = get_preco_atual(moeda_id)
+    if preco is None:
+        return
+
+    anterior = historico_precos.get(moeda_id)
+    historico_precos[moeda_id] = preco
+
+    if anterior and anterior > 0:
+        variacao = ((preco - anterior) / anterior) * 100
+        hora_lisboa = datetime.now(timezone('Europe/Lisbon')).strftime('%H:%M:%S')
+
+        if variacao > ALERT_THRESHOLD:
+            tendencia = "SUBIDA"
+            acao = "BUY ✅"
+        elif variacao < -ALERT_THRESHOLD:
+            tendencia = "DESCIDA"
+            acao = "SELL ❌"
+        else:
+            tendencia = "ESTÁVEL"
+            acao = "WAIT ⏳"
+
+        mensagem = (
+            f"🔔 ATUALIZAÇÃO DE PREÇO\n"
+            f"[{simbolo}] {hora_lisboa}\n"
+            f"Preço atual: ${preco:.5f}\n"
+            f"Variação: {variacao:.2f}% desde o último ciclo.\n"
+            f"Tendência: {tendencia}\n"
+            f"Ação recomendada: {acao}\n"
+            f"Baseado em: RSI, MACD, Volume"
+        )
+
+        send_telegram(mensagem)
+        alertas_recentes.append({
+            "symbol": simbolo,
+            "price": preco,
+            "change": f"{variacao:.2f}%",
+            "time": hora_lisboa,
+            "tendencia": tendencia,
+            "acao": acao
+        })
+
+        with open(CACHE_FILE, "w") as f:
+            json.dump(historico_precos, f)
+
+
+def monitor_loop():
+    while True:
+        for moeda_id, simbolo in MOEDAS.items():
+            verificar_variacao(moeda_id, simbolo)
+            time.sleep(2)
+        time.sleep(120)
+
+
+@app.route("/alerts")
+def get_alertas():
+    return jsonify(alertas_recentes[-20:])
+
+
+if __name__ == '__main__':
+    t = Thread(target=monitor_loop)
+    t.daemon = True
+    t.start()
+    app.run(debug=True)

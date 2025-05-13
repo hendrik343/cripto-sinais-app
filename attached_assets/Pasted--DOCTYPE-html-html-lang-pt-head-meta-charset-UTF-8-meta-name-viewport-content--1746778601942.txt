@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criptosinais | Plataforma de Sinais Inteligentes</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+    <h1 class="text-2xl font-bold text-green-400">Criptosinais</h1>
+    <nav class="space-x-6">
+      <a href="#funcionalidades" class="hover:text-green-300">Funcionalidades</a>
+      <a href="#preco" class="hover:text-green-300">Preço</a>
+      <a href="#testemunhos" class="hover:text-green-300">Testemunhos</a>
+      <a href="#acesso" class="bg-green-500 hover:bg-green-600 text-black font-semibold px-4 py-2 rounded-lg">Começar</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="text-center px-6 py-20 bg-gradient-to-br from-gray-900 to-black">
+    <h2 class="text-4xl font-extrabold mb-4">Sinais de Trading com Inteligência Técnica</h2>
+    <p class="text-gray-400 text-lg max-w-xl mx-auto mb-6">RSI, MACD, Volume e muito mais — Recebe sinais em tempo real com lógica de mercado e análise preditiva.</p>
+    <a href="#acesso" class="bg-yellow-400 text-black font-bold px-6 py-3 rounded-full hover:bg-yellow-500">Aderir por apenas $1.99</a>
+  </section>
+
+  <!-- Funcionalidades -->
+  <section id="funcionalidades" class="px-6 py-16 max-w-5xl mx-auto">
+    <h3 class="text-3xl font-bold mb-10 text-center">🔍 O que oferecemos</h3>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div><h4 class="text-xl font-semibold mb-2">📈 Análise Técnica Avançada</h4><p class="text-gray-400">RSI, MACD, Volume e suporte/resistência integrados no algoritmo.</p></div>
+      <div><h4 class="text-xl font-semibold mb-2">🚀 Alertas Antecipados</h4><p class="text-gray-400">Recebe sinais no Telegram antes das grandes movimentações.</p></div>
+      <div><h4 class="text-xl font-semibold mb-2">🔐 Acesso VIP Exclusivo</h4><p class="text-gray-400">Grupo privado com relatórios técnicos semanais.</p></div>
+    </div>
+  </section>
+
+  <!-- Preço -->
+  <section id="preco" class="px-6 py-16 text-center bg-gray-900">
+    <h3 class="text-3xl font-bold mb-4">💸 Preço único. Valor vitalício.</h3>
+    <p class="text-gray-400 mb-8">Paga uma vez, acede para sempre.</p>
+    <div class="inline-block bg-white text-black px-8 py-6 rounded-xl shadow-lg">
+      <p class="text-2xl font-bold mb-2">$1.99</p>
+      <p class="text-sm mb-4 text-gray-700">Oferta limitada</p>
+      <a href="https://tinyurl.com/2aqcbv5x" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-semibold">Começar agora</a>
+    </div>
+  </section>
+
+  <!-- Testemunhos -->
+  <section id="testemunhos" class="px-6 py-16 max-w-4xl mx-auto">
+    <h3 class="text-3xl font-bold mb-10 text-center">📢 O que dizem os nossos utilizadores</h3>
+    <div class="space-y-6">
+      <blockquote class="bg-gray-800 p-6 rounded-lg border-l-4 border-green-400">
+        <p class="text-gray-300">“Recebi sinais certeiros nos últimos 3 dias. Consegui lucrar $47 só com os alertas VIP!”</p>
+        <footer class="text-green-300 mt-2">— João T., Lisboa</footer>
+      </blockquote>
+      <blockquote class="bg-gray-800 p-6 rounded-lg border-l-4 border-green-400">
+        <p class="text-gray-300">“Nunca pensei que $1.99 me trouxessem tanto retorno. Serviço sério, rápido e eficaz.”</p>
+        <footer class="text-green-300 mt-2">— Marina S., Luanda</footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section id="acesso" class="px-6 py-20 text-center bg-gradient-to-tr from-gray-900 to-black">
+    <h3 class="text-3xl font-bold mb-4">Pronto para começar?</h3>
+    <p class="text-gray-400 mb-6">Garante já o teu acesso ao grupo VIP e começa a receber sinais em tempo real.</p>
+    <a href="https://tinyurl.com/2aqcbv5x" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-4 rounded-full">Aderir Agora</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="px-6 py-10 text-center text-gray-500 text-sm bg-black">
+    <p>© 2025 Criptosinais. Todos os direitos reservados.</p>
+  </footer>
+</body>
+</html>

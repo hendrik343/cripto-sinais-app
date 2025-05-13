@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alertas em Tempo Real | Criptosinais</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .hero-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-5 border-b border-gray-800 bg-black shadow-md">
+    <div class="flex items-center">
+      <img src="/static/images/logo.svg" alt="Logo Criptosinais" class="h-10 w-10 rounded-full mr-2">
+      <h1 class="text-2xl font-extrabold text-green-400 tracking-wide">Criptosinais</h1>
+    </div>
+    <nav class="space-x-4 text-sm">
+      <a href="/landing" class="hover:text-green-300 transition">Início</a>
+      <a href="/charts" class="hover:text-green-300 transition">Gráficos</a>
+      <a href="/premium" class="bg-green-500 hover:bg-green-600 text-black font-semibold px-4 py-1 rounded-full text-xs transition">Premium</a>
+    </nav>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <section class="text-center px-6 py-20">
+    <h1 class="text-4xl font-bold text-green-400 mb-4">🚨 Alertas em Tempo Real</h1>
+    <p class="text-gray-300 mb-6 text-lg max-w-2xl mx-auto">Receba sinais imediatos de compra e venda com base em análise técnica, tendências sociais e algoritmos preditivos.</p>
+    <a href="https://tinyurl.com/2aqcbv5x" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-full text-lg">Aderir Agora</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="px-6 py-12 text-center text-gray-500 text-sm bg-black border-t border-gray-800">
+    <div class="flex items-center justify-center space-x-4 mb-4 social-links">
+      <a href="https://twitter.com/seuTwitter" target="_blank" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" aria-label="Telegram">
+        <i class="fab fa-telegram"></i>
+      </a>
+      <a href="https://instagram.com/criptosinais77" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+    <p>© 2025 Criptosinais. Todos os direitos reservados.</p>
+  </footer>
+</body>
+</html>

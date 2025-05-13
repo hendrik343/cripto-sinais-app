@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Área Premium - Alertas Antecipados</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    const historicoPrecos = {};
+    const historicoSeries = {};
+
+    function calcularTendencia(moeda, precoAtual) {
+      const anterior = historicoPrecos[moeda];
+      historicoPrecos[moeda] = precoAtual;
+      if (!anterior) return ['ESTÁVEL', 'WAIT'];
+      const variacao = ((precoAtual - anterior) / anterior) * 100;
+      if (variacao > 1) return ['SUBIDA', 'BUY'];
+      else if (variacao < -1) return ['DESCIDA', 'SELL'];
+      else return ['ESTÁVEL', 'WAIT'];
+    }
+
+    async function atualizarTabela() {
+      const tabela = document.getElementById('premium-alerts');
+      tabela.innerHTML = '';
+
+      try {
+        const response = await fetch('/api/data?timestamp=' + Date.now(), { cache: 'no-store' });
+        const data = await response.json();
+
+        data.moedas.forEach(coin => {
+          const [tendencia, acao] = calcularTendencia(coin.nome, coin.preco);
+
+          if (!historicoSeries[coin.nome]) historicoSeries[coin.nome] = [];
+          historicoSeries[coin.nome].push({ t: new Date(), y: coin.preco });
+
+          const linha = `<tr>
+            <td class='py-2'>${coin.nome}</td>
+            <td>$${coin.preco.toFixed(4)}</td>
+            <td>${coin.rsi}</td>
+            <td>${coin.macd}</td>
+            <td class='${tendencia === 'SUBIDA' ? 'text-yellow-400' : tendencia === 'DESCIDA' ? 'text-red-400' : 'text-white'}'>${tendencia}</td>
+            <td class='${acao === 'BUY' ? 'text-green-500' : acao === 'SELL' ? 'text-red-500' : 'text-gray-400'} font-bold'>${acao}</td>
+            <td>${new Date().toLocaleString("pt-PT", { timeZone: "Europe/Lisbon" })}</td>
+          </tr>`;
+          tabela.innerHTML += linha;
+        });
+
+        renderizarGrafico();
+      } catch (error) {
+        console.error('Erro ao atualizar tabela:', error);
+      }
+    }
+
+    function renderizarGrafico() {
+      const ctx = document.getElementById('tendenciasChart').getContext('2d');
+      const datasets = Object.entries(historicoSeries).map(([moeda, pontos]) => ({
+        label: moeda,
+        data: pontos,
+        fill: false,
+        borderColor: '#' + Math.floor(Math.random()*16777215).toString(16),
+        tension: 0.1
+      }));
+
+      new Chart(ctx, {
+        type: 'line',
+        data: { datasets },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: { display: true, text: '📊 Tendência das Criptomoedas (últimos ciclos)' }
+          },
+          scales: {
+            x: { type: 'time', time: { unit: 'minute' }, title: { display: true, text: 'Hora' } },
+            y: { title: { display: true, text: 'Preço (USD)' } }
+          }
+        }
+      });
+    }
+
+    window.onload = () => {
+      atualizarTabela();
+      setInterval(atualizarTabela, 120000);
+    };
+  </script>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <div class="max-w-7xl mx-auto py-10 px-6">
+    <div class="flex justify-between items-center mb-10">
+      <h1 class="text-3xl font-bold text-green-400">🔐 Área Premium - Alertas Antecipados</h1>
+      <a href="/index.html" class="text-sm bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">← Voltar ao Público</a>
+    </div>
+
+    <div class="bg-gray-800 rounded-xl p-6 shadow-lg mb-8">
+      <h2 class="text-2xl font-semibold mb-2">📈 Sinais Técnicos Premium</h2>
+      <p class="text-gray-400 mb-4">Acesso exclusivo a sinais com base em RSI, MACD, Volume e Sentimento de Mercado. Atualizado a cada 2 minutos.</p>
+      <table class="w-full text-sm">
+        <thead class="text-green-300 border-b border-gray-700">
+          <tr>
+            <th class="text-left py-2">Moeda</th>
+            <th class="text-left py-2">Preço</th>
+            <th class="text-left py-2">RSI</th>
+            <th class="text-left py-2">MACD</th>
+            <th class="text-left py-2">Tendência</th>
+            <th class="text-left py-2">Ação</th>
+            <th class="text-left py-2">Última Atualização</th>
+          </tr>
+        </thead>
+        <tbody id="premium-alerts">
+          <!-- Conteúdo gerado dinamicamente -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bg-gray-800 rounded-xl p-6 shadow-lg mb-10">
+      <h2 class="text-xl font-semibold mb-4">📊 Tráfego de Tendências Visuais</h2>
+      <canvas id="tendenciasChart" height="120"></canvas>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+        <h3 class="text-xl font-semibold mb-2">📁 Relatório Semanal</h3>
+        <p class="text-gray-400 mb-3">Faça o download da análise completa das criptomoedas monitoradas esta semana.</p>
+        <a href="/relatorios/analise-semanal.pdf" download class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">⬇️ Baixar PDF</a>
+      </div>
+
+      <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+        <h3 class="text-xl font-semibold mb-2">📩 Alertas por Telegram</h3>
+        <p class="text-gray-400 mb-3">Receba sinais antecipados diretamente no seu Telegram com o nosso bot premium.</p>
+        <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" class="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg">Entrar no Bot Telegram</a>
+      </div>
+    </div>
+
+    <footer class="text-center mt-12 text-sm text-gray-500">
+      © 2025 Crypto Signals Premium. Todos os direitos reservados.
+    </footer>
+  </div>
+</body>
+</html>

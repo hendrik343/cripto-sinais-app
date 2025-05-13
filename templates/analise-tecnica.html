@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análise Técnica | Criptosinais</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Importar nossa biblioteca de gráficos com verificação de acesso premium -->
+  <script src="/static/js/chart-data.js"></script>
+  <style>
+    .hero-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+    }
+    .chart-container {
+      position: relative;
+      background-color: #1a1a1a;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      border: 1px solid #333;
+      margin-bottom: 2rem;
+      height: 350px;
+    }
+    .indicator-card {
+      transition: all 0.3s ease;
+      border: 1px solid rgba(16, 185, 129, 0.1);
+    }
+    .indicator-card:hover {
+      transform: translateY(-5px);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+    .lang-pt { display: none; }
+    .lang-en { display: none; }
+    .lang-fr { display: none; }
+    .lang-active { display: block; }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-5 border-b border-gray-800 bg-black shadow-md">
+    <div class="flex items-center">
+      <img src="/static/images/logo.svg" alt="Logo Criptosinais" class="h-10 w-10 rounded-full mr-2">
+      <h1 class="text-2xl font-extrabold text-green-400 tracking-wide">Criptosinais</h1>
+    </div>
+    <div class="flex items-center">
+      <select id="languageSelect" class="bg-gray-800 text-white text-xs rounded-lg px-2 py-1 border border-gray-700 mr-4">
+        <option value="pt" selected>Português</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+      <nav class="space-x-4 text-sm">
+        <a href="/landing" class="hover:text-green-300 transition">
+          <span class="lang-pt">Início</span>
+          <span class="lang-en">Home</span>
+          <span class="lang-fr">Accueil</span>
+        </a>
+        <a href="/dashboard" class="hover:text-green-300 transition">
+          <span class="lang-pt">Dashboard</span>
+          <span class="lang-en">Dashboard</span>
+          <span class="lang-fr">Tableau de Bord</span>
+        </a>
+        <a href="/grupo-vip" class="hover:text-green-300 transition">
+          <span class="lang-pt">Grupo VIP</span>
+          <span class="lang-en">VIP Group</span>
+          <span class="lang-fr">Groupe VIP</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-gradient text-center px-6 py-16">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-5xl font-bold mb-6">
+        <span class="lang-pt">📊 Análise Técnica Avançada</span>
+        <span class="lang-en">📊 Advanced Technical Analysis</span>
+        <span class="lang-fr">📊 Analyse Technique Avancée</span>
+      </h2>
+      <p class="text-gray-300 mb-8 text-lg">
+        <span class="lang-pt">Descubra tendências de mercado com nossa análise técnica baseada em indicadores profissionais e algoritmos avançados.</span>
+        <span class="lang-en">Discover market trends with our technical analysis based on professional indicators and advanced algorithms.</span>
+        <span class="lang-fr">Découvrez les tendances du marché avec notre analyse technique basée sur des indicateurs professionnels et des algorithmes avancés.</span>
+      </p>
+      <a href="https://tinyurl.com/2aqcbv5x" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-full inline-block">
+        <span class="lang-pt">Acesso Premium</span>
+        <span class="lang-en">Premium Access</span>
+        <span class="lang-fr">Accès Premium</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Indicadores -->
+  <section class="px-6 py-16 max-w-6xl mx-auto">
+    <h3 class="text-3xl font-bold mb-10 text-center">
+      <span class="lang-pt">Indicadores Técnicos</span>
+      <span class="lang-en">Technical Indicators</span>
+      <span class="lang-fr">Indicateurs Techniques</span>
+    </h3>
+    
+    <div class="grid md:grid-cols-3 gap-8 mb-12">
+      <div class="indicator-card bg-gray-800 p-6 rounded-xl">
+        <div class="text-center mb-4">
+          <span class="inline-block bg-green-900 p-3 rounded-full mb-2">
+            <i class="fas fa-chart-line text-green-400 text-xl"></i>
+          </span>
+          <h4 class="text-xl font-bold">
+            <span class="lang-pt">RSI</span>
+            <span class="lang-en">RSI</span>
+            <span class="lang-fr">RSI</span>
+          </h4>
+        </div>
+        <p class="text-gray-400 text-center">
+          <span class="lang-pt">Identifica condições de sobrecompra e sobrevenda para determinar pontos ideais de entrada e saída.</span>
+          <span class="lang-en">Identifies overbought and oversold conditions to determine ideal entry and exit points.</span>
+          <span class="lang-fr">Identifie les conditions de surachat et de survente pour déterminer les points d'entrée et de sortie idéaux.</span>
+        </p>
+      </div>
+      
+      <div class="indicator-card bg-gray-800 p-6 rounded-xl">
+        <div class="text-center mb-4">
+          <span class="inline-block bg-green-900 p-3 rounded-full mb-2">
+            <i class="fas fa-chart-bar text-green-400 text-xl"></i>
+          </span>
+          <h4 class="text-xl font-bold">
+            <span class="lang-pt">MACD</span>
+            <span class="lang-en">MACD</span>
+            <span class="lang-fr">MACD</span>
+          </h4>
+        </div>
+        <p class="text-gray-400 text-center">
+          <span class="lang-pt">Indicador de tendência que mostra a relação entre duas médias móveis de preços.</span>
+          <span class="lang-en">Trend indicator that shows the relationship between two moving averages of prices.</span>
+          <span class="lang-fr">Indicateur de tendance qui montre la relation entre deux moyennes mobiles de prix.</span>
+        </p>
+      </div>
+      
+      <div class="indicator-card bg-gray-800 p-6 rounded-xl">
+        <div class="text-center mb-4">
+          <span class="inline-block bg-green-900 p-3 rounded-full mb-2">
+            <i class="fas fa-wave-square text-green-400 text-xl"></i>
+          </span>
+          <h4 class="text-xl font-bold">
+            <span class="lang-pt">Bandas de Bollinger</span>
+            <span class="lang-en">Bollinger Bands</span>
+            <span class="lang-fr">Bandes de Bollinger</span>
+          </h4>
+        </div>
+        <p class="text-gray-400 text-center">
+          <span class="lang-pt">Mede a volatilidade do mercado e fornece níveis potenciais de suporte e resistência.</span>
+          <span class="lang-en">Measures market volatility and provides potential support and resistance levels.</span>
+          <span class="lang-fr">Mesure la volatilité du marché et fournit des niveaux potentiels de support et de résistance.</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Seletor de Moeda -->
+    <div class="flex flex-wrap items-center justify-between mb-8">
+      <div>
+        <label for="coinSelect" class="block text-sm font-medium text-gray-400 mb-2">
+          <span class="lang-pt">Selecione a Moeda</span>
+          <span class="lang-en">Select Coin</span>
+          <span class="lang-fr">Sélectionnez la Monnaie</span>
+        </label>
+        <select id="coinSelect" class="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700">
+          <option value="bitcoin">Bitcoin (BTC)</option>
+          <option value="ethereum">Ethereum (ETH)</option>
+          <option value="solana">Solana (SOL)</option>
+          <option value="dogecoin">Dogecoin (DOGE)</option>
+          <option value="shiba-inu">Shiba Inu (SHIB)</option>
+          <option value="pepe">Pepe (PEPE)</option>
+          <option value="floki">Floki (FLOKI)</option>
+          <option value="bonk">Bonk (BONK)</option>
+        </select>
+      </div>
+      <div>
+        <label for="timeframeSelect" class="block text-sm font-medium text-gray-400 mb-2">
+          <span class="lang-pt">Período</span>
+          <span class="lang-en">Timeframe</span>
+          <span class="lang-fr">Période</span>
+        </label>
+        <select id="timeframeSelect" class="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700">
+          <option value="7">
+            <span class="lang-pt">7 dias</span>
+            <span class="lang-en">7 days</span>
+            <span class="lang-fr">7 jours</span>
+          </option>
+          <option value="14">
+            <span class="lang-pt">14 dias</span>
+            <span class="lang-en">14 days</span>
+            <span class="lang-fr">14 jours</span>
+          </option>
+          <option value="30" selected>
+            <span class="lang-pt">30 dias</span>
+            <span class="lang-en">30 days</span>
+            <span class="lang-fr">30 jours</span>
+          </option>
+          <option value="90">
+            <span class="lang-pt">90 dias</span>
+            <span class="lang-en">90 days</span>
+            <span class="lang-fr">90 jours</span>
+          </option>
+        </select>
+      </div>
+      <button id="updateCharts" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg mt-6 md:mt-0">
+        <span class="lang-pt">Analisar</span>
+        <span class="lang-en">Analyze</span>
+        <span class="lang-fr">Analyser</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Gráficos de Análise Técnica -->
+  <section class="px-6 pb-16 max-w-6xl mx-auto">
+    <!-- RSI Chart -->
+    <div>
+      <h3 class="text-2xl font-bold mb-4 text-center">
+        <span class="lang-pt">Índice de Força Relativa (RSI)</span>
+        <span class="lang-en">Relative Strength Index (RSI)</span>
+        <span class="lang-fr">Indice de Force Relative (RSI)</span>
+      </h3>
+      <div class="chart-container">
+        <canvas id="rsiChart"></canvas>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg text-center mb-8">
+        <p class="text-sm text-gray-300">
+          <span class="lang-pt">RSI > 70: Sobrecomprado, possível sinal de venda | RSI < 30: Sobrevendido, possível sinal de compra</span>
+          <span class="lang-en">RSI > 70: Overbought, possible sell signal | RSI < 30: Oversold, possible buy signal</span>
+          <span class="lang-fr">RSI > 70: Suracheté, signal de vente possible | RSI < 30: Survendu, signal d'achat possible</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- MACD Chart -->
+    <div>
+      <h3 class="text-2xl font-bold mb-4 text-center">
+        <span class="lang-pt">MACD (Convergência e Divergência de Médias Móveis)</span>
+        <span class="lang-en">MACD (Moving Average Convergence Divergence)</span>
+        <span class="lang-fr">MACD (Convergence et Divergence des Moyennes Mobiles)</span>
+      </h3>
+      <div class="chart-container">
+        <canvas id="macdChart"></canvas>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg text-center mb-8">
+        <p class="text-sm text-gray-300">
+          <span class="lang-pt">Quando a linha MACD cruza acima da linha de sinal: Sinal de compra | Quando cruza abaixo: Sinal de venda</span>
+          <span class="lang-en">When MACD line crosses above signal line: Buy signal | When crosses below: Sell signal</span>
+          <span class="lang-fr">Lorsque la ligne MACD croise au-dessus de la ligne de signal: Signal d'achat | Lorsqu'elle croise en dessous: Signal de vente</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Bollinger Bands Chart -->
+    <div>
+      <h3 class="text-2xl font-bold mb-4 text-center">
+        <span class="lang-pt">Bandas de Bollinger</span>
+        <span class="lang-en">Bollinger Bands</span>
+        <span class="lang-fr">Bandes de Bollinger</span>
+      </h3>
+      <div class="chart-container">
+        <canvas id="bollingerChart"></canvas>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg text-center mb-8">
+        <p class="text-sm text-gray-300">
+          <span class="lang-pt">Preço próximo à banda superior: Possível sobrecompra | Preço próximo à banda inferior: Possível sobrevenda</span>
+          <span class="lang-en">Price near upper band: Possible overbought | Price near lower band: Possible oversold</span>
+          <span class="lang-fr">Prix proche de la bande supérieure: Possible surachat | Prix proche de la bande inférieure: Possible survente</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Acesso Premium -->
+  <section class="bg-white text-center py-20 relative overflow-hidden">
+    <!-- Marca d'água grande e suave -->
+    <div class="absolute inset-0 opacity-5 flex justify-center items-center">
+      <img src="/static/images/logo.svg" alt="Criptosinais Watermark" class="w-96 h-auto" />
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="relative z-10">
+      <img src="/static/images/logo.svg" alt="Logo Criptosinais" class="mx-auto w-20 h-20 mb-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
+        <span class="lang-pt">Aderir ao Acesso Premium — <span class="text-green-500">$1.99</span></span>
+        <span class="lang-en">Join Premium Access — <span class="text-green-500">$1.99</span></span>
+        <span class="lang-fr">Rejoindre l'Accès Premium — <span class="text-green-500">$1.99</span></span>
+      </h2>
+      <p class="text-gray-600 text-lg mb-8">
+        <span class="lang-pt">Pagamento único. Acesso vitalício. 100% garantido.</span>
+        <span class="lang-en">One-time payment. Lifetime access. 100% guaranteed.</span>
+        <span class="lang-fr">Paiement unique. Accès à vie. 100% garanti.</span>
+      </p>
+      <a href="https://tinyurl.com/2aqcbv5x" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg transition-all duration-300">
+        <span class="lang-pt">🔓 Desbloquear Agora</span>
+        <span class="lang-en">🔓 Unlock Now</span>
+        <span class="lang-fr">🔓 Débloquer Maintenant</span>
+      </a>
+
+      <!-- Logos sociais -->
+      <div class="flex justify-center space-x-6 mt-10">
+        <a href="https://twitter.com" target="_blank" class="text-gray-500 hover:text-gray-900"><i class="fab fa-twitter fa-lg"></i></a>
+        <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" class="text-gray-500 hover:text-gray-900"><i class="fab fa-telegram fa-lg"></i></a>
+        <a href="https://instagram.com/criptosinais77" target="_blank" class="text-gray-500 hover:text-gray-900"><i class="fab fa-instagram fa-lg"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="px-6 py-12 text-center text-gray-500 text-sm bg-black border-t border-gray-800">
+    <div class="flex items-center justify-center space-x-4 mb-4 social-links">
+      <a href="https://twitter.com/seuTwitter" target="_blank" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" aria-label="Telegram">
+        <i class="fab fa-telegram"></i>
+      </a>
+      <a href="https://instagram.com/criptosinais77" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+    <p>
+      <span class="lang-pt">© 2025 Criptosinais. Todos os direitos reservados.</span>
+      <span class="lang-en">© 2025 Criptosinais. All rights reserved.</span>
+      <span class="lang-fr">© 2025 Criptosinais. Tous droits réservés.</span>
+    </p>
+  </footer>
+
+  <script>
+    // Funções para lidar com múltiplos idiomas
+    document.addEventListener('DOMContentLoaded', function() {
+      // Detectar idioma do navegador
+      const browserLang = navigator.language.split('-')[0];
+      if(['pt', 'en', 'fr'].includes(browserLang)) {
+        setLanguage(browserLang);
+        document.getElementById('languageSelect').value = browserLang;
+      } else {
+        setLanguage('pt'); // Default para português
+      }
+      
+      // Mudar idioma quando selecionado
+      document.getElementById('languageSelect').addEventListener('change', function() {
+        setLanguage(this.value);
+      });
+
+      // Carregar os gráficos iniciais
+      renderCharts();
+
+      // Event listener para o botão de atualizar
+      document.getElementById('updateCharts').addEventListener('click', renderCharts);
+    });
+    
+    function setLanguage(lang) {
+      document.querySelectorAll('.lang-pt, .lang-en, .lang-fr').forEach(el => {
+        el.classList.remove('lang-active');
+      });
+      
+      document.querySelectorAll(`.lang-${lang}`).forEach(el => {
+        el.classList.add('lang-active');
+      });
+      
+      // Atualizar o atributo lang do HTML
+      document.documentElement.lang = lang;
+    }
+
+    async function fetchChartData(coin, days = 30) {
+      try {
+        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&days=${days}`);
+        if (!res.ok) {
+          throw new Error(`API returned status ${res.status}`);
+        }
+        const data = await res.json();
+        return {
+          labels: data.prices.map(item => new Date(item[0]).toLocaleDateString()),
+          prices: data.prices.map(item => item[1]),
+          volumes: data.total_volumes.map(item => item[1])
+        };
+      } catch (error) {
+        console.error(`Error fetching data: ${error.message}`);
+        // Mostrar mensagem de erro para o usuário
+        const errorMessage = document.documentElement.lang === 'pt' 
+          ? 'Erro ao carregar dados. Limite de API atingido, tente novamente em alguns minutos.' 
+          : document.documentElement.lang === 'fr'
+            ? 'Erreur lors du chargement des données. Limite API atteinte, réessayez dans quelques minutes.'
+            : 'Error loading data. API rate limit reached, try again in a few minutes.';
+            
+        alert(errorMessage);
+        
+        // Retornar dados vazios para evitar erros
+        return {
+          labels: [],
+          prices: [],
+          volumes: []
+        };
+      }
+    }
+
+    function calculateRSI(prices, period = 14) {
+      if (prices.length < period + 1) {
+        return [];
+      }
+      
+      let gains = [], losses = [];
+      for (let i = 1; i < prices.length; i++) {
+        const diff = prices[i] - prices[i - 1];
+        gains.push(diff > 0 ? diff : 0);
+        losses.push(diff < 0 ? Math.abs(diff) : 0);
+      }
+      
+      let avgGain = gains.slice(0, period).reduce((sum, gain) => sum + gain, 0) / period;
+      let avgLoss = losses.slice(0, period).reduce((sum, loss) => sum + loss, 0) / period;
+      
+      let rsis = Array(period - 1).fill(null);
+      
+      for (let i = period - 1; i < gains.length; i++) {
+        if (i > period - 1) {
+          avgGain = ((period - 1) * avgGain + gains[i]) / period;
+          avgLoss = ((period - 1) * avgLoss + losses[i]) / period;
+        }
+        
+        const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
+        rsis.push(100 - (100 / (1 + rs)));
+      }
+      
+      return rsis;
+    }
+
+    function calculateMACD(prices, fastPeriod = 12, slowPeriod = 26, signalPeriod = 9) {
+      if (prices.length < slowPeriod + signalPeriod) {
+        return { macdLine: [], signalLine: [], histogram: [] };
+      }
+      
+      // Calcular as médias móveis exponenciais (EMA)
+      function calculateEMA(data, period) {
+        const k = 2 / (period + 1);
+        let ema = [data[0]];
+        
+        for (let i = 1; i < data.length; i++) {
+          ema.push(data[i] * k + ema[i - 1] * (1 - k));
+        }
+        
+        return ema;
+      }
+      
+      const fastEMA = calculateEMA(prices, fastPeriod);
+      const slowEMA = calculateEMA(prices, slowPeriod);
+      
+      // Calcular a linha MACD (diferença entre fast e slow EMA)
+      const macdLine = fastEMA.map((fast, i) => fast - slowEMA[i]);
+      
+      // Calcular a linha de sinal (EMA da linha MACD)
+      const signalLine = calculateEMA(macdLine, signalPeriod);
+      
+      // Calcular o histograma (diferença entre a linha MACD e a linha de sinal)
+      const histogram = macdLine.map((macd, i) => macd - signalLine[i]);
+      
+      return { macdLine, signalLine, histogram };
+    }
+
+    function calculateBollingerBands(prices, period = 20, multiplier = 2) {
+      if (prices.length < period) {
+        return { middle: [], upper: [], lower: [] };
+      }
+      
+      let middle = [], upper = [], lower = [];
+      
+      for (let i = period - 1; i < prices.length; i++) {
+        const slice = prices.slice(i - period + 1, i + 1);
+        const mean = slice.reduce((sum, price) => sum + price, 0) / period;
+        
+        // Desvio padrão
+        const std = Math.sqrt(slice.reduce((sum, price) => sum + Math.pow(price - mean, 2), 0) / period);
+        
+        middle.push(mean);
+        upper.push(mean + multiplier * std);
+        lower.push(mean - multiplier * std);
+      }
+      
+      // Preencher com null para alinhar com os outros dados
+      const padding = Array(period - 1).fill(null);
+      middle = [...padding, ...middle];
+      upper = [...padding, ...upper];
+      lower = [...padding, ...lower];
+      
+      return { middle, upper, lower };
+    }
+
+    let rsiChart, macdChart, bollingerChart;
+
+    async function renderCharts() {
+      const selectedCoin = document.getElementById('coinSelect').value;
+      const selectedTimeframe = document.getElementById('timeframeSelect').value;
+      const data = await fetchChartData(selectedCoin, selectedTimeframe);
+      
+      if (data.prices.length === 0) {
+        return; // Não prosseguir se não houver dados
+      }
+      
+      const rsiValues = calculateRSI(data.prices);
+      const rsiLabels = data.labels.slice(13); // Ajustar para alinhar com o RSI
+      
+      const macd = calculateMACD(data.prices);
+      const macdLabels = data.labels.slice(25); // Ajustar para alinhar com o MACD
+      
+      const bollingerBands = calculateBollingerBands(data.prices);
+      const bbLabels = data.labels.slice(19); // Ajustar para alinhar com as Bandas de Bollinger
+      
+      // Definir cores do tema escuro
+      const darkTheme = {
+        backgroundColor: '#1a1a1a',
+        gridColor: 'rgba(255, 255, 255, 0.1)',
+        textColor: 'rgba(255, 255, 255, 0.7)',
+        lineColors: {
+          price: '#10B981', // Verde
+          volume: 'rgba(16, 185, 129, 0.7)', // Verde translúcido
+          rsi: '#F59E0B', // Amarelo/laranja
+          overbought: '#EF4444', // Vermelho
+          oversold: '#10B981',  // Verde
+          macd: '#10B981', // Verde
+          signal: '#EF4444', // Vermelho
+          histogram: '#3B82F6', // Azul
+          bbMiddle: '#F59E0B', // Amarelo/laranja
+          bbUpper: '#EF4444', // Vermelho
+          bbLower: '#10B981'  // Verde
+        }
+      };
+      
+      // Destruir gráficos existentes
+      if (rsiChart) rsiChart.destroy();
+      if (macdChart) macdChart.destroy();
+      if (bollingerChart) bollingerChart.destroy();
+      
+      // Criar gráfico RSI
+      const rsiCtx = document.getElementById('rsiChart').getContext('2d');
+      rsiChart = new Chart(rsiCtx, {
+        type: 'line',
+        data: {
+          labels: rsiLabels,
+          datasets: [
+            {
+              label: 'RSI',
+              data: rsiValues,
+              borderColor: darkTheme.lineColors.rsi,
+              borderWidth: 2,
+              fill: false,
+              tension: 0.1
+            },
+            {
+              label: 'Sobrecomprado (70)',
+              data: Array(rsiLabels.length).fill(70),
+              borderColor: darkTheme.lineColors.overbought,
+              borderWidth: 1,
+              borderDash: [5, 5],
+              fill: false,
+              pointRadius: 0
+            },
+            {
+              label: 'Sobrevendido (30)',
+              data: Array(rsiLabels.length).fill(30),
+              borderColor: darkTheme.lineColors.oversold,
+              borderWidth: 1,
+              borderDash: [5, 5],
+              fill: false,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: darkTheme.textColor
+              }
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: darkTheme.gridColor
+              },
+              ticks: {
+                color: darkTheme.textColor
+              }
+            },
+            y: {
+              min: 0,
+              max: 100,
+              grid: {
+                color: darkTheme.gridColor
+              },
+              ticks: {
+                color: darkTheme.textColor
+              }
+            }
+          }
+        }
+      });
+      
+      // Criar gráfico MACD
+      const macdCtx = document.getElementById('macdChart').getContext('2d');
+      macdChart = new Chart(macdCtx, {
+        type: 'bar',
+        data: {
+          labels: macdLabels,
+          datasets: [
+            {
+              label: 'MACD',
+              data: macd.macdLine.slice(25),
+              borderColor: darkTheme.lineColors.macd,
+              borderWidth: 2,
+              fill: false,
+              type: 'line'
+            },
+            {
+              label: 'Linha de Sinal',
+              data: macd.signalLine.slice(25),
+              borderColor: darkTheme.lineColors.signal,
+              borderWidth: 2,
+              fill: false,
+              type: 'line'
+            },
+            {
+              label: 'Histograma',
+              data: macd.histogram.slice(25),
+              backgroundColor: (context) => {
+                const value = context.dataset.data[context.dataIndex];
+                return value >= 0 ? darkTheme.lineColors.macd : darkTheme.lineColors.signal;
+              },
+              borderColor: 'transparent'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: darkTheme.textColor
+              }
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: darkTheme.gridColor
+              },
+              ticks: {
+                color: darkTheme.textColor
+              }
+            },
+            y: {
+              grid: {
+                color: darkTheme.gridColor
+              },
+              ticks: {
+                color: darkTheme.textColor
+              }
+            }
+          }
+        }
+      });
+      
+      // Criar gráfico Bollinger Bands
+      const bollingerCtx = document.getElementById('bollingerChart').getContext('2d');
+      bollingerChart = new Chart(bollingerCtx, {
+        type: 'line',
+        data: {
+          labels: data.labels,
+          datasets: [
+            {
+              label: 'Preço',
+              data: data.prices,
+              borderColor: darkTheme.lineColors.price,
+              borderWidth: 2,
+              fill: false,
+              tension: 0.1,
+              pointRadius: 0
+            },
+            {
+              label: 'Banda Superior',
+              data: bollingerBands.upper,
+              borderColor: darkTheme.lineColors.bbUpper,
+              borderWidth: 1,
+              fill: false,
+              tension: 0.1,
+              pointRadius: 0
+            },
+            {
+              label: 'Média Móvel',
+              data: bollingerBands.middle,
+              borderColor: darkTheme.lineColors.bbMiddle,
+              borderWidth: 1,
+              fill: false,
+              tension: 0.1,
+              pointRadius: 0
+            },
+            {
+              label: 'Banda Inferior',
+              data: bollingerBands.lower,
+              borderColor: darkTheme.lineColors.bbLower,
+              borderWidth: 1,
+              fill: false,
+              tension: 0.1,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: darkTheme.textColor
+              }
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: darkTheme.gridColor
+              },
+              ticks: {
+                color: darkTheme.textColor
+              }
+            },
+            y: {
+              grid: {
+                color: darkTheme.gridColor
+              },
+              ticks: {
+                color: darkTheme.textColor,
+                callback: function(value) {
+                  return '$' + value.toLocaleString();
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

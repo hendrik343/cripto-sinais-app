@@ -1,0 +1,103 @@
+import requests
+import time
+from datetime import datetime
+from pytz import timezone
+from flask import Flask, jsonify
+from threading import Thread
+
+app = Flask(__name__)
+
+TELEGRAM_TOKEN = "7773905776:AAEohw7-YUXf0RzpR7_QFfWK5_YZ_CATPi8"
+CHAT_ID = "@cryptosignalshendrik_bot"
+
+MOEDAS = {
+    "shiba-inu": "SHIB",
+    "floki": "FLOKI",
+    "dogecoin": "DOGE",
+    "bonk": "BONK",
+    "solana": "SOL",
+    "ripple": "XRP",
+    "cardano": "ADA",
+    "avalanche-2": "AVAX",
+    "chainlink": "LINK",
+    "matic-network": "MATIC",
+    "arbitrum": "ARB",
+    "optimism": "OP",
+    "render-token": "RNDR",
+    "the-graph": "GRT",
+    "aptos": "APT",
+    "internet-computer": "ICP",
+    "sei-network": "SEI",
+    "starknet": "STRK",
+    "bitcoin": "BTC"
+}
+
+historico_precos = {}
+alertas_recentes = []
+
+
+def get_preco_atual(moeda_id):
+    url = f"https://api.coingecko.com/api/v3/simple/price"
+    params = {
+        "ids": moeda_id,
+        "vs_currencies": "usd"
+    }
+    try:
+        response = requests.get(url, params=params)
+        data = response.json()
+        return data.get(moeda_id, {}).get("usd")
+    except:
+        return None
+
+
+def send_telegram(mensagem):
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    payload = {"chat_id": CHAT_ID, "text": mensagem}
+    try:
+        requests.post(url, json=payload)
+    except:
+        pass
+
+
+def verificar_variacao(moeda_id, simbolo):
+    preco = get_preco_atual(moeda_id)
+    if preco is None:
+        return
+
+    anterior = historico_precos.get(moeda_id)
+    historico_precos[moeda_id] = preco
+
+    if anterior:
+        variacao = ((preco - anterior) / anterior) * 100
+        if abs(variacao) >= 3:
+            hora_lisboa = datetime.now(timezone('Europe/Lisbon')).strftime('%H:%M:%S')
+            direcao = "📈 ALTA forte! RECOMENDADO: COMPRA ✅" if variacao > 0 else "📉 QUEDA forte! RECOMENDADO: VENDA ⚠️"
+            mensagem = f"[{simbolo}] {hora_lisboa}\nPreço atual: ${preco:.5f}\nVariação: {variacao:.2f}% desde a última leitura.\nSINAL: {direcao}"
+            send_telegram(mensagem)
+            alertas_recentes.append({
+                "symbol": simbolo,
+                "price": preco,
+                "change": f"{variacao:.2f}%",
+                "time": hora_lisboa,
+                "recomendacao": direcao
+            })
+
+
+def monitor_loop():
+    while True:
+        for moeda_id, simbolo in MOEDAS.items():
+            verificar_variacao(moeda_id, simbolo)
+            time.sleep(2)
+        time.sleep(120)
+
+
+@app.route("/alerts")
+def get_alertas():
+    return jsonify(alertas_recentes[-10:])
+
+
+if __name__ == '__main__':
+    t = Thread(target=monitor_loop)
+    t.daemon = True
+    t.start()
+    app.run(debug=True)

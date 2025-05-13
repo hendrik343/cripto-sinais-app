@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plano Premium de Sinais Cripto</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white font-sans">
+  <div class="max-w-4xl mx-auto p-6">
+    <header class="text-center mb-10">
+      <h1 class="text-4xl font-bold text-green-400">Plano Premium - $4.99</h1>
+      <p class="mt-2 text-lg text-gray-300">Acesso exclusivo aos sinais de trading mais avançados</p>
+    </header>
+
+    <section class="grid gap-6 md:grid-cols-2">
+      <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+        <h2 class="text-2xl font-semibold text-green-300 mb-4">O que você recebe:</h2>
+        <ul class="space-y-3 text-gray-200">
+          <li>✅ Sinais técnicos com base em <strong>RSI, MACD e Volume</strong>
+          </li>
+          <li>✅ <strong>Alertas antecipados</strong> enviados diretamente no Telegram</li>
+          <li>✅ <strong>Gráficos de tendência</strong> em tempo real</li>
+          <li>✅ <strong>Relatórios técnicos semanais</strong> em PDF</li>
+          <li>✅ Acesso ao <strong>Grupo VIP no Telegram</strong></li>
+        </ul>
+      </div>
+
+      <div class="bg-gray-800 p-6 rounded-2xl shadow-lg flex flex-col items-center justify-center">
+        <h2 class="text-2xl font-semibold text-green-300 mb-4">Aderir agora</h2>
+        <p class="text-gray-400 mb-6 text-center">Comece hoje por apenas <span class="text-white font-bold">$4.99</span> por mês e melhore as suas decisões de trading.</p>
+        <a href="https://your-payment-link.com" target="_blank"
+           class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold text-lg transition">Assinar Agora</a>
+      </div>
+    </section>
+
+    <footer class="mt-12 text-center text-gray-500 text-sm">
+      Desenvolvido por @cryptosignalshendrik_bot | Todos os direitos reservados
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criptosinais | Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: #0f172a;
+    }
+    .hero-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+    }
+    .chart-container {
+      position: relative;
+      background-color: rgba(26, 26, 26, 0.7);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      border: 1px solid rgba(68, 68, 68, 0.5);
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .card-glow {
+      transition: all 0.3s ease;
+    }
+    .card-glow:hover {
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.7);
+      transform: translateY(-5px);
+    }
+    .lang-pt { display: none; }
+    .lang-en { display: none; }
+    .lang-fr { display: none; }
+    .lang-active { display: block; }
+    
+    /* Animação de atualização dos gráficos */
+    .grafico-atualizado {
+      animation: flash-update 0.6s ease;
+    }
+    
+    @keyframes flash-update {
+      0% { background-color: rgba(34,197,94,0.1); }
+      100% { background-color: transparent; }
+    }
+    
+    /* Animação do ícone de atualização */
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Efeito de estrelas para o fundo */
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+    
+    /* Efeito de brilho para o CTA */
+    .cta-glow-container {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .cta-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 9999px;
+      z-index: 1;
+      background: rgba(255, 215, 0, 0.3);
+      filter: blur(15px);
+      animation: glowPulse 2s infinite;
+    }
+    
+    @keyframes glowPulse {
+      0% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 0.7; transform: scale(1); }
+    }
+    
+    /* Animação de pulso */
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <!-- Header Moderno -->
+  <header class="flex justify-between items-center p-6 bg-black border-b border-gray-700 sticky top-0 z-50">
+    <div class="text-xl font-bold text-yellow-400">🚀 Criptosinais</div>
+    <nav class="space-x-4 text-sm">
+      <a href="/dashboard" class="hover:text-yellow-300">Dashboard</a>
+      <a href="/premium" class="hover:text-yellow-300">Premium</a>
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" class="hover:text-yellow-300">Telegram</a>
+    </nav>
+  </header>
+  
+  <div class="flex items-center px-4 py-2 bg-gray-800 bg-opacity-80 text-sm border-b border-gray-700">
+      <select id="languageSelect" class="bg-gray-800 text-white text-xs rounded-lg px-2 py-1 border border-gray-700 mr-4">
+        <option value="pt" selected>Português</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+      <nav class="space-x-4 text-sm">
+        <a href="/landing" class="hover:text-green-300 transition">
+          <span class="lang-pt">Início</span>
+          <span class="lang-en">Home</span>
+          <span class="lang-fr">Accueil</span>
+        </a>
+        <a href="/charts" class="hover:text-green-300 transition">
+          <span class="lang-pt">Gráficos</span>
+          <span class="lang-en">Charts</span>
+          <span class="lang-fr">Graphiques</span>
+        </a>
+        <div class="relative group">
+          <a href="/premium" class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-black font-semibold px-4 py-1 rounded-full text-xs transition shadow-md">
+            <span class="lang-pt">Premium</span>
+            <span class="lang-en">Premium</span>
+            <span class="lang-fr">Premium</span>
+          </a>
+          <div class="absolute z-10 hidden group-hover:block mt-1 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg py-1">
+            <a href="/premium" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">
+              <span class="lang-pt">Acesso Premium</span>
+              <span class="lang-en">Premium Access</span>
+              <span class="lang-fr">Accès Premium</span>
+            </a>
+            <a href="/promocao" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">
+              <span class="lang-pt">Promoção Especial</span>
+              <span class="lang-en">Special Promotion</span>
+              <span class="lang-fr">Promotion Spéciale</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Funcionalidades Premium -->
+  <section id="funcionalidades" class="px-6 py-10 max-w-6xl mx-auto">
+    <h2 class="text-3xl font-bold mb-8 text-center">
+      <span class="lang-pt">🔍 Funcionalidades Premium</span>
+      <span class="lang-en">🔍 Premium Features</span>
+      <span class="lang-fr">🔍 Fonctionnalités Premium</span>
+    </h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <a href="/alertas-tempo-real" class="block">
+        <div class="bg-gray-800 p-6 rounded-lg text-center card-glow h-full">
+          <div class="text-3xl mb-2 text-green-400">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">
+            <span class="lang-pt">Alertas em Tempo Real</span>
+            <span class="lang-en">Real-Time Alerts</span>
+            <span class="lang-fr">Alertes en Temps Réel</span>
+          </h3>
+          <p class="text-gray-400">
+            <span class="lang-pt">Receba alertas precisos sobre oportunidades de compra e venda.</span>
+            <span class="lang-en">Receive accurate alerts on buying and selling opportunities.</span>
+            <span class="lang-fr">Recevez des alertes précises sur les opportunités d'achat et de vente.</span>
+          </p>
+        </div>
+      </a>
+      <a href="/analise-tecnica" class="block">
+        <div class="bg-gray-800 p-6 rounded-lg text-center card-glow h-full">
+          <div class="text-3xl mb-2 text-green-400">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">
+            <span class="lang-pt">Análise Técnica</span>
+            <span class="lang-en">Technical Analysis</span>
+            <span class="lang-fr">Analyse Technique</span>
+          </h3>
+          <p class="text-gray-400">
+            <span class="lang-pt">RSI, MACD e indicadores de Volume analisados em detalhe.</span>
+            <span class="lang-en">RSI, MACD and Volume indicators analyzed in detail.</span>
+            <span class="lang-fr">RSI, MACD et indicateurs de Volume analysés en détail.</span>
+          </p>
+        </div>
+      </a>
+      <a href="/grupo-vip" class="block">
+        <div class="bg-gray-800 p-6 rounded-lg text-center card-glow h-full">
+          <div class="text-3xl mb-2 text-green-400">
+            <i class="fab fa-telegram"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">
+            <span class="lang-pt">Grupo VIP Telegram</span>
+            <span class="lang-en">VIP Telegram Group</span>
+            <span class="lang-fr">Groupe Telegram VIP</span>
+          </h3>
+          <p class="text-gray-400">
+            <span class="lang-pt">Comunidade exclusiva para discussões e alertas premium.</span>
+            <span class="lang-en">Exclusive community for discussions and premium alerts.</span>
+            <span class="lang-fr">Communauté exclusive pour les discussions et alertes premium.</span>
+          </p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Seletor de Moeda -->
+  <section class="px-6 py-6 max-w-6xl mx-auto">
+    <div class="flex flex-wrap items-center justify-between mb-4">
+      <div>
+        <label for="coinSelect" class="block text-sm font-medium text-gray-400 mb-2">
+          <span class="lang-pt">Selecione a Moeda</span>
+          <span class="lang-en">Select Coin</span>
+          <span class="lang-fr">Sélectionnez la Monnaie</span>
+        </label>
+        <select id="coinSelect" class="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700">
+          <option value="bitcoin">Bitcoin (BTC)</option>
+          <option value="ethereum">Ethereum (ETH)</option>
+          <option value="solana">Solana (SOL)</option>
+          <option value="dogecoin">Dogecoin (DOGE)</option>
+          <option value="shiba-inu">Shiba Inu (SHIB)</option>
+          <option value="pepe">Pepe (PEPE)</option>
+          <option value="floki">Floki (FLOKI)</option>
+          <option value="bonk">Bonk (BONK)</option>
+          <option value="ripple">XRP</option>
+          <option value="cardano">Cardano (ADA)</option>
+        </select>
+      </div>
+      <div class="md:flex items-center space-x-4 mt-6 md:mt-0">
+        <!-- Intervalo de Atualização -->
+        <div class="flex items-center mb-4 md:mb-0">
+          <label for="intervalSelect" class="text-sm text-gray-400 mr-2">
+            <span class="lang-pt">Atualizar a cada:</span>
+            <span class="lang-en">Update every:</span>
+            <span class="lang-fr">Actualiser tous les:</span>
+          </label>
+          <select id="intervalSelect" class="bg-gray-800 text-white px-3 py-1 rounded-lg border border-gray-600">
+            <option value="30000">
+              <span class="lang-pt">30 segundos</span>
+              <span class="lang-en">30 seconds</span>
+              <span class="lang-fr">30 secondes</span>
+            </option>
+            <option value="60000" selected>
+              <span class="lang-pt">1 minuto</span>
+              <span class="lang-en">1 minute</span>
+              <span class="lang-fr">1 minute</span>
+            </option>
+            <option value="300000">
+              <span class="lang-pt">5 minutos</span>
+              <span class="lang-en">5 minutes</span>
+              <span class="lang-fr">5 minutes</span>
+            </option>
+            <option value="0">
+              <span class="lang-pt">Manual</span>
+              <span class="lang-en">Manual</span>
+              <span class="lang-fr">Manuel</span>
+            </option>
+          </select>
+        </div>
+        <button id="updateCharts" class="glass-card bg-gradient-to-r from-green-600 to-green-700 bg-opacity-90 hover:bg-opacity-100 text-white font-semibold px-6 py-2 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105">
+          <i class="fas fa-sync-alt mr-2"></i>
+          <span class="lang-pt">Atualizar</span>
+          <span class="lang-en">Update</span>
+          <span class="lang-fr">Actualiser</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gráficos -->
+  <section class="px-6 pb-16 max-w-6xl mx-auto">
+    <!-- Indicador de última atualização -->
+    <div class="text-right mb-4 flex items-center justify-end space-x-2">
+      <div class="glass-card px-4 py-2 rounded-full text-sm flex items-center space-x-2">
+        <span id="iconeAtualizacao" class="animate-spin hidden text-green-400">
+          <i class="fas fa-sync-alt"></i>
+        </span>
+        <span id="ultimaAtualizacaoTexto" class="text-blue-300">
+          <span class="lang-pt">Última atualização: aguardando...</span>
+          <span class="lang-en">Last update: waiting...</span>
+          <span class="lang-fr">Dernière mise à jour: en attente...</span>
+        </span>
+      </div>
+    </div>
+    
+    <!-- Título principal -->
+    <div class="text-center mt-10 mb-8">
+      <h1 class="text-4xl font-bold mb-2">
+        <span class="lang-pt">📊 Top Daily Pumps</span>
+        <span class="lang-en">📊 Top Daily Pumps</span>
+        <span class="lang-fr">📊 Top Daily Pumps</span>
+      </h1>
+      <p class="text-gray-400">
+        <span class="lang-pt">Atualizado a cada 5 minutos com sinais de valorização iminente</span>
+        <span class="lang-en">Updated every 5 minutes with imminent pump signals</span>
+        <span class="lang-fr">Mis à jour toutes les 5 minutes avec des signaux de hausse imminente</span>
+      </p>
+    </div>
+
+    <!-- Top Daily Pumps - Tabela principal -->
+    <div class="max-w-5xl mx-auto mb-16">
+      <div class="glass-card p-6">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="text-gray-300 border-b border-gray-700">
+              <tr>
+                <th class="py-3 px-4">
+                  <span class="lang-pt">Moeda</span>
+                  <span class="lang-en">Coin</span>
+                  <span class="lang-fr">Monnaie</span>
+                </th>
+                <th class="py-3 px-4">
+                  <span class="lang-pt">Preço (USD)</span>
+                  <span class="lang-en">Price (USD)</span>
+                  <span class="lang-fr">Prix (USD)</span>
+                </th>
+                <th class="py-3 px-4">
+                  <span class="lang-pt">RSI</span>
+                  <span class="lang-en">RSI</span>
+                  <span class="lang-fr">RSI</span>
+                </th>
+                <th class="py-3 px-4">
+                  <span class="lang-pt">Volume</span>
+                  <span class="lang-en">Volume</span>
+                  <span class="lang-fr">Volume</span>
+                </th>
+                <th class="py-3 px-4">
+                  <span class="lang-pt">Status</span>
+                  <span class="lang-en">Status</span>
+                  <span class="lang-fr">Statut</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="top-pumps-table">
+              <!-- Dados dinâmicos serão inseridos aqui pelo JavaScript -->
+              <tr class="placeholder-row border-b border-gray-700">
+                <td colspan="5" class="text-center py-8 text-gray-400">
+                  <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span class="lang-pt">Carregando moedas com maior valorização...</span>
+                  <span class="lang-en">Loading coins with highest gains...</span>
+                  <span class="lang-fr">Chargement des monnaies avec les plus grands gains...</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+
+
+    <!-- Volume -->
+    <div class="mb-12">
+      <h3 class="text-2xl font-bold mb-6 text-center text-blue-400">
+        <span class="lang-pt"><i class="fas fa-chart-line mr-2"></i>Volume de Negociação</span>
+        <span class="lang-en"><i class="fas fa-chart-line mr-2"></i>Trading Volume</span>
+        <span class="lang-fr"><i class="fas fa-chart-line mr-2"></i>Volume d'Échange</span>
+      </h3>
+      <div class="glass-card p-6 rounded-2xl shadow-2xl">
+        <canvas id="volumeChart" height="300"></canvas>
+      </div>
+    </div>
+
+    <!-- RSI -->
+    <div class="mb-12">
+      <h3 class="text-2xl font-bold mb-6 text-center text-purple-400">
+        <span class="lang-pt"><i class="fas fa-chart-bar mr-2"></i>RSI (Índice de Força Relativa)</span>
+        <span class="lang-en"><i class="fas fa-chart-bar mr-2"></i>RSI (Relative Strength Index)</span>
+        <span class="lang-fr"><i class="fas fa-chart-bar mr-2"></i>RSI (Indice de Force Relative)</span>
+      </h3>
+      <div class="glass-card p-6 rounded-2xl shadow-2xl mb-4">
+        <canvas id="rsiChart" height="300"></canvas>
+      </div>
+      <div class="glass-card p-4 rounded-xl text-center">
+        <p class="text-sm text-blue-300 font-medium">
+          <span class="lang-pt">RSI > 70: Mercado sobrecomprado <span class="text-red-400 font-bold">(Venda)</span> | RSI < 30: Mercado sobrevendido <span class="text-green-400 font-bold">(Compra)</span></span>
+          <span class="lang-en">RSI > 70: Overbought market <span class="text-red-400 font-bold">(Sell)</span> | RSI < 30: Oversold market <span class="text-green-400 font-bold">(Buy)</span></span>
+          <span class="lang-fr">RSI > 70: Marché suracheté <span class="text-red-400 font-bold">(Vendre)</span> | RSI < 30: Marché survendu <span class="text-green-400 font-bold">(Acheter)</span></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Inscreva-se Premium - Nova seção CTA -->
+  <section class="hero-gradient text-center py-20 relative overflow-hidden">
+    <!-- Efeito de partículas/estrelas -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="stars"></div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="relative z-10 max-w-4xl mx-auto px-4">
+      <div class="glass-card p-10 rounded-3xl">
+        <div class="flex justify-center">
+          <div class="relative">
+            <div class="absolute inset-0 bg-yellow-500 rounded-full opacity-20 blur-md animate-pulse"></div>
+            <span class="text-5xl relative z-10">💎</span>
+          </div>
+        </div>
+        
+        <h2 class="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-600 mb-4 tracking-tight mt-4">
+          <span class="lang-pt">Desbloqueie o Acesso Premium</span>
+          <span class="lang-en">Unlock Premium Access</span>
+          <span class="lang-fr">Débloquez l'Accès Premium</span>
+        </h2>
+        
+        <div class="text-2xl font-bold text-green-400 mb-4">
+          <span class="lang-pt">Apenas $1.99</span>
+          <span class="lang-en">Only $1.99</span>
+          <span class="lang-fr">Seulement $1.99</span>
+        </div>
+        
+        <p class="text-gray-300 text-lg mb-8">
+          <span class="lang-pt">Pagamento único. Acesso vitalício. 100% garantido.</span>
+          <span class="lang-en">One-time payment. Lifetime access. 100% guaranteed.</span>
+          <span class="lang-fr">Paiement unique. Accès à vie. 100% garanti.</span>
+        </p>
+        
+        <div class="cta-glow-container">
+          <div class="cta-glow"></div>
+          <a href="/premium-preview" class="relative z-10 inline-block bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-bold py-4 px-10 rounded-full text-lg shadow-xl transition-all duration-300 transform hover:scale-105">
+            <span class="lang-pt">🔓 Desbloquear Agora</span>
+            <span class="lang-en">🔓 Unlock Now</span>
+            <span class="lang-fr">🔓 Débloquer Maintenant</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+      <!-- Logos sociais -->
+      <div class="flex justify-center space-x-6 mt-10">
+        <a href="https://twitter.com" target="_blank" class="text-gray-500 hover:text-gray-900"><i class="fab fa-twitter fa-lg"></i></a>
+        <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" class="text-gray-500 hover:text-gray-900"><i class="fab fa-telegram fa-lg"></i></a>
+        <a href="https://instagram.com/criptosinais77" target="_blank" class="text-gray-500 hover:text-gray-900"><i class="fab fa-instagram fa-lg"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="px-6 py-12 text-center text-gray-500 text-sm bg-black border-t border-gray-800">
+    <div class="flex items-center justify-center space-x-4 mb-4 social-links">
+      <a href="https://twitter.com/seuTwitter" target="_blank" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" aria-label="Telegram">
+        <i class="fab fa-telegram"></i>
+      </a>
+      <a href="https://instagram.com/criptosinais77" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+    <p>
+      <span class="lang-pt">© 2025 Criptosinais. Todos os direitos reservados.</span>
+      <span class="lang-en">© 2025 Criptosinais. All rights reserved.</span>
+      <span class="lang-fr">© 2025 Criptosinais. Tous droits réservés.</span>
+    </p>
+  </footer>
+
+  <script>
+    // Funções para lidar com múltiplos idiomas
+    let intervalId;
+    
+    // Inicia a atualização automática com base no intervalo selecionado
+    function startAutoUpdate() {
+      clearInterval(intervalId); // Limpa o intervalo anterior
+      const interval = parseInt(document.getElementById("intervalSelect").value);
+      
+      // Se o valor for 0, é o modo manual (não atualiza automaticamente)
+      if (interval > 0) {
+        renderCharts(); // Atualiza imediatamente
+        intervalId = setInterval(renderCharts, interval);
+      }
+    }
+    
+    // Função para carregar e mostrar os Top Daily Pumps
+    async function loadTopPumps() {
+      try {
+        // Mostrar indicador de carregamento
+        document.querySelector('#top-pumps-table .placeholder-row').style.display = 'table-row';
+        
+        // Fazer a requisição para a API
+        const response = await fetch('/api/top_pumps');
+        
+        if (!response.ok) {
+          throw new Error(`API returned status ${response.status}`);
+        }
+        
+        const data = await response.json();
+        const table = document.getElementById('top-pumps-table');
+        
+        // Limpar a tabela
+        table.innerHTML = '';
+        
+        // Se não houver dados, exibir mensagem
+        if (!data || data.length === 0) {
+          const lang = document.documentElement.lang;
+          let message = "Sem dados disponíveis no momento.";
+          if (lang === 'en') message = "No data available at the moment.";
+          if (lang === 'fr') message = "Aucune donnée disponible pour le moment.";
+          
+          table.innerHTML = `
+            <tr class="border-b border-gray-700">
+              <td colspan="5" class="text-center py-4 text-gray-400">${message}</td>
+            </tr>
+          `;
+          return;
+        }
+        
+        // Preencher a tabela com os dados
+        data.forEach(coin => {
+          const row = document.createElement('tr');
+          row.className = 'border-b border-gray-700 hover:bg-opacity-20 hover:bg-blue-900 transition-all duration-300';
+          
+          // Determinar classes de cor com base na variação
+          const changeClass = parseFloat(coin.percent_change) >= 0 ? 'text-green-400 font-bold' : 'text-red-400 font-bold';
+          
+          // Determinar o ícone do sinal
+          let signalIcon = '⏳'; // Neutro/espera
+          if (coin.recommendation === 'COMPRA') {
+            signalIcon = '🟢'; // Compra
+          } else if (coin.recommendation === 'VENDA') {
+            signalIcon = '🔴'; // Venda
+          } else if (coin.recommendation === 'OBSERVAR') {
+            signalIcon = '👀'; // Observar
+          }
+          
+          row.innerHTML = `
+            <td class="py-4 px-4">
+              <div class="flex items-center">
+                <span class="font-bold">${coin.symbol}</span>
+                <span class="text-gray-400 ml-2">${coin.name}</span>
+              </div>
+            </td>
+            <td class="py-4 px-4">${coin.formatted_price || formatPrice(coin.price)}</td>
+            <td class="py-4 px-4 ${changeClass}">
+              ${coin.formatted_change || (coin.percent_change >= 0 ? '+' : '') + (coin.percent_change || 0).toFixed(2) + '%'}
+            </td>
+            <td class="py-4 px-4">
+              $${formatNumber(coin.volume || 0)}
+            </td>
+            <td class="py-4 px-4">
+              <span class="bg-gray-900 text-sm px-3 py-1 rounded-full">
+                ${signalIcon} ${coin.recommendation || 'NEUTRAL'}
+              </span>
+            </td>
+          `;
+          
+          table.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Error loading top pumps:', error);
+        
+        // Mostrar mensagem de erro
+        const lang = document.documentElement.lang;
+        let errorMsg = "Erro ao carregar dados. Tente novamente mais tarde.";
+        if (lang === 'en') errorMsg = "Error loading data. Please try again later.";
+        if (lang === 'fr') errorMsg = "Erreur lors du chargement des données. Veuillez réessayer plus tard.";
+        
+        document.getElementById('top-pumps-table').innerHTML = `
+          <tr class="border-b border-gray-700">
+            <td colspan="5" class="text-center py-4 text-red-400">${errorMsg}</td>
+          </tr>
+        `;
+      }
+    }
+    
+    // Função helper para formatar números grandes
+    function formatNumber(num) {
+      if (num >= 1000000000) {
+        return (num / 1000000000).toFixed(2) + 'B';
+      }
+      if (num >= 1000000) {
+        return (num / 1000000).toFixed(2) + 'M';
+      }
+      if (num >= 1000) {
+        return (num / 1000).toFixed(2) + 'K';
+      }
+      return num.toFixed(2);
+    }
+    
+    // Função para formatar preços de acordo com a magnitude
+    function formatPrice(price) {
+      if (price === undefined || price === null) {
+        return '$0.00';
+      }
+      if (price < 0.01) {
+        return '$' + price.toFixed(8);
+      } else if (price < 1) {
+        return '$' + price.toFixed(6);
+      } else if (price < 1000) {
+        return '$' + price.toFixed(4);
+      } else {
+        return '$' + price.toFixed(2);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Detectar idioma do navegador
+      const browserLang = navigator.language.split('-')[0];
+      if(['pt', 'en', 'fr'].includes(browserLang)) {
+        setLanguage(browserLang);
+        document.getElementById('languageSelect').value = browserLang;
+      } else {
+        setLanguage('pt'); // Default para português
+      }
+      
+      // Mudar idioma quando selecionado
+      document.getElementById('languageSelect').addEventListener('change', function() {
+        setLanguage(this.value);
+      });
+
+      // Carregar Top Daily Pumps
+      loadTopPumps();
+
+      // Iniciar atualização automática
+      startAutoUpdate();
+      
+      // Atualizar quando o intervalo for alterado
+      document.getElementById("intervalSelect").addEventListener("change", startAutoUpdate);
+
+      // Event listener para o botão de atualizar
+      document.getElementById('updateCharts').addEventListener('click', function() {
+        renderCharts();
+        loadTopPumps();
+      });
+      
+      // Não precisamos mais do event listener para coinSelect, pois foi removido
+      // A função renderCharts será simplificada
+      
+      // Atualizar os Top Pumps a cada 2 minutos
+      setInterval(loadTopPumps, 120000);
+    });
+    
+    function setLanguage(lang) {
+      document.querySelectorAll('.lang-pt, .lang-en, .lang-fr').forEach(el => {
+        el.classList.remove('lang-active');
+      });
+      
+      document.querySelectorAll(`.lang-${lang}`).forEach(el => {
+        el.classList.add('lang-active');
+      });
+      
+      // Atualizar o atributo lang do HTML
+      document.documentElement.lang = lang;
+    }
+
+
+
+    function calculateRSI(prices, period = 14) {
+      if (prices.length < period + 1) {
+        return [];
+      }
+      
+      let gains = [], losses = [];
+      for (let i = 1; i < prices.length; i++) {
+        const diff = prices[i] - prices[i - 1];
+        gains.push(diff > 0 ? diff : 0);
+        losses.push(diff < 0 ? Math.abs(diff) : 0);
+      }
+      
+      let avgGain = gains.slice(0, period).reduce((sum, gain) => sum + gain, 0) / period;
+      let avgLoss = losses.slice(0, period).reduce((sum, loss) => sum + loss, 0) / period;
+      
+      let rsis = Array(period - 1).fill(null);
+      
+      for (let i = period - 1; i < gains.length; i++) {
+        if (i > period - 1) {
+          avgGain = ((period - 1) * avgGain + gains[i]) / period;
+          avgLoss = ((period - 1) * avgLoss + losses[i]) / period;
+        }
+        
+        const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
+        rsis.push(100 - (100 / (1 + rs)));
+      }
+      
+      return rsis;
+    }
+
+    let volumeChart, rsiChart;
+
+    // Atualiza o horário da última atualização
+    function atualizarHorarioUltimaAtualizacao() {
+      const agora = new Date();
+      const horas = agora.getHours().toString().padStart(2, '0');
+      const minutos = agora.getMinutes().toString().padStart(2, '0');
+      const segundos = agora.getSeconds().toString().padStart(2, '0');
+      const horario = `${horas}:${minutos}:${segundos}`;
+      
+      const icone = document.getElementById("iconeAtualizacao");
+      const texto = document.getElementById("ultimaAtualizacaoTexto");
+      
+      // Determina o texto baseado no idioma atual
+      if (document.documentElement.lang === 'pt') {
+        texto.textContent = `Última atualização: ${horario}`;
+      } else if (document.documentElement.lang === 'fr') {
+        texto.textContent = `Dernière mise à jour: ${horario}`;
+      } else {
+        texto.textContent = `Last update: ${horario}`;
+      }
+      
+      // Mostra o ícone durante 1s
+      icone.classList.remove("hidden");
+      setTimeout(() => {
+        icone.classList.add("hidden");
+      }, 1000);
+    }
+    
+    function renderCharts() {
+      // Função simplificada que apenas atualiza o horário
+      atualizarHorarioUltimaAtualizacao();
+    }
+    

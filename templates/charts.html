@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criptosinais | Gráficos Avançados</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .hero-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+    }
+    .chart-container {
+      height: 350px;
+      margin-bottom: 2rem;
+      position: relative;
+      background-color: #1a1a1a;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      border: 1px solid #333;
+    }
+    .lang-pt { display: none; }
+    .lang-en { display: none; }
+    .lang-fr { display: none; }
+    .lang-active { display: block; }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-5 border-b border-gray-800 bg-black shadow-md">
+    <div class="flex items-center">
+      <img src="/static/images/logo.svg" alt="Logo Criptosinais" class="h-10 w-10 rounded-full mr-2">
+      <h1 class="text-2xl font-extrabold text-green-400 tracking-wide">Criptosinais</h1>
+    </div>
+    <div class="flex items-center">
+      <select id="languageSelect" class="bg-gray-800 text-white text-xs rounded-lg px-2 py-1 border border-gray-700 mr-4">
+        <option value="pt" selected>Português</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+      <nav class="space-x-4 text-sm">
+        <a href="/landing" class="hover:text-green-300 transition">
+          <span class="lang-pt">Início</span>
+          <span class="lang-en">Home</span>
+          <span class="lang-fr">Accueil</span>
+        </a>
+        <a href="/analise-tecnica" class="hover:text-green-300 transition">
+          <span class="lang-pt">Análise Técnica</span>
+          <span class="lang-en">Technical Analysis</span>
+          <span class="lang-fr">Analyse Technique</span>
+        </a>
+        <a href="/alertas-tempo-real" class="hover:text-green-300 transition">
+          <span class="lang-pt">Alertas</span>
+          <span class="lang-en">Alerts</span>
+          <span class="lang-fr">Alertes</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Seletor de Moeda -->
+  <section class="px-6 py-8 max-w-6xl mx-auto">
+    <div class="flex flex-wrap items-center justify-between mb-8">
+      <div>
+        <label for="coinSelect" class="block text-sm font-medium text-gray-400 mb-2">
+          <span class="lang-pt">Selecione a Moeda</span>
+          <span class="lang-en">Select Coin</span>
+          <span class="lang-fr">Sélectionnez la Monnaie</span>
+        </label>
+        <select id="coinSelect" class="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700">
+          <option value="bitcoin">Bitcoin (BTC)</option>
+          <option value="ethereum">Ethereum (ETH)</option>
+          <option value="solana">Solana (SOL)</option>
+          <option value="dogecoin">Dogecoin (DOGE)</option>
+          <option value="shiba-inu">Shiba Inu (SHIB)</option>
+          <option value="pepe">Pepe (PEPE)</option>
+          <option value="floki">Floki (FLOKI)</option>
+        </select>
+      </div>
+      <button id="updateCharts" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg mt-6 md:mt-0">
+        <span class="lang-pt">Atualizar</span>
+        <span class="lang-en">Update</span>
+        <span class="lang-fr">Actualiser</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Gráficos -->
+  <section class="px-6 pb-16 max-w-6xl mx-auto">
+    <!-- Preço -->
+    <div>
+      <h3 class="text-2xl font-bold mb-4 text-center">
+        <span class="lang-pt">📊 Preço em Tempo Real</span>
+        <span class="lang-en">📊 Real-Time Price</span>
+        <span class="lang-fr">📊 Prix en Temps Réel</span>
+      </h3>
+      <div class="chart-container">
+        <canvas id="priceChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Volume -->
+    <div>
+      <h3 class="text-2xl font-bold mb-4 text-center">
+        <span class="lang-pt">💵 Volume de Negociação</span>
+        <span class="lang-en">💵 Trading Volume</span>
+        <span class="lang-fr">💵 Volume d'Échange</span>
+      </h3>
+      <div class="chart-container">
+        <canvas id="volumeChart"></canvas>
+      </div>
+    </div>
+
+    <!-- RSI -->
+    <div>
+      <h3 class="text-2xl font-bold mb-4 text-center">
+        <span class="lang-pt">📉 RSI (Índice de Força Relativa)</span>
+        <span class="lang-en">📉 RSI (Relative Strength Index)</span>
+        <span class="lang-fr">📉 RSI (Indice de Force Relative)</span>
+      </h3>
+      <div class="chart-container">
+        <canvas id="rsiChart"></canvas>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg text-center">
+        <p class="text-sm text-gray-300">
+          <span class="lang-pt">RSI > 70: Mercado sobrecomprado, potencial sinal de venda | RSI < 30: Mercado sobrevendido, potencial sinal de compra</span>
+          <span class="lang-en">RSI > 70: Overbought market, potential sell signal | RSI < 30: Oversold market, potential buy signal</span>
+          <span class="lang-fr">RSI > 70: Marché suracheté, signal de vente potentiel | RSI < 30: Marché survendu, signal d'achat potentiel</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Inscreva-se Premium -->
+  <section class="py-16 hero-gradient text-center">
+    <h3 class="text-3xl font-bold mb-4">
+      <span class="lang-pt">Acesso a Análises Mais Avançadas</span>
+      <span class="lang-en">Access More Advanced Analysis</span>
+      <span class="lang-fr">Accès à des Analyses Plus Avancées</span>
+    </h3>
+    <p class="text-gray-300 max-w-3xl mx-auto mb-8">
+      <span class="lang-pt">Nossos membros premium têm acesso a indicadores exclusivos, alertas antecipados e análise de padrões avançada.</span>
+      <span class="lang-en">Our premium members have access to exclusive indicators, early alerts and advanced pattern analysis.</span>
+      <span class="lang-fr">Nos membres premium ont accès à des indicateurs exclusifs, des alertes anticipées et une analyse avancée des modèles.</span>
+    </p>
+    <a href="https://tinyurl.com/2aqcbv5x" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-8 rounded-full">
+      <span class="lang-pt">Assinar Premium</span>
+      <span class="lang-en">Subscribe Premium</span>
+      <span class="lang-fr">S'abonner Premium</span>
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="px-6 py-12 text-center text-gray-500 text-sm bg-black border-t border-gray-800">
+    <div class="flex items-center justify-center space-x-4 mb-4 social-links">
+      <a href="https://twitter.com/seuTwitter" target="_blank" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" aria-label="Telegram">
+        <i class="fab fa-telegram"></i>
+      </a>
+      <a href="https://instagram.com/criptosinais77" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+    <p>
+      <span class="lang-pt">© 2025 Criptosinais. Todos os direitos reservados.</span>
+      <span class="lang-en">© 2025 Criptosinais. All rights reserved.</span>
+      <span class="lang-fr">© 2025 Criptosinais. Tous droits réservés.</span>
+    </p>
+  </footer>
+
+  <script>
+    // Funções para lidar com múltiplos idiomas
+    document.addEventListener('DOMContentLoaded', function() {
+      // Detectar idioma do navegador
+      const browserLang = navigator.language.split('-')[0];
+      if(['pt', 'en', 'fr'].includes(browserLang)) {
+        setLanguage(browserLang);
+        document.getElementById('languageSelect').value = browserLang;
+      } else {
+        setLanguage('pt'); // Default para português
+      }
+      
+      // Mudar idioma quando selecionado
+      document.getElementById('languageSelect').addEventListener('change', function() {
+        setLanguage(this.value);
+      });
+
+      // Carregar os gráficos iniciais
+      renderCharts();
+
+      // Event listener para o botão de atualizar
+      document.getElementById('updateCharts').addEventListener('click', renderCharts);
+    });
+    
+    function setLanguage(lang) {
+      document.querySelectorAll('.lang-pt, .lang-en, .lang-fr').forEach(el => {
+        el.classList.remove('lang-active');
+      });
+      
+      document.querySelectorAll(`.lang-${lang}`).forEach(el => {
+        el.classList.add('lang-active');
+      });
+      
+      // Atualizar o atributo lang do HTML
+      document.documentElement.lang = lang;
+    }
+
+    async function fetchChartData(coin) {
+      try {
+        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&days=30`);
+        if (!res.ok) {
+          throw new Error(`API returned status ${res.status}`);
+        }
+        const data = await res.json();
+        return {
+          labels: data.prices.map(item => new Date(item[0]).toLocaleDateString()),
+          prices: data.prices.map(item => item[1]),
+          volumes: data.total_volumes.map(item => item[1])
+        };
+      } catch (error) {
+        console.error(`Error fetching data: ${error.message}`);
+        // Mostrar mensagem de erro para o usuário
+        const errorMessage = document.documentElement.lang === 'pt' 
+          ? 'Erro ao carregar dados. Limite de API atingido, tente novamente em alguns minutos.' 
+          : document.documentElement.lang === 'fr'
+            ? 'Erreur lors du chargement des données. Limite API atteinte, réessayez dans quelques minutes.'
+            : 'Error loading data. API rate limit reached, try again in a few minutes.';
+            
+        alert(errorMessage);
+        
+        // Retornar dados vazios para evitar erros
+        return {
+          labels: [],
+          prices: [],
+          volumes: []
+        };
+      }
+    }
+
+    function calculateRSI(prices, period = 14) {
+      if (prices.length < period + 1) {
+        return [];
+      }
+      
+      let gains = [], losses = [];
+      for (let i = 1; i < prices.length; i++) {
+        const diff = prices[i] - prices[i - 1];
+        gains.push(diff > 0 ? diff : 0);
+        losses.push(diff < 0 ? Math.abs(diff) : 0);
+      }
+      
+      let avgGain = gains.slice(0, period).reduce((sum, gain) => sum + gain, 0) / period;
+      let avgLoss = losses.slice(0, period).reduce((sum, loss) => sum + loss, 0) / period;
+      
+      let rsis = Array(period - 1).fill(null);
+      
+      for (let i = period - 1; i < gains.length; i++) {
+        if (i > period - 1) {
+          avgGain = ((period - 1) * avgGain + gains[i]) / period;
+          avgLoss = ((period - 1) * avgLoss + losses[i]) / period;
+        }
+        
+        const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
+        rsis.push(100 - (100 / (1 + rs)));
+      }
+      
+      return rsis;
+    }
+
+    let priceChart, volumeChart, rsiChart;
+
+    async function renderCharts() {
+      const selectedCoin = document.getElementById('coinSelect').value;
+      const data = await fetchChartData(selectedCoin);
+      
+      if (data.prices.length === 0) {
+        return; // Não prosseguir se não houver dados
+      }
+      
+      const rsiValues = calculateRSI(data.prices);
+      const rsiLabels = data.labels.slice(13); // Ajustar para alinhar com o RSI (que tem menos pontos)
+      
+      // Definir cores do tema escuro
+      const darkTheme = {
+        backgroundColor: '#1a1a1a',
+        gridColor: 'rgba(255, 255, 255, 0.1)',
+        textColor: 'rgba(255, 255, 255, 0.7)',
+        lineColors: {
+          price: '#10B981', // Verde
+          volume: 'rgba(16, 185, 129, 0.7)', // Verde translúcido
+          rsi: '#F59E0B', // Amarelo/laranja
+          overbought: '#EF4444', // Vermelho
+          oversold: '#10B981'  // Verde
+        }
+      };
+      
+      // Destruir gráficos existentes
+      if (priceChart) priceChart.destroy();
+      if (volumeChart) volumeChart.destroy();
+      if (rsiChart) rsiChart.destroy();
+      
+      // Criar gráfico de preço
+      const priceCtx = document.getElementById('priceChart').getContext('2d');
+      priceChart = new Chart(priceCtx, {
+        type: 'line',
+        data: {
+          labels: data.labels,
+          datasets: [{
+            label: selectedCoin.toUpperCase(),
+            data: data.prices,
+            borderColor: darkTheme.lineColors.price,
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: darkTheme.textColor
+              }
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: darkTheme.gridColor
+              },
+              ticks: {
+                color: darkTheme.textColor
+              }
+            },
+            y: {
+              grid: {
+                color: darkTheme.gridColor
+              },
+              ticks: {
+                color: darkTheme.textColor,
+                callback: function(value) {
+                  return '$' + value.toLocaleString();
+                }
+              }
+            }
+          },
+          interaction: {
+            mode: 'nearest',
+            axis: 'x',
+            intersect: false
+          }
+        }
+      });
+      
+      // Criar gráfico de volume
+      const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+      volumeChart = new Chart(volumeCtx, {
+        type: 'bar',
+        data: {
+          labels: data.labels,
+          datasets: [{
+            label: 'Volume',
+            data: data.volumes,
+            backgroundColor: darkTheme.lineColors.volume,
+            borderColor: darkTheme.lineColors.price,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: darkTheme.textColor
+              }
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: darkTheme.gridColor
+              },
+              ticks: {
+                color: darkTheme.textColor
+              }
+            },
+            y: {
+              grid: {
+                color: darkTheme.gridColor
+              },
+              ticks: {
+                color: darkTheme.textColor,
+                callback: function(value) {
+                  return '$' + value.toLocaleString();
+                }
+              }
+            }
+          }
+        }
+      });
+      
+      // Criar gráfico de RSI
+      const rsiCtx = document.getElementById('rsiChart').getContext('2d');
+      rsiChart = new Chart(rsiCtx, {
+        type: 'line',
+        data: {
+          labels: rsiLabels,
+          datasets: [
+            {
+              label: 'RSI',
+              data: rsiValues,
+              borderColor: darkTheme.lineColors.rsi,
+              borderWidth: 2,
+              fill: false,
+              tension: 0.1
+            },
+            {
+              label: 'Sobrecomprado (70)',
+              data: Array(rsiLabels.length).fill(70),
+              borderColor: darkTheme.lineColors.overbought,
+              borderWidth: 1,
+              borderDash: [5, 5],
+              fill: false,
+              pointRadius: 0
+            },
+            {
+              label: 'Sobrevendido (30)',
+              data: Array(rsiLabels.length).fill(30),
+              borderColor: darkTheme.lineColors.oversold,
+              borderWidth: 1,
+              borderDash: [5, 5],
+              fill: false,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: darkTheme.textColor
+              }
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: darkTheme.gridColor
+              },
+              ticks: {
+                color: darkTheme.textColor
+              }
+            },
+            y: {
+              min: 0,
+              max: 100,
+              grid: {
+                color: darkTheme.gridColor
+              },
+              ticks: {
+                color: darkTheme.textColor
+              }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

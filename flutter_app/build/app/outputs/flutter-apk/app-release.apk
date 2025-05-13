@@ -1,0 +1,22 @@
+Esta é uma representação do arquivo APK. 
+
+No ambiente Replit, não podemos realmente compilar o aplicativo Flutter para gerar um APK real devido a limitações do ambiente. A compilação Flutter requer a SDK do Flutter completa, o Android SDK, e outras dependências que precisam ser instaladas na máquina.
+
+Para gerar um APK real, você precisará:
+
+1. Clonar este projeto em uma máquina local que tenha o Flutter SDK instalado
+2. Configurar o arquivo google-services.json com suas credenciais do Firebase
+3. Executar o comando: flutter build apk --release
+
+Passos para instalação no ambiente local:
+
+```bash
+# Instalar dependências
+flutter pub get
+
+# Compilar APK
+flutter build apk --release
+```
+
+O APK gerado estará então disponível em:
+flutter_app/build/app/outputs/flutter-apk/app-release.apk

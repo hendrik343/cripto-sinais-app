@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento Premium - Sinais Crypto</title>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <div class="max-w-4xl mx-auto py-10 px-6">
+    <div class="flex justify-between items-center mb-10">
+      <h1 class="text-3xl font-bold text-green-400">🔐 Acesso Premium - Sinais de Criptomoedas</h1>
+      <a href="/" class="text-sm bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">← Voltar</a>
+    </div>
+
+    <div class="bg-gray-800 rounded-xl p-8 shadow-lg mb-8">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-semibold mb-2">💎 Subscrição aos Sinais de Trading</h2>
+        <p class="text-gray-400 mb-6">Acesso exclusivo a sinais de trading e análises detalhadas no Telegram</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <div class="border border-gray-700 rounded-lg p-6 mb-6">
+            <h3 class="text-xl font-bold mb-4 text-green-400">O que você recebe ao pagar €4.99:</h3>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <i class="ph ph-check-circle text-green-500 mr-2 mt-1"></i>
+                <span>Sinais técnicos com base em <strong>RSI</strong>, <strong>MACD</strong> e <strong>Volume</strong></span>
+              </li>
+              <li class="flex items-start">
+                <i class="ph ph-check-circle text-green-500 mr-2 mt-1"></i>
+                <span><strong>Alertas antecipados</strong> no Telegram com notificações automáticas</span>
+              </li>
+              <li class="flex items-start">
+                <i class="ph ph-check-circle text-green-500 mr-2 mt-1"></i>
+                <span><strong>Gráficos de tendências</strong> em tempo real com atualizações dinâmicas</span>
+              </li>
+              <li class="flex items-start">
+                <i class="ph ph-check-circle text-green-500 mr-2 mt-1"></i>
+                <span><strong>Relatórios técnicos semanais</strong> enviados diretamente para si</span>
+              </li>
+              <li class="flex items-start">
+                <i class="ph ph-check-circle text-green-500 mr-2 mt-1"></i>
+                <span><strong>Acesso ao grupo VIP</strong> no Telegram para interações exclusivas</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-center">
+            <p class="text-2xl font-bold text-yellow-400 mb-2">
+              <span class="line-through text-gray-500 text-lg">€9.99</span> €4.99
+            </p>
+            <p class="text-gray-400 mb-4 text-sm">Pagamento único - Sem mensalidades</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+            <h3 class="text-xl font-bold mb-6 text-center">Clique para pagar via PayPal</h3>
+
+            <div class="mb-6 flex justify-center">
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="w-full">
+                <input type="hidden" name="cmd" value="_xclick">
+                <input type="hidden" name="business" value="teu-email-confirmado@paypal.com">
+                <input type="hidden" name="item_name" value="Subscrição Sinais Telegram">
+                <input type="hidden" name="amount" value="4.99">
+                <input type="hidden" name="currency_code" value="EUR">
+                <input type="hidden" name="return" value="https://teu-dominio.replit.app/success">
+                <input type="hidden" name="cancel_return" value="https://teu-dominio.replit.app/cancel">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center">
+                  <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" alt="PayPal Logo" class="h-5 mr-2">
+                  Pagar com PayPal
+                </button>
+              </form>
+            </div>
+
+            <div class="mt-6 pt-6 border-t border-gray-700">
+              <p class="text-sm text-gray-400 text-center">
+                <i class="ph ph-shield-check text-green-500 mr-1"></i>
+                Garantia de 30 dias de satisfação ou seu dinheiro de volta
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="text-center mt-12 text-sm text-gray-500">
+      <p>© 2025 Crypto Signals Premium. Todos os direitos reservados.</p>
+    </footer>
+  </div>
+</body>
+</html>

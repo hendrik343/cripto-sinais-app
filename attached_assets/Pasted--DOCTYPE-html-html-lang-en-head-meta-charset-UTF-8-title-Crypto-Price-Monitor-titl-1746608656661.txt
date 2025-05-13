@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crypto Price Monitor</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <div class="max-w-6xl mx-auto py-10 px-6">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-4xl font-extrabold text-green-400 flex items-center gap-2">
+        <i class="ph ph-chart-line"></i> Crypto Monitor
+      </h1>
+      <span class="text-gray-400">Alert threshold: <span class="text-white font-bold">3.0%</span></span>
+    </div>
+
+    <div class="bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">📈 Current Prices & Recommendations</h2>
+        <button onclick="loadAlerts()" class="text-sm px-4 py-1 bg-green-600 hover:bg-green-700 rounded-xl">🔄 Refresh</button>
+      </div>
+      <table class="w-full table-auto text-sm" id="price-table">
+        <thead class="text-green-300 border-b border-gray-700">
+          <tr>
+            <th class="text-left py-2">Symbol</th>
+            <th class="text-left py-2">Price (USD)</th>
+            <th class="text-left py-2">Change</th>
+            <th class="text-left py-2">Recommendation</th>
+            <th class="text-left py-2">Last Updated</th>
+          </tr>
+        </thead>
+        <tbody id="alert-body">
+          <tr>
+            <td colspan="5" class="text-center py-6 text-gray-400">Loading alerts...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="text-center text-sm text-gray-500">
+      Data provided by CoinGecko API<br>
+      Last updated: <span id="last-updated">--:--:--</span>
+    </footer>
+  </div>
+
+  <script>
+    function loadAlerts() {
+      fetch('/alerts')
+        .then(res => res.json())
+        .then(data => {
+          const tbody = document.getElementById('alert-body');
+          const now = new Date();
+          document.getElementById('last-updated').textContent = now.toLocaleTimeString('pt-PT');
+
+          if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-6 text-gray-400">No price alerts yet. Alerts will appear here when price changes exceed the threshold.</td></tr>';
+            return;
+          }
+
+          tbody.innerHTML = data.map(row => `
+            <tr class="border-b border-gray-700">
+              <td class="py-2">${row.symbol}</td>
+              <td class="py-2">$${parseFloat(row.price).toFixed(5)}</td>
+              <td class="py-2">${row.change}</td>
+              <td class="py-2">${row.recomendacao}</td>
+              <td class="py-2">${row.time}</td>
+            </tr>
+          `).join('');
+        })
+        .catch(() => {
+          const tbody = document.getElementById('alert-body');
+          tbody.innerHTML = '<tr><td colspan="5" class="text-center py-6 text-red-400">Não foi possível atualizar os preços. Tente novamente mais tarde.</td></tr>';
+        });
+    }
+
+    loadAlerts();
+    setInterval(loadAlerts, 60000); // Atualiza a cada 60 segundos
+  </script>
+</body>
+</html>

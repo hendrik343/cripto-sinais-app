@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Pagamento Premium - Monitor de Criptomoedas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <div class="max-w-4xl mx-auto py-10 px-6">
+    <div class="flex justify-between items-center mb-10">
+      <h1 class="text-3xl font-bold text-green-400">🔐 Acesso Premium - Monitor de Criptomoedas</h1>
+      <div class="flex items-center gap-4">
+        <select id="lang" onchange="setLanguage(this.value)" class="bg-gray-800 text-white border border-gray-600 rounded px-2 py-1">
+          <option value="pt">🇵🇹 Português</option>
+          <option value="fr">🇫🇷 Français</option>
+          <option value="en">🇬🇧 English</option>
+        </select>
+        <a href="/" class="text-sm bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg" id="btn-voltar">← Voltar</a>
+      </div>
+    </div>
+
+    <div class="bg-gray-800 rounded-xl p-8 shadow-lg mb-8">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-semibold mb-2" id="titulo-pagamento">💎 Desbloqueie o Acesso Premium</h2>
+        <p class="text-gray-400 mb-6" id="descricao-pagamento">Acesso vitalício a todos os recursos premium, incluindo sinais técnicos avançados, alertas prioritários e análises detalhadas.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <div class="border border-gray-700 rounded-lg p-6 mb-6">
+            <h3 class="text-xl font-bold mb-4 text-green-400" id="recursos-titulo">O que você recebe:</h3>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <i class="ph ph-check-circle text-green-500 mr-2 mt-1"></i>
+                <span id="recurso1">Sinais técnicos com base em RSI, MACD e Volume</span>
+              </li>
+              <li class="flex items-start">
+                <i class="ph ph-check-circle text-green-500 mr-2 mt-1"></i>
+                <span id="recurso2">Alertas antecipados no Telegram</span>
+              </li>
+              <li class="flex items-start">
+                <i class="ph ph-check-circle text-green-500 mr-2 mt-1"></i>
+                <span id="recurso3">Gráficos de tendências em tempo real</span>
+              </li>
+              <li class="flex items-start">
+                <i class="ph ph-check-circle text-green-500 mr-2 mt-1"></i>
+                <span id="recurso4">Relatórios técnicos semanais em PDF</span>
+              </li>
+              <li class="flex items-start">
+                <i class="ph ph-check-circle text-green-500 mr-2 mt-1"></i>
+                <span id="recurso5">Acesso vitalício a todas as atualizações</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-center">
+            <p class="text-2xl font-bold text-yellow-400 mb-2" id="preco-normal">
+              <span class="line-through text-gray-500 text-lg">$99.99</span> $49.99
+            </p>
+            <p class="text-gray-400 mb-4 text-sm" id="pagamento-unico">Pagamento único - Sem mensalidades</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+            <h3 class="text-xl font-bold mb-6 text-center" id="pagamento-titulo">Selecione o método de pagamento</h3>
+            
+            <div class="mb-6">
+              <div id="paypal-button-container" class="flex justify-center"></div>
+            </div>
+            
+            <div class="mt-6 pt-6 border-t border-gray-700">
+              <p class="text-sm text-gray-400 text-center" id="garantia">
+                <i class="ph ph-shield-check text-green-500 mr-1"></i>
+                Garantia de 30 dias de satisfação ou seu dinheiro de volta
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="text-center mt-12 text-sm text-gray-500">
+      <span id="copyright">© 2025 Crypto Signals Premium. Todos os direitos reservados.</span>
+    </footer>
+  </div>
+
+  <script>
+    // Traduções
+    const translations = {
+      pt: {
+        titulo: "Pagamento Premium - Monitor de Criptomoedas",
+        voltar: "← Voltar",
+        tituloPagamento: "💎 Desbloqueie o Acesso Premium",
+        descricaoPagamento: "Acesso vitalício a todos os recursos premium, incluindo sinais técnicos avançados, alertas prioritários e análises detalhadas.",
+        recursosTitulo: "O que você recebe:",
+        recurso1: "Sinais técnicos com base em RSI, MACD e Volume",
+        recurso2: "Alertas antecipados no Telegram",
+        recurso3: "Gráficos de tendências em tempo real",
+        recurso4: "Relatórios técnicos semanais em PDF",
+        recurso5: "Acesso vitalício a todas as atualizações",
+        precoNormal: "<span class='line-through text-gray-500 text-lg'>$99.99</span> $49.99",
+        pagamentoUnico: "Pagamento único - Sem mensalidades",
+        pagamentoTitulo: "Selecione o método de pagamento",
+        garantia: "<i class='ph ph-shield-check text-green-500 mr-1'></i>Garantia de 30 dias de satisfação ou seu dinheiro de volta",
+        copyright: "© 2025 Crypto Signals Premium. Todos os direitos reservados."
+      },
+      fr: {
+        titulo: "Paiement Premium - Moniteur de Cryptomonnaies",
+        voltar: "← Retour",
+        tituloPagamento: "💎 Débloquez l'Accès Premium",
+        descricaoPagamento: "Accès à vie à toutes les fonctionnalités premium, y compris les signaux techniques avancés, les alertes prioritaires et les analyses détaillées.",
+        recursosTitulo: "Ce que vous obtenez:",
+        recurso1: "Signaux techniques basés sur RSI, MACD et Volume",
+        recurso2: "Alertes anticipées sur Telegram",
+        recurso3: "Graphiques de tendances en temps réel",
+        recurso4: "Rapports techniques hebdomadaires en PDF",
+        recurso5: "Accès à vie à toutes les mises à jour",
+        precoNormal: "<span class='line-through text-gray-500 text-lg'>99,99€</span> 49,99€",
+        pagamentoUnico: "Paiement unique - Pas d'abonnement mensuel",
+        pagamentoTitulo: "Sélectionnez le mode de paiement",
+        garantia: "<i class='ph ph-shield-check text-green-500 mr-1'></i>Garantie de satisfaction de 30 jours ou remboursement intégral",
+        copyright: "© 2025 Crypto Signals Premium. Tous droits réservés."
+      },
+      en: {
+        titulo: "Premium Payment - Cryptocurrency Monitor",
+        voltar: "← Back",
+        tituloPagamento: "💎 Unlock Premium Access",
+        descricaoPagamento: "Lifetime access to all premium features, including advanced technical signals, priority alerts, and detailed analysis.",
+        recursosTitulo: "What you get:",
+        recurso1: "Technical signals based on RSI, MACD, and Volume",
+        recurso2: "Early alerts on Telegram",
+        recurso3: "Real-time trend charts",
+        recurso4: "Weekly technical reports in PDF",
+        recurso5: "Lifetime access to all updates",
+        precoNormal: "<span class='line-through text-gray-500 text-lg'>$99.99</span> $49.99",
+        pagamentoUnico: "One-time payment - No monthly fees",
+        pagamentoTitulo: "Select payment method",
+        garantia: "<i class='ph ph-shield-check text-green-500 mr-1'></i>30-day satisfaction guarantee or your money back",
+        copyright: "© 2025 Crypto Signals Premium. All rights reserved."
+      }
+    };
+
+    function setLanguage(lang) {
+      const t = translations[lang];
+      document.title = t.titulo;
+      document.getElementById("btn-voltar").innerHTML = t.voltar;
+      document.getElementById("titulo-pagamento").innerHTML = t.tituloPagamento;
+      document.getElementById("descricao-pagamento").innerHTML = t.descricaoPagamento;
+      document.getElementById("recursos-titulo").innerHTML = t.recursosTitulo;
+      document.getElementById("recurso1").innerHTML = t.recurso1;
+      document.getElementById("recurso2").innerHTML = t.recurso2;
+      document.getElementById("recurso3").innerHTML = t.recurso3;
+      document.getElementById("recurso4").innerHTML = t.recurso4;
+      document.getElementById("recurso5").innerHTML = t.recurso5;
+      document.getElementById("preco-normal").innerHTML = t.precoNormal;
+      document.getElementById("pagamento-unico").innerHTML = t.pagamentoUnico;
+      document.getElementById("pagamento-titulo").innerHTML = t.pagamentoTitulo;
+      document.getElementById("garantia").innerHTML = t.garantia;
+      document.getElementById("copyright").innerHTML = t.copyright;
+    }
+
+    // Detectar idioma do navegador ou usar padrão
+    window.onload = function() {
+      const userLang = navigator.language || navigator.userLanguage;
+      if (userLang.startsWith('fr')) {
+        setLanguage('fr');
+      } else if (userLang.startsWith('en')) {
+        setLanguage('en');
+      } else {
+        setLanguage('pt'); // Padrão para português
+      }
+
+      // Inicializar botões do PayPal
+      paypal.Buttons({
+        createOrder: function(data, actions) {
+          // Criar ordem de pagamento
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: '49.99'
+              }
+            }]
+          });
+        },
+        onApprove: function(data, actions) {
+          // Quando o pagamento for aprovado
+          return actions.order.capture().then(function(details) {
+            window.location.href = '/premium_confirmed?payment_id=' + details.id;
+          });
+        }
+      }).render('#paypal-button-container');
+    };
+  </script>
+</body>
+</html>

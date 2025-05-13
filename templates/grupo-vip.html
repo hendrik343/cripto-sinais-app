@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grupo VIP | Criptosinais</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .hero-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+    }
+    .benefit-card {
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    .benefit-card:hover {
+      transform: translateY(-5px);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+    .testimonial-card {
+      position: relative;
+      background: rgba(31, 41, 55, 0.6);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid #10b981;
+    }
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 4rem;
+      color: rgba(16, 185, 129, 0.2);
+      font-family: serif;
+      z-index: -1;
+    }
+    .lang-pt { display: none; }
+    .lang-en { display: none; }
+    .lang-fr { display: none; }
+    .lang-active { display: block; }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-5 border-b border-gray-800 bg-black shadow-md">
+    <div class="flex items-center">
+      <img src="/static/images/logo.svg" alt="Logo Criptosinais" class="h-10 w-10 rounded-full mr-2">
+      <h1 class="text-2xl font-extrabold text-green-400 tracking-wide">Criptosinais</h1>
+    </div>
+    <div class="flex items-center">
+      <select id="languageSelect" class="bg-gray-800 text-white text-xs rounded-lg px-2 py-1 border border-gray-700 mr-4">
+        <option value="pt" selected>Português</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+      <nav class="space-x-4 text-sm">
+        <a href="/landing" class="hover:text-green-300 transition">
+          <span class="lang-pt">Início</span>
+          <span class="lang-en">Home</span>
+          <span class="lang-fr">Accueil</span>
+        </a>
+        <a href="/charts" class="hover:text-green-300 transition">
+          <span class="lang-pt">Gráficos</span>
+          <span class="lang-en">Charts</span>
+          <span class="lang-fr">Graphiques</span>
+        </a>
+        <a href="/dashboard" class="hover:text-green-300 transition">
+          <span class="lang-pt">Dashboard</span>
+          <span class="lang-en">Dashboard</span>
+          <span class="lang-fr">Tableau de Bord</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-gradient text-center px-6 py-16">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-5xl font-bold mb-6">
+        <span class="lang-pt">👑 Grupo VIP Exclusivo</span>
+        <span class="lang-en">👑 Exclusive VIP Group</span>
+        <span class="lang-fr">👑 Groupe VIP Exclusif</span>
+      </h2>
+      <p class="text-gray-300 mb-8 text-lg">
+        <span class="lang-pt">Entre para o nosso grupo exclusivo no Telegram e receba sinais de qualidade e análises avançadas em tempo real.</span>
+        <span class="lang-en">Join our exclusive Telegram group and receive quality signals and advanced real-time analysis.</span>
+        <span class="lang-fr">Rejoignez notre groupe Telegram exclusif et recevez des signaux de qualité et des analyses avancées en temps réel.</span>
+      </p>
+      <a href="https://tinyurl.com/2aqcbv5x" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-full inline-block">
+        <span class="lang-pt">Tornar-se Membro VIP</span>
+        <span class="lang-en">Become a VIP Member</span>
+        <span class="lang-fr">Devenir Membre VIP</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Benefícios VIP -->
+  <section class="px-6 py-16 max-w-6xl mx-auto">
+    <h3 class="text-3xl font-bold mb-10 text-center">
+      <span class="lang-pt">Benefícios Exclusivos</span>
+      <span class="lang-en">Exclusive Benefits</span>
+      <span class="lang-fr">Avantages Exclusifs</span>
+    </h3>
+    
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="benefit-card bg-gray-800 p-6 rounded-xl">
+        <div class="text-center mb-4">
+          <span class="inline-block bg-green-900 p-3 rounded-full mb-2">
+            <i class="fas fa-bolt text-green-400 text-xl"></i>
+          </span>
+          <h4 class="text-xl font-bold">
+            <span class="lang-pt">Sinais Antecipados</span>
+            <span class="lang-en">Early Signals</span>
+            <span class="lang-fr">Signaux Anticipés</span>
+          </h4>
+        </div>
+        <p class="text-gray-400 text-center">
+          <span class="lang-pt">Receba sinais antes de todos os outros usuários, ganhando vantagem competitiva no mercado.</span>
+          <span class="lang-en">Receive signals before all other users, gaining a competitive advantage in the market.</span>
+          <span class="lang-fr">Recevez des signaux avant tous les autres utilisateurs, obtenant un avantage concurrentiel sur le marché.</span>
+        </p>
+      </div>
+      
+      <div class="benefit-card bg-gray-800 p-6 rounded-xl">
+        <div class="text-center mb-4">
+          <span class="inline-block bg-green-900 p-3 rounded-full mb-2">
+            <i class="fas fa-user-tie text-green-400 text-xl"></i>
+          </span>
+          <h4 class="text-xl font-bold">
+            <span class="lang-pt">Análises Personalizadas</span>
+            <span class="lang-en">Personalized Analysis</span>
+            <span class="lang-fr">Analyses Personnalisées</span>
+          </h4>
+        </div>
+        <p class="text-gray-400 text-center">
+          <span class="lang-pt">Consulte nossos analistas diretamente e receba feedback personalizado sobre suas estratégias de trading.</span>
+          <span class="lang-en">Consult our analysts directly and receive personalized feedback on your trading strategies.</span>
+          <span class="lang-fr">Consultez nos analystes directement et recevez des commentaires personnalisés sur vos stratégies de trading.</span>
+        </p>
+      </div>
+      
+      <div class="benefit-card bg-gray-800 p-6 rounded-xl">
+        <div class="text-center mb-4">
+          <span class="inline-block bg-green-900 p-3 rounded-full mb-2">
+            <i class="fas fa-comments text-green-400 text-xl"></i>
+          </span>
+          <h4 class="text-xl font-bold">
+            <span class="lang-pt">Comunidade Exclusiva</span>
+            <span class="lang-en">Exclusive Community</span>
+            <span class="lang-fr">Communauté Exclusive</span>
+          </h4>
+        </div>
+        <p class="text-gray-400 text-center">
+          <span class="lang-pt">Interaja com traders experientes e construa uma rede de contatos valiosa para o seu sucesso.</span>
+          <span class="lang-en">Interact with experienced traders and build a valuable network of contacts for your success.</span>
+          <span class="lang-fr">Interagissez avec des traders expérimentés et créez un réseau de contacts précieux pour votre succès.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Como Funciona -->
+  <section class="px-6 py-16 bg-gray-900">
+    <div class="max-w-6xl mx-auto">
+      <h3 class="text-3xl font-bold mb-10 text-center">
+        <span class="lang-pt">Como Funciona</span>
+        <span class="lang-en">How It Works</span>
+        <span class="lang-fr">Comment Ça Marche</span>
+      </h3>
+      
+      <div class="flex flex-col md:flex-row gap-8 items-center">
+        <div class="md:w-1/2">
+          <div class="rounded-lg bg-gray-800 p-8">
+            <ol class="space-y-6">
+              <li class="flex">
+                <span class="w-8 h-8 bg-green-800 text-white rounded-full flex items-center justify-center mr-4 flex-shrink-0">1</span>
+                <div>
+                  <h4 class="font-bold text-lg mb-1">
+                    <span class="lang-pt">Torne-se um Membro Premium</span>
+                    <span class="lang-en">Become a Premium Member</span>
+                    <span class="lang-fr">Devenez un Membre Premium</span>
+                  </h4>
+                  <p class="text-gray-400">
+                    <span class="lang-pt">Faça um pagamento único de $1.99 para acesso vitalício ao grupo VIP.</span>
+                    <span class="lang-en">Make a one-time payment of $1.99 for lifetime access to the VIP group.</span>
+                    <span class="lang-fr">Effectuez un paiement unique de 1,99 $ pour un accès à vie au groupe VIP.</span>
+                  </p>
+                </div>
+              </li>
+              <li class="flex">
+                <span class="w-8 h-8 bg-green-800 text-white rounded-full flex items-center justify-center mr-4 flex-shrink-0">2</span>
+                <div>
+                  <h4 class="font-bold text-lg mb-1">
+                    <span class="lang-pt">Receba Acesso ao Telegram</span>
+                    <span class="lang-en">Get Telegram Access</span>
+                    <span class="lang-fr">Recevez l'Accès Telegram</span>
+                  </h4>
+                  <p class="text-gray-400">
+                    <span class="lang-pt">Após a confirmação do pagamento, você receberá um e-mail com acesso ao canal exclusivo no Telegram.</span>
+                    <span class="lang-en">After payment confirmation, you will receive an email with access to the exclusive Telegram channel.</span>
+                    <span class="lang-fr">Après confirmation du paiement, vous recevrez un e-mail avec accès au canal Telegram exclusif.</span>
+                  </p>
+                </div>
+              </li>
+              <li class="flex">
+                <span class="w-8 h-8 bg-green-800 text-white rounded-full flex items-center justify-center mr-4 flex-shrink-0">3</span>
+                <div>
+                  <h4 class="font-bold text-lg mb-1">
+                    <span class="lang-pt">Comece a Receber Sinais Premium</span>
+                    <span class="lang-en">Start Receiving Premium Signals</span>
+                    <span class="lang-fr">Commencez à Recevoir des Signaux Premium</span>
+                  </h4>
+                  <p class="text-gray-400">
+                    <span class="lang-pt">Obtenha acesso imediato a todos os sinais VIP e interaja com nossa comunidade exclusiva.</span>
+                    <span class="lang-en">Get immediate access to all VIP signals and interact with our exclusive community.</span>
+                    <span class="lang-fr">Obtenez un accès immédiat à tous les signaux VIP et interagissez avec notre communauté exclusive.</span>
+                  </p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+        
+        <div class="md:w-1/2">
+          <div class="bg-gray-800 p-6 rounded-lg">
+            <div class="mb-6">
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="font-bold">
+                  <span class="lang-pt">O que você recebe</span>
+                  <span class="lang-en">What you get</span>
+                  <span class="lang-fr">Ce que vous recevez</span>
+                </h4>
+                <span class="text-2xl font-bold text-green-400">$1.99</span>
+              </div>
+              <p class="text-sm text-gray-400 mb-4">
+                <span class="lang-pt">Pagamento único • Acesso vitalício</span>
+                <span class="lang-en">One-time payment • Lifetime access</span>
+                <span class="lang-fr">Paiement unique • Accès à vie</span>
+              </p>
+            </div>
+            
+            <ul class="space-y-3 mb-6">
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>
+                  <span class="lang-pt">Sinais VIP diários com 3x mais precisão</span>
+                  <span class="lang-en">Daily VIP signals with 3x more accuracy</span>
+                  <span class="lang-fr">Signaux VIP quotidiens avec une précision 3x supérieure</span>
+                </span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>
+                  <span class="lang-pt">Análises detalhadas de RSI, MACD e Volume</span>
+                  <span class="lang-en">Detailed analysis of RSI, MACD and Volume</span>
+                  <span class="lang-fr">Analyses détaillées de RSI, MACD et Volume</span>
+                </span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>
+                  <span class="lang-pt">Acesso a alertas antecipados em +18 criptomoedas</span>
+                  <span class="lang-en">Access to early alerts on +18 cryptocurrencies</span>
+                  <span class="lang-fr">Accès aux alertes anticipées sur +18 crypto-monnaies</span>
+                </span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>
+                  <span class="lang-pt">Suporte prioritário via Telegram</span>
+                  <span class="lang-en">Priority support via Telegram</span>
+                  <span class="lang-fr">Support prioritaire via Telegram</span>
+                </span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>
+                  <span class="lang-pt">Discussões exclusivas com analistas profissionais</span>
+                  <span class="lang-en">Exclusive discussions with professional analysts</span>
+                  <span class="lang-fr">Discussions exclusives avec des analystes professionnels</span>
+                </span>
+              </li>
+            </ul>
+            
+            <a href="https://tinyurl.com/2aqcbv5x" class="block bg-green-500 hover:bg-green-600 text-center text-white font-bold py-3 rounded-lg">
+              <span class="lang-pt">Aderir Agora</span>
+              <span class="lang-en">Join Now</span>
+              <span class="lang-fr">Adhérer Maintenant</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Depoimentos -->
+  <section class="px-6 py-16 max-w-6xl mx-auto">
+    <h3 class="text-3xl font-bold mb-10 text-center">
+      <span class="lang-pt">O Que Dizem Nossos Membros</span>
+      <span class="lang-en">What Our Members Say</span>
+      <span class="lang-fr">Ce Que Disent Nos Membres</span>
+    </h3>
+    
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="testimonial-card">
+        <p class="mb-4 italic">
+          <span class="lang-pt">"Os sinais VIP me ajudaram a aumentar meu portfolio em 35% em apenas dois meses. Melhor investimento que já fiz!"</span>
+          <span class="lang-en">"VIP signals helped me increase my portfolio by 35% in just two months. Best investment I've ever made!"</span>
+          <span class="lang-fr">"Les signaux VIP m'ont aidé à augmenter mon portefeuille de 35% en seulement deux mois. Le meilleur investissement que j'ai jamais fait!"</span>
+        </p>
+        <div class="flex items-center">
+          <span class="font-semibold mr-2">Carlos M.</span>
+          <div class="text-yellow-400">★★★★★</div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card">
+        <p class="mb-4 italic">
+          <span class="lang-pt">"A comunidade VIP é incrível. Aprendi muito com os outros membros e os analistas sempre estão dispostos a ajudar."</span>
+          <span class="lang-en">"The VIP community is amazing. I learned a lot from other members and the analysts are always willing to help."</span>
+          <span class="lang-fr">"La communauté VIP est incroyable. J'ai beaucoup appris des autres membres et les analystes sont toujours prêts à aider."</span>
+        </p>
+        <div class="flex items-center">
+          <span class="font-semibold mr-2">Ana L.</span>
+          <div class="text-yellow-400">★★★★★</div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card">
+        <p class="mb-4 italic">
+          <span class="lang-pt">"Os sinais são precisos e as recomendações são bem explicadas. Vale muito mais que o preço cobrado!"</span>
+          <span class="lang-en">"The signals are accurate and the recommendations are well explained. It's worth much more than the price charged!"</span>
+          <span class="lang-fr">"Les signaux sont précis et les recommandations sont bien expliquées. Ça vaut beaucoup plus que le prix demandé!"</span>
+        </p>
+        <div class="flex items-center">
+          <span class="font-semibold mr-2">Ricardo P.</span>
+          <div class="text-yellow-400">★★★★★</div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card">
+        <p class="mb-4 italic">
+          <span class="lang-pt">"Depois de testar vários serviços, este é de longe o mais preciso e consistente. Já recomendei para todos os meus amigos."</span>
+          <span class="lang-en">"After testing various services, this is by far the most accurate and consistent. I've already recommended it to all my friends."</span>
+          <span class="lang-fr">"Après avoir testé plusieurs services, celui-ci est de loin le plus précis et cohérent. Je l'ai déjà recommandé à tous mes amis."</span>
+        </p>
+        <div class="flex items-center">
+          <span class="font-semibold mr-2">Mariana S.</span>
+          <div class="text-yellow-400">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section class="px-6 py-16 hero-gradient text-center">
+    <div class="max-w-4xl mx-auto">
+      <h3 class="text-3xl font-bold mb-6">
+        <span class="lang-pt">Pronto para Elevar Seus Investimentos?</span>
+        <span class="lang-en">Ready to Elevate Your Investments?</span>
+        <span class="lang-fr">Prêt à Élever Vos Investissements?</span>
+      </h3>
+      <p class="text-gray-300 mb-8 text-lg">
+        <span class="lang-pt">Junte-se hoje ao nosso grupo VIP e tenha acesso às melhores oportunidades de mercado.</span>
+        <span class="lang-en">Join our VIP group today and get access to the best market opportunities.</span>
+        <span class="lang-fr">Rejoignez notre groupe VIP aujourd'hui et accédez aux meilleures opportunités du marché.</span>
+      </p>
+      <a href="https://tinyurl.com/2aqcbv5x" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-full inline-block">
+        <span class="lang-pt">Comece Agora • Apenas $1.99</span>
+        <span class="lang-en">Start Now • Only $1.99</span>
+        <span class="lang-fr">Commencez Maintenant • Seulement $1.99</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="px-6 py-12 text-center text-gray-500 text-sm bg-black border-t border-gray-800">
+    <div class="flex items-center justify-center space-x-4 mb-4 social-links">
+      <a href="https://twitter.com/seuTwitter" target="_blank" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" aria-label="Telegram">
+        <i class="fab fa-telegram"></i>
+      </a>
+      <a href="https://instagram.com/criptosinais77" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+    <p>
+      <span class="lang-pt">© 2025 Criptosinais. Todos os direitos reservados.</span>
+      <span class="lang-en">© 2025 Criptosinais. All rights reserved.</span>
+      <span class="lang-fr">© 2025 Criptosinais. Tous droits réservés.</span>
+    </p>
+  </footer>
+
+  <script>
+    // Funções para lidar com múltiplos idiomas
+    document.addEventListener('DOMContentLoaded', function() {
+      // Detectar idioma do navegador
+      const browserLang = navigator.language.split('-')[0];
+      if(['pt', 'en', 'fr'].includes(browserLang)) {
+        setLanguage(browserLang);
+        document.getElementById('languageSelect').value = browserLang;
+      } else {
+        setLanguage('pt'); // Default para português
+      }
+      
+      // Mudar idioma quando selecionado
+      document.getElementById('languageSelect').addEventListener('change', function() {
+        setLanguage(this.value);
+      });
+    });
+    
+    function setLanguage(lang) {
+      document.querySelectorAll('.lang-pt, .lang-en, .lang-fr').forEach(el => {
+        el.classList.remove('lang-active');
+      });
+      
+      document.querySelectorAll(`.lang-${lang}`).forEach(el => {
+        el.classList.add('lang-active');
+      });
+      
+      // Atualizar o atributo lang do HTML
+      document.documentElement.lang = lang;
+    }
+  </script>
+</body>
+</html>

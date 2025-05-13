@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste API CoinGecko</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <div class="max-w-3xl mx-auto py-10 px-6">
+    <h1 class="text-3xl font-bold text-green-400 mb-6">Teste de Conexão API CoinGecko</h1>
+    
+    <div class="bg-gray-800 rounded-xl p-8 shadow-lg mb-8">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-semibold">Status da API</h2>
+        <button id="testButton" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+          Testar API
+        </button>
+      </div>
+      
+      <div id="loading" class="hidden text-center py-6">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
+        <p class="mt-2 text-gray-400">Consultando API...</p>
+      </div>
+      
+      <div id="result" class="hidden">
+        <div class="bg-gray-900 rounded-lg p-4 mb-4">
+          <h3 class="font-bold mb-2">Resposta da API:</h3>
+          <pre id="apiResponse" class="text-sm text-gray-300 overflow-x-auto p-2"></pre>
+        </div>
+        
+        <div id="status" class="text-center p-4 rounded-lg mb-4">
+          <!-- Status será adicionado via JavaScript -->
+        </div>
+      </div>
+    </div>
+    
+    <div class="bg-gray-800 rounded-xl p-8 shadow-lg">
+      <h2 class="text-xl font-semibold mb-4">Preços Atuais</h2>
+      <div id="prices" class="grid grid-cols-2 gap-4">
+        <!-- Preços serão adicionados via JavaScript -->
+      </div>
+    </div>
+    
+    <div class="mt-8 text-center">
+      <a href="/" class="text-green-400 hover:text-green-300">Voltar para o Dashboard</a>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const testButton = document.getElementById('testButton');
+      const loading = document.getElementById('loading');
+      const result = document.getElementById('result');
+      const apiResponse = document.getElementById('apiResponse');
+      const status = document.getElementById('status');
+      const prices = document.getElementById('prices');
+      
+      testButton.addEventListener('click', function() {
+        // Mostrar loading
+        loading.classList.remove('hidden');
+        result.classList.add('hidden');
+        
+        // Fazer a requisição para a API
+        fetch('/test-api')
+          .then(res => res.json())
+          .then(data => {
+            console.log("Dados recebidos:", data);
+            
+            // Esconder loading e mostrar resultado
+            loading.classList.add('hidden');
+            result.classList.remove('hidden');
+            
+            // Formatação bonita do JSON
+            apiResponse.textContent = JSON.stringify(data, null, 2);
+            
+            // Verificar se houve erro
+            if (data.error) {
+              status.innerHTML = `<div class="bg-red-900 text-red-200 p-4 rounded-lg">❌ ${data.error}</div>`;
+              prices.innerHTML = '';
+              return;
+            }
+            
+            // Mostrar status de sucesso
+            status.innerHTML = '<div class="bg-green-900 text-green-200 p-4 rounded-lg">✅ API funcionando corretamente!</div>';
+            
+            // Mostrar preços
+            prices.innerHTML = '';
+            for (const [coin, value] of Object.entries(data)) {
+              const priceCard = document.createElement('div');
+              priceCard.className = 'bg-gray-900 p-4 rounded-lg';
+              priceCard.innerHTML = `
+                <div class="font-bold mb-2">${coin.toUpperCase()}</div>
+                <div class="text-2xl text-green-400">$${value.usd.toLocaleString()}</div>
+              `;
+              prices.appendChild(priceCard);
+            }
+          })
+          .catch(err => {
+            console.error("Erro ao buscar dados:", err);
+            loading.classList.add('hidden');
+            result.classList.remove('hidden');
+            apiResponse.textContent = JSON.stringify({error: err.message}, null, 2);
+            status.innerHTML = '<div class="bg-red-900 text-red-200 p-4 rounded-lg">❌ Erro ao consultar a API</div>';
+            prices.innerHTML = '';
+          });
+      });
+      
+      // Executar teste automaticamente ao carregar a página
+      testButton.click();
+    });
+  </script>
+</body>
+</html>

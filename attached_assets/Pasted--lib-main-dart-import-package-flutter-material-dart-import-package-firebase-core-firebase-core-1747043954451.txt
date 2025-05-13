@@ -1,0 +1,100 @@
+// lib/main.dart
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'screens/login_screen.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(CryptoSignalsApp());
+}
+
+class CryptoSignalsApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'CriptoSinais',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.indigo,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.grey[900],
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      home: LoginScreen(),
+    );
+  }
+}
+
+// lib/screens/profile_screen.dart
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+class ProfileScreen extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  Widget build(BuildContext context) {
+    final user = _auth.currentUser;
+    final String email = user?.email ?? 'Desconhecido';
+    final bool isVip = false; // Isto será dinâmico no futuro com Firestore ou backend
+
+    return Scaffold(
+      appBar: AppBar(title: Text('Perfil')), 
+      backgroundColor: Colors.black,
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Bem-vindo, $email',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(height: 16),
+            Row(
+              children: [
+                Text('Estado da Conta:', style: TextStyle(fontSize: 16)),
+                SizedBox(width: 10),
+                Chip(
+                  label: Text(
+                    isVip ? 'VIP Ativo' : 'Grátis',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: isVip ? Colors.green : Colors.grey,
+                ),
+              ],
+            ),
+            SizedBox(height: 32),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  // Futuro: lógica de upgrade com Stripe ou PayPal
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Em breve: integração com Stripe/PayPal')),
+                  );
+                },
+                child: Text('Ativar Acesso VIP'),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 50),
+                  backgroundColor: Colors.amberAccent.shade700,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criptosinais | Home</title>
+  <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --neon-blue: #00f0ff;
+      --neon-purple: #8a2be2;
+      --neon-pink: #ff00ff;
+      --neon-green: #00ff9f;
+      --cyber-dark: #0a0a1e;
+      --cyber-darker: #050510;
+      --cyber-black: #000004;
+    }
+    
+    body {
+      background: radial-gradient(ellipse at top, var(--cyber-dark) 0%, var(--cyber-darker) 50%, var(--cyber-black) 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    /* Cyber grid effect */
+    .cyber-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(30, 30, 70, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 30, 70, 0.05) 1px, transparent 1px);
+      background-size: 25px 25px;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .card {
+      background: rgba(10, 10, 30, 0.5);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+    
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.8), transparent);
+      z-index: 1;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+    }
+    
+    .neon-text {
+      text-shadow: 0 0 5px rgba(0, 240, 255, 0.7), 0 0 10px rgba(0, 240, 255, 0.5);
+      color: var(--neon-blue);
+    }
+    
+    .hero-section {
+      background: linear-gradient(135deg, rgba(10, 10, 30, 0.7) 0%, rgba(5, 5, 16, 0.9) 100%);
+      padding: 80px 0;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-section::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.8), transparent);
+    }
+    
+    .btn-cyber {
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--neon-blue);
+      transition: all 0.2s ease;
+    }
+    
+    .btn-cyber:hover {
+      background: rgba(0, 240, 255, 0.2);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+      color: #fff;
+    }
+    
+    .btn-cyber-warning {
+      background: rgba(255, 255, 0, 0.1);
+      border: 1px solid rgba(255, 255, 0, 0.3);
+      color: var(--neon-yellow);
+    }
+    
+    .btn-cyber-warning:hover {
+      background: rgba(255, 255, 0, 0.2);
+      box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+    }
+    
+    .btn-cyber-success {
+      background: rgba(0, 255, 159, 0.1);
+      border: 1px solid rgba(0, 255, 159, 0.3);
+      color: var(--neon-green);
+    }
+    
+    .btn-cyber-success:hover {
+      background: rgba(0, 255, 159, 0.2);
+      box-shadow: 0 0 15px rgba(0, 255, 159, 0.5);
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7);
+      }
+      
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(0, 240, 255, 0);
+      }
+      
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 240, 255, 0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Grid background -->
+  <div class="cyber-grid"></div>
+
+  <!-- Header -->
+  <div class="hero-section">
+    <div class="container text-center">
+      <div class="pulse mb-4 d-inline-block">
+        <div style="width: 60px; height: 60px; border-radius: 50%; border: 1px solid var(--neon-blue); margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-chart-line text-info fa-xl"></i>
+        </div>
+      </div>
+      <h1 class="display-4 fw-bold neon-text mb-3">CRIPTOSINAIS</h1>
+      <p class="lead mb-5">Monitore preços de criptomoedas com análises técnicas avançadas e alertas em tempo real</p>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="/dashboard-futuristic" class="btn btn-cyber btn-lg px-4">
+          <i class="fas fa-rocket me-2"></i> Dashboard Futurista
+        </a>
+        <a href="/bot-dashboard" class="btn btn-cyber-warning btn-lg px-4">
+          <i class="fas fa-robot me-2"></i> Bot Dashboard
+        </a>
+        <a href="/premium-preview-futuristic" class="btn btn-cyber-success btn-lg px-4">
+          <i class="fas fa-gem me-2"></i> Área Premium
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="container py-5">
+    <div class="row mb-5">
+      <div class="col-12 text-center mb-4">
+        <h2 class="neon-text">Escolha seu Estilo</h2>
+        <p class="text-muted">Explore diferentes interfaces para monitorar as criptomoedas</p>
+      </div>
+    </div>
+    
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <!-- Dashboard Card -->
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-chart-line me-2"></i>Dashboard Padrão</h5>
+            <p class="card-text">Dashboard com design moderno, focado em dados de criptomoedas.</p>
+            <a href="/dashboard" class="btn btn-cyber w-100">Acessar</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Futuristic Dashboard Card -->
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-rocket me-2"></i>Dashboard Futurista</h5>
+            <p class="card-text">Design cibernético com efeitos neon e interface futurista.</p>
+            <div class="d-grid gap-2">
+              <a href="/dashboard-futuristic" class="btn btn-cyber">Versão Completa</a>
+              <a href="/dashboard-futuristic-alt" class="btn btn-outline-info btn-sm">Versão Leve</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Premium Area Card -->
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-gem me-2"></i>Área Premium</h5>
+            <p class="card-text">Análises técnicas avançadas, alertas antecipados e grupo VIP.</p>
+            <div class="d-grid gap-2">
+              <a href="/premium-preview" class="btn btn-cyber-warning">Versão Padrão</a>
+              <a href="/premium-preview-futuristic" class="btn btn-outline-warning btn-sm">Versão Futurista</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Landing Page Card -->
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-globe me-2"></i>Landing Page</h5>
+            <p class="card-text">Página de conversão com apresentação dos benefícios.</p>
+            <div class="d-grid">
+              <a href="/landing-new" class="btn btn-cyber-success">Ver Landing</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Features Section -->
+    <div class="row mt-5 pt-5">
+      <div class="col-12 text-center mb-4">
+        <h2 class="neon-text">Recursos Principais</h2>
+        <p class="text-muted">O que você encontrará no CriptoSignals</p>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="text-center">
+          <div class="mb-3">
+            <i class="fas fa-bolt fa-3x" style="color: var(--neon-blue);"></i>
+          </div>
+          <h4>Alertas em Tempo Real</h4>
+          <p class="text-muted">Notificações instantâneas sobre variações significativas de preço via Telegram</p>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="text-center">
+          <div class="mb-3">
+            <i class="fas fa-chart-line fa-3x" style="color: var(--neon-green);"></i>
+          </div>
+          <h4>Análise Técnica</h4>
+          <p class="text-muted">RSI, MACD e indicadores avançados para decisões de trading informadas</p>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="text-center">
+          <div class="mb-3">
+            <i class="fas fa-users fa-3x" style="color: var(--neon-purple);"></i>
+          </div>
+          <h4>Grupo VIP Exclusivo</h4>
+          <p class="text-muted">Acesso a um grupo seleto com sinais antecipados e suporte dedicado</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="row mt-5 pt-4">
+      <div class="col-12">
+        <div class="card p-5 text-center">
+          <h3 class="neon-text mb-4">Pronto para levar seus trades ao próximo nível?</h3>
+          <p class="lead mb-4">Acesse nosso dashboard futurista e comece a receber sinais de alta precisão</p>
+          <div class="d-flex justify-content-center gap-3">
+            <a href="/dashboard-futuristic" class="btn btn-cyber btn-lg px-4">
+              <i class="fas fa-rocket me-2"></i> Ver Dashboard
+            </a>
+            <a href="/premium-preview-futuristic" class="btn btn-cyber-success btn-lg px-4">
+              <i class="fas fa-gem me-2"></i> Desbloquear VIP
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="border-top border-info border-opacity-25 py-4 mt-5">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <span class="neon-text">CRIPTOSINAIS</span>
+          <small class="text-muted d-block">© 2025 Todos os direitos reservados</small>
+        </div>
+        <div>
+          <a href="https://t.me/cryptosignalshendrik_bot" class="btn btn-sm btn-cyber me-2">
+            <i class="fab fa-telegram"></i> Telegram
+          </a>
+          <a href="https://instagram.com/criptosinais77" class="btn btn-sm btn-cyber">
+            <i class="fab fa-instagram"></i> Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

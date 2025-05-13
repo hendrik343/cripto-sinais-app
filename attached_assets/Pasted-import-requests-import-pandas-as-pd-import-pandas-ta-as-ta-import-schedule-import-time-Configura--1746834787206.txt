@@ -1,0 +1,77 @@
+import requests
+import pandas as pd
+import pandas_ta as ta
+import schedule
+import time
+
+# Configurações do Telegram
+TELEGRAM_BOT_TOKEN = "SEU_TOKEN_DO_BOT"
+TELEGRAM_CHAT_ID = "SEU_CHAT_ID"
+
+def send_telegram_alert(message):
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    payload = {
+        "chat_id": TELEGRAM_CHAT_ID,
+        "text": message,
+        "parse_mode": "Markdown"
+    }
+    requests.post(url, data=payload)
+
+def fetch_candles(symbol="bitcoin", days=7):
+    url = f"https://api.coingecko.com/api/v3/coins/{symbol}/market_chart"
+    params = {
+        "vs_currency": "usd",
+        "days": days,
+        "interval": "hourly"
+    }
+    response = requests.get(url, params=params)
+    data = response.json()
+    prices = [p[1] for p in data["prices"]]
+    volumes = [v[1] for v in data["total_volumes"]]
+    timestamps = [pd.to_datetime(p[0], unit='ms') for p in data["prices"]]
+    df = pd.DataFrame({"timestamp": timestamps, "close": prices, "volume": volumes})
+    return df
+
+def analyze(df, coin_name="Bitcoin"):
+    df["rsi"] = ta.rsi(df["close"], length=14)
+    macd = ta.macd(df["close"])
+    df["macd"] = macd["MACD_12_26_9"]
+    df["macd_signal"] = macd["MACDs_12_26_9"]
+
+    latest = df.iloc[-1]
+
+    rsi_ok = latest["rsi"] < 30
+    macd_ok = latest["macd"] > latest["macd_signal"]
+    volume_ok = latest["volume"] > df["volume"].rolling(5).mean().iloc[-1]
+
+    if rsi_ok and macd_ok and volume_ok:
+        msg = (
+            f"🚀 *POSSÍVEL PUMP DETETADO* — {coin_name.upper()}\n\n"
+            f"• RSI: `{latest['rsi']:.2f}` (abaixo de 30)\n"
+            f"• MACD cruzado para cima\n"
+            f"• Volume crescente detectado\n\n"
+            f"_Hora:_ {latest['timestamp'].strftime('%d/%m %H:%M')}\n"
+            f"_Ação recomendada:_ monitorar para entrada antecipada 📈"
+        )
+        print(msg)
+        send_telegram_alert(msg)
+    else:
+        print(f"[{coin_name.upper()}] Sem sinais fortes...")
+
+def tarefa():
+    coins = ["bitcoin", "pepe", "shiba-inu"]
+    for coin in coins:
+        try:
+            df = fetch_candles(coin)
+            analyze(df, coin)
+        except Exception as e:
+            print(f"Erro ao analisar {coin}: {e}")
+
+# Verifica a cada 5 minutos
+schedule.every(5).minutes.do(tarefa)
+
+print("🟢 Monitor de Pumps com alerta no Telegram iniciado...")
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)

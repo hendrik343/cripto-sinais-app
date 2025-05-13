@@ -1,0 +1,13 @@
+{% if use_external_logo %}
+<!-- Logo externo com efeito de brilho e fallback para o logo local -->
+<div class="relative">
+  <div class="absolute inset-0 bg-yellow-400 rounded-full opacity-20 blur-md"></div>
+  <img src="{{ logo_path }}" onerror="this.onerror=null; this.src='/static/images/logo.svg';" 
+       alt="Criptosinais Logo" class="h-12 w-12 rounded-full border-2 border-yellow-400 relative z-10">
+</div>
+{% else %}
+<!-- Logo local SVG com tamanho ajustado -->
+<div class="flex-shrink-0">
+  <img src="{{ logo_path }}" alt="Criptosinais Logo" class="h-10 w-10">
+</div>
+{% endif %}

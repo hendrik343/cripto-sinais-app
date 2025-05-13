@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criptosinais | Área Premium Futurista</title>
+  
+  <!-- Bootstrap CSS e Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap');
+    
+    :root {
+      --neon-blue: #00f0ff;
+      --neon-purple: #8a2be2;
+      --neon-pink: #ff00ff;
+      --neon-green: #00ff9f;
+      --neon-yellow: #ffff00;
+      --cyber-dark: #0a0a1e;
+      --cyber-darker: #050510;
+      --cyber-black: #000004;
+      --cyber-gray: #151528;
+      --cyber-light: #1c1c3b;
+    }
+    
+    /* Estilo base */
+    body {
+      background: radial-gradient(ellipse at top, #0a0a1e 0%, #050510 50%, #000004 100%);
+      background-attachment: fixed;
+      color: #e1e1fa;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* Efeito de grid futurista */
+    .cyber-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(30, 30, 70, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 30, 70, 0.05) 1px, transparent 1px);
+      background-size: 25px 25px;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    /* Efeitos de card */
+    .cyber-card {
+      background: rgba(12, 12, 40, 0.5);
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      border-radius: 0.5rem;
+      box-shadow: 0 0 15px rgba(138, 43, 226, 0.15);
+      backdrop-filter: blur(5px);
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 1.5rem;
+      padding: 1.25rem;
+    }
+    
+    .cyber-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.8), transparent);
+      z-index: 1;
+    }
+    
+    .cyber-card:hover {
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+      transform: translateY(-3px);
+      transition: all 0.3s ease;
+    }
+    
+    /* Botões e elementos interativos */
+    .cyber-button {
+      background: rgba(138, 43, 226, 0.1);
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      color: var(--neon-purple);
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .cyber-button:hover {
+      background: rgba(138, 43, 226, 0.2);
+      box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+      color: #fff;
+    }
+    
+    .cyber-button-blue {
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--neon-blue);
+    }
+    
+    .cyber-button-blue:hover {
+      background: rgba(0, 240, 255, 0.2);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+    }
+    
+    /* Efeito de brilho neon */
+    .neon-text {
+      text-shadow: 0 0 5px rgba(138, 43, 226, 0.7), 0 0 10px rgba(138, 43, 226, 0.5);
+      color: var(--neon-purple);
+    }
+    
+    .neon-text-blue {
+      text-shadow: 0 0 5px rgba(0, 240, 255, 0.7), 0 0 10px rgba(0, 240, 255, 0.5);
+      color: var(--neon-blue);
+    }
+    
+    .font-cyber {
+      font-family: 'Space Grotesk', monospace;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    
+    header {
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+      margin-bottom: 2rem;
+    }
+    
+    /* Feature Box */
+    .feature-box {
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      height: 100%;
+      transition: all 0.3s ease;
+      background: rgba(12, 12, 40, 0.3);
+    }
+    
+    .feature-box:hover {
+      box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
+      background: rgba(12, 12, 40, 0.5);
+    }
+    
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(138, 43, 226, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+    
+    .feature-icon i {
+      font-size: 1.5rem;
+      color: var(--neon-purple);
+    }
+    
+    /* Pricing Box */
+    .pricing-box {
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      border-radius: 0.5rem;
+      padding: 2rem;
+      text-align: center;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+      0% { box-shadow: 0 0 10px rgba(138, 43, 226, 0.3); }
+      100% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.5); }
+    }
+    
+    .price-tag {
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--neon-purple);
+      font-family: 'Space Grotesk', monospace;
+      text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+      margin: 1.5rem 0;
+    }
+    
+    .feature-list {
+      list-style-type: none;
+      padding-left: 0;
+      margin-bottom: 2rem;
+    }
+    
+    .feature-list li {
+      padding: 0.5rem 0;
+      position: relative;
+    }
+    
+    .feature-list li::before {
+      content: "✓";
+      color: var(--neon-green);
+      margin-right: 8px;
+    }
+    
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(138, 43, 226, 0.1);
+      padding: 2rem 0;
+      margin-top: 4rem;
+    }
+    
+    /* Hero */
+    .hero-section {
+      text-align: center;
+      padding: 3rem 0;
+      margin-bottom: 3rem;
+    }
+    
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.25rem;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      opacity: 0.8;
+    }
+    
+    /* Testimonial */
+    .testimonial {
+      font-style: italic;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      position: relative;
+      background: rgba(12, 12, 40, 0.3);
+    }
+    
+    .testimonial::before {
+      content: """;
+      font-size: 4rem;
+      font-family: Georgia, serif;
+      color: rgba(138, 43, 226, 0.2);
+      position: absolute;
+      top: -20px;
+      left: 10px;
+    }
+    
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+    }
+    
+    .author-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: rgba(138, 43, 226, 0.1);
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .author-avatar i {
+      color: var(--neon-purple);
+    }
+    
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(to right, rgba(12, 12, 40, 0.8), rgba(12, 12, 40, 0.8)), url('https://images.unsplash.com/photo-1639322537504-6427a16b0a28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1932&q=80');
+      background-size: cover;
+      background-position: center;
+      padding: 4rem 0;
+      text-align: center;
+      margin: 3rem 0;
+      border-top: 1px solid rgba(138, 43, 226, 0.3);
+      border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+    }
+    
+    .pulse-icon {
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(138, 43, 226, 0.7);
+      }
+      
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(138, 43, 226, 0);
+      }
+      
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(138, 43, 226, 0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Grid de fundo -->
+  <div class="cyber-grid"></div>
+  
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <div class="pulse-icon me-3" style="width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--neon-purple); display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-gem" style="color: var(--neon-purple);"></i>
+          </div>
+          <div>
+            <h1 class="font-cyber neon-text mb-0" style="font-size: 1.5rem;">CRIPTOSINAIS</h1>
+            <p class="text-muted mb-0" style="font-size: 0.8rem;">ÁREA VIP</p>
+          </div>
+        </div>
+        <div>
+          <a href="/" class="cyber-button-blue me-2">
+            <i class="fas fa-home me-1"></i> Home
+          </a>
+          <a href="/dashboard-futuristic-alt" class="cyber-button-blue">
+            <i class="fas fa-chart-line me-1"></i> Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <h1 class="hero-title font-cyber neon-text">Acesso VIP Exclusivo</h1>
+      <p class="hero-subtitle">Desbloqueie sinais premium de alta precisão e análises técnicas avançadas para maximizar seus lucros no mercado cripto</p>
+      <a href="#pricing" class="cyber-button py-2 px-4" style="font-size: 1.1rem;">
+        <i class="fas fa-lock-open me-2"></i>Desbloquear Acesso VIP
+      </a>
+    </div>
+  </section>
+  
+  <!-- Features -->
+  <section class="container mb-5">
+    <h2 class="font-cyber neon-text text-center mb-5">Benefícios Exclusivos</h2>
+    
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="feature-box">
+          <div class="feature-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3 class="font-cyber mb-3">Alertas Antecipados</h3>
+          <p class="text-white-50">Receba alertas de pump e dump antes de todos os outros, com precisão superior a 87% baseada em algoritmos avançados.</p>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="feature-box">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="font-cyber mb-3">Análise Técnica Pro</h3>
+          <p class="text-white-50">Acesso a indicadores avançados como RSI, MACD, Bandas de Bollinger e muito mais com interpretações claras.</p>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="feature-box">
+          <div class="feature-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 class="font-cyber mb-3">Grupo VIP Telegram</h3>
+          <p class="text-white-50">Junte-se à nossa comunidade exclusiva no Telegram com sinais em tempo real e suporte 24/7.</p>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="feature-box">
+          <div class="feature-icon">
+            <i class="fas fa-robot"></i>
+          </div>
+          <h3 class="font-cyber mb-3">Algoritmos Exclusivos</h3>
+          <p class="text-white-50">Nossos algoritmos detectam padrões de pump com antecedência de até 3 horas antes dos grandes movimentos.</p>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="feature-box">
+          <div class="feature-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <h3 class="font-cyber mb-3">Relatórios Semanais</h3>
+          <p class="text-white-50">Relatórios detalhados de performance e previsões para a semana seguinte, com análise aprofundada.</p>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="feature-box">
+          <div class="feature-icon">
+            <i class="fas fa-medal"></i>
+          </div>
+          <h3 class="font-cyber mb-3">Suporte Prioritário</h3>
+          <p class="text-white-50">Atendimento exclusivo para membros VIP, resposta garantida em até 2 horas para qualquer dúvida.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Testimonials -->
+  <section class="container mb-5">
+    <h2 class="font-cyber neon-text text-center mb-5">O Que Dizem Nossos Usuários VIP</h2>
+    
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="testimonial">
+          <p>Os sinais de pump são incríveis! Consegui 38% de lucro em uma semana seguindo as recomendações. Melhor investimento que já fiz.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div>
+              <p class="mb-0">Carlos Mendes</p>
+              <small class="text-muted">Membro desde 2024</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="testimonial">
+          <p>A análise técnica e os relatórios semanais me ajudaram a entender muito melhor o mercado. Os indicadores são certeiros!</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div>
+              <p class="mb-0">Ana Oliveira</p>
+              <small class="text-muted">Membro desde 2023</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="testimonial">
+          <p>O grupo do Telegram é fantástico, sempre com dicas valiosas. Já recuperei o valor da assinatura várias vezes com os sinais.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div>
+              <p class="mb-0">Pedro Santos</p>
+              <small class="text-muted">Membro desde 2024</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Banner -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="font-cyber neon-text mb-4">Não perca mais oportunidades</h2>
+      <p class="text-white mb-4" style="max-width: 700px; margin: 0 auto;">
+        Enquanto você está lendo isto, nossos membros VIP estão recebendo sinais de alta precisão. Junte-se agora e transforme sua experiência com criptomoedas.
+      </p>
+      <a href="#pricing" class="cyber-button py-3 px-5" style="font-size: 1.2rem;">
+        <i class="fas fa-rocket me-2"></i>Começar Agora
+      </a>
+    </div>
+  </section>
+  
+  <!-- Pricing -->
+  <section id="pricing" class="container mb-5">
+    <h2 class="font-cyber neon-text text-center mb-5">Investimento Único</h2>
+    
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="pricing-box">
+          <h3 class="font-cyber mb-3">Acesso VIP Vitalício</h3>
+          <div class="price-tag">$1.99</div>
+          <p class="text-white-50 mb-4">Pagamento único • Sem mensalidades</p>
+          
+          <ul class="feature-list">
+            <li>Alertas antecipados de pump e dump</li>
+            <li>Análise técnica avançada (RSI, MACD, Bollinger)</li>
+            <li>Acesso ao grupo VIP do Telegram</li>
+            <li>Relatórios semanais de performance</li>
+            <li>Suporte prioritário 24/7</li>
+            <li>Algoritmo exclusivo de detecção de pump</li>
+            <li>Atualizações futuras gratuitamente</li>
+          </ul>
+          
+          <a href="/payment" class="cyber-button py-3 px-5 w-100" style="font-size: 1.1rem;">
+            <i class="fas fa-unlock me-2"></i>Desbloquear Acesso VIP
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FAQ -->
+  <section class="container mb-5">
+    <h2 class="font-cyber neon-text text-center mb-5">Perguntas Frequentes</h2>
+    
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="cyber-card mb-4">
+          <h4 class="font-cyber mb-3">Como funciona o acesso VIP?</h4>
+          <p class="text-white-50">Após o pagamento, você receberá acesso imediato a todas as funcionalidades premium. O link para o grupo VIP do Telegram será enviado para o seu email, junto com as instruções de acesso.</p>
+        </div>
+        
+        <div class="cyber-card mb-4">
+          <h4 class="font-cyber mb-3">Qual a precisão dos sinais?</h4>
+          <p class="text-white-50">Nossos sinais têm uma taxa de sucesso superior a 87%, baseada em algoritmos avançados que combinam análise técnica, volume e padrões de mercado para identificar movimentos antes que aconteçam.</p>
+        </div>
+        
+        <div class="cyber-card mb-4">
+          <h4 class="font-cyber mb-3">O pagamento é realmente único?</h4>
+          <p class="text-white-50">Sim! Você paga apenas $1.99 uma única vez e recebe acesso vitalício a todas as funcionalidades premium, incluindo atualizações futuras da plataforma.</p>
+        </div>
+        
+        <div class="cyber-card mb-4">
+          <h4 class="font-cyber mb-3">Posso cancelar a qualquer momento?</h4>
+          <p class="text-white-50">Como o pagamento é único, não há o que cancelar. Seu acesso é vitalício após o pagamento. Se desejar sair do grupo do Telegram, basta sair do grupo a qualquer momento.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Final CTA -->
+  <section class="container text-center mb-5">
+    <div class="cyber-card py-5">
+      <h2 class="font-cyber neon-text mb-4">Pronto para Transformar seus Resultados?</h2>
+      <p class="text-white-50 mb-4" style="max-width: 700px; margin: 0 auto;">
+        Junte-se a milhares de traders que já estão aproveitando nossos sinais premium para maximizar seus lucros.
+      </p>
+      <a href="/payment" class="cyber-button py-3 px-5" style="font-size: 1.2rem;">
+        <i class="fas fa-gem me-2"></i>Acessar Área VIP • $1.99
+      </a>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+        <div class="text-center text-md-start mb-3 mb-md-0">
+          <h3 class="font-cyber" style="font-size: 1rem; color: var(--neon-purple);">CRIPTOSINAIS</h3>
+          <p class="text-muted mb-0">© 2025 Criptosinais. All rights reserved.</p>
+        </div>
+        
+        <div>
+          <a href="https://t.me/cryptosignalshendrik_bot" class="me-3 text-muted" style="transition: color 0.2s ease;"><i class="fab fa-telegram"></i></a>
+          <a href="https://instagram.com/criptosinais77" class="me-3 text-muted" style="transition: color 0.2s ease;"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-muted" style="transition: color 0.2s ease;"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criptosinais | Futuristic Dashboard</title>
+  
+  <!-- CSS e Recursos externos -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/futuristic.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Movemos os estilos para o arquivo futuristic.css -->
+</head>
+
+<body>
+  <!-- Grid de fundo -->
+  <div class="cyber-grid"></div>
+  
+  <!-- Header -->
+  <header class="sticky top-0 z-10 border-b border-neon-blue/20 bg-cyber-black/80 backdrop-blur-md">
+    <div class="container mx-auto flex items-center justify-between px-4 py-3">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <div class="animate-pulse-slow mr-3 h-10 w-10 rounded-full border border-neon-blue bg-neon-blue/10">
+          <div class="flex h-full w-full items-center justify-center">
+            <i class="fas fa-chart-line text-neon-blue"></i>
+          </div>
+        </div>
+        <div>
+          <h1 class="font-cyber text-xl font-bold text-neon-blue">
+            <span class="neon-text">CRIPTOSINAIS</span>
+          </h1>
+          <p class="text-xs text-gray-400">v2.5 QUANTUM</p>
+        </div>
+      </div>
+      
+      <!-- Controls -->
+      <div class="flex items-center space-x-4">
+        <select id="languageSelect" class="cyber-button bg-cyber-gray px-3 py-1 text-xs">
+          <option value="pt" selected>Português</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
+        
+        <button class="cyber-button flex items-center space-x-2 px-3 py-2 text-xs">
+          <i class="fas fa-satellite-dish"></i>
+          <span class="lang-pt">CONECTADO</span>
+          <span class="lang-en">CONNECTED</span>
+          <span class="lang-fr">CONNECTÉ</span>
+        </button>
+        
+        <a href="/premium" class="cyber-button px-3 py-2 text-xs font-bold text-neon-green">
+          <i class="fas fa-gem mr-1"></i>
+          <span class="lang-pt">ACESSO VIP</span>
+          <span class="lang-en">VIP ACCESS</span>
+          <span class="lang-fr">ACCÈS VIP</span>
+        </a>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- Status Indicators -->
+    <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <!-- Market Pulse -->
+      <div class="cyber-card p-5">
+        <h3 class="text-xs font-medium uppercase tracking-wider text-gray-400">
+          <span class="lang-pt">PULSO DE MERCADO</span>
+          <span class="lang-en">MARKET PULSE</span>
+          <span class="lang-fr">POULS DU MARCHÉ</span>
+        </h3>
+        <div class="mt-2 flex items-center">
+          <div class="h-8 w-8 animate-pulse rounded-full bg-neon-green/30">
+            <div class="flex h-full w-full items-center justify-center">
+              <div class="h-2 w-2 rounded-full bg-neon-green"></div>
+            </div>
+          </div>
+          <div class="ml-3">
+            <span class="text-lg font-semibold text-neon-green">
+              <span class="lang-pt">BULL MARKET</span>
+              <span class="lang-en">BULL MARKET</span>
+              <span class="lang-fr">MARCHÉ HAUSSIER</span>
+            </span>
+            <p class="text-xs text-gray-400">+2.4% global</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Active Signals -->
+      <div class="cyber-card p-5">
+        <h3 class="text-xs font-medium uppercase tracking-wider text-gray-400">
+          <span class="lang-pt">SINAIS ATIVOS</span>
+          <span class="lang-en">ACTIVE SIGNALS</span>
+          <span class="lang-fr">SIGNAUX ACTIFS</span>
+        </h3>
+        <div class="mt-2 flex items-center">
+          <div class="h-8 w-8 rounded-full bg-neon-blue/30">
+            <div class="flex h-full w-full items-center justify-center">
+              <span class="font-cyber text-lg font-bold text-neon-blue">12</span>
+            </div>
+          </div>
+          <div class="ml-3">
+            <div class="text-sm">
+              <span class="text-neon-green">8</span> <span class="text-xs text-gray-400">compra</span> / 
+              <span class="text-neon-pink">4</span> <span class="text-xs text-gray-400">venda</span>
+            </div>
+            <p class="text-xs text-gray-400">
+              <span class="lang-pt">Atualizado há 5 min</span>
+              <span class="lang-en">Updated 5 min ago</span>
+              <span class="lang-fr">Mis à jour il y a 5 min</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Success Rate -->
+      <div class="cyber-card p-5">
+        <h3 class="text-xs font-medium uppercase tracking-wider text-gray-400">
+          <span class="lang-pt">TAXA DE SUCESSO</span>
+          <span class="lang-en">SUCCESS RATE</span>
+          <span class="lang-fr">TAUX DE RÉUSSITE</span>
+        </h3>
+        <div class="mt-2 flex items-end justify-between">
+          <span class="font-cyber text-3xl font-bold text-neon-blue">87%</span>
+          <div class="h-10 w-24">
+            <div class="flex h-full w-full items-end">
+              <div class="h-3/4 w-1/5 bg-neon-blue/30"></div>
+              <div class="h-1/2 w-1/5 bg-neon-blue/40"></div>
+              <div class="h-full w-1/5 bg-neon-blue/50"></div>
+              <div class="h-2/3 w-1/5 bg-neon-blue/60"></div>
+              <div class="h-4/5 w-1/5 bg-neon-blue/70"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Last Alert -->
+      <div class="cyber-card p-5">
+        <h3 class="text-xs font-medium uppercase tracking-wider text-gray-400">
+          <span class="lang-pt">ÚLTIMO ALERTA</span>
+          <span class="lang-en">LAST ALERT</span>
+          <span class="lang-fr">DERNIER ALERTE</span>
+        </h3>
+        <div class="mt-2">
+          <div class="flex items-center">
+            <span class="mr-2 rounded bg-neon-green/20 px-2 py-1 text-xs font-bold text-neon-green">SOL</span>
+            <span class="text-neon-green">+4.23%</span>
+            <div class="ml-auto flex h-6 w-6 items-center justify-center rounded-full bg-neon-green/20">
+              <i class="fas fa-arrow-up text-xs text-neon-green"></i>
+            </div>
+          </div>
+          <p class="mt-1 text-xs text-gray-400">
+            <span class="lang-pt">Cruzamento de médias móveis detectado</span>
+            <span class="lang-en">Moving average crossover detected</span>
+            <span class="lang-fr">Croisement de moyenne mobile détecté</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Crypto Signals Table (Main Feature) -->
+    <section class="mb-10">
+      <div class="mb-6 flex items-center justify-between">
+        <h2 class="font-cyber text-2xl font-bold text-neon-blue">
+          <span class="lang-pt neon-text">⚡ SINAIS DE ALTA PRECISÃO</span>
+          <span class="lang-en neon-text">⚡ HIGH PRECISION SIGNALS</span>
+          <span class="lang-fr neon-text">⚡ SIGNAUX DE HAUTE PRÉCISION</span>
+        </h2>
+        <div class="flex items-center">
+          <span id="statusDot" class="mr-2 h-2 w-2 animate-pulse rounded-full bg-neon-green"></span>
+          <span id="updateStatus" class="text-xs text-gray-400">
+            <span class="lang-pt">Atualização ao vivo</span>
+            <span class="lang-en">Live update</span>
+            <span class="lang-fr">Mise à jour en direct</span>
+          </span>
+        </div>
+      </div>
+      
+      <!-- Crypto Table -->
+      <div class="cyber-card neon-border overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="cyber-table w-full">
+            <thead>
+              <tr>
+                <th class="py-3 px-4 text-left">
+                  <span class="lang-pt">MOEDA</span>
+                  <span class="lang-en">COIN</span>
+                  <span class="lang-fr">MONNAIE</span>
+                </th>
+                <th class="py-3 px-4 text-left">
+                  <span class="lang-pt">PREÇO (USD)</span>
+                  <span class="lang-en">PRICE (USD)</span>
+                  <span class="lang-fr">PRIX (USD)</span>
+                </th>
+                <th class="py-3 px-4 text-left">
+                  <span class="lang-pt">RSI</span>
+                  <span class="lang-en">RSI</span>
+                  <span class="lang-fr">RSI</span>
+                </th>
+                <th class="py-3 px-4 text-left">
+                  <span class="lang-pt">VARIAÇÃO</span>
+                  <span class="lang-en">CHANGE</span>
+                  <span class="lang-fr">VARIATION</span>
+                </th>
+                <th class="py-3 px-4 text-left">
+                  <span class="lang-pt">TENDÊNCIA</span>
+                  <span class="lang-en">TREND</span>
+                  <span class="lang-fr">TENDANCE</span>
+                </th>
+                <th class="py-3 px-4 text-left">
+                  <span class="lang-pt">SINAL</span>
+                  <span class="lang-en">SIGNAL</span>
+                  <span class="lang-fr">SIGNAL</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="crypto-signals-table">
+              <!-- Table will be filled via JavaScript -->
+              <tr>
+                <td colspan="6" class="py-8 text-center text-gray-400">
+                  <div class="flex items-center justify-center">
+                    <svg class="h-5 w-5 animate-spin text-neon-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span class="ml-2">
+                      <span class="lang-pt">Carregando sinais...</span>
+                      <span class="lang-en">Loading signals...</span>
+                      <span class="lang-fr">Chargement des signaux...</span>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Charts Row -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <!-- Market Trends Chart -->
+      <div class="cyber-card p-5">
+        <h3 class="mb-4 font-cyber text-lg font-semibold text-neon-blue">
+          <span class="lang-pt">Tendências de Mercado</span>
+          <span class="lang-en">Market Trends</span>
+          <span class="lang-fr">Tendances du Marché</span>
+        </h3>
+        <div class="chart-container h-80">
+          <canvas id="trendsChart"></canvas>
+        </div>
+      </div>
+      
+      <!-- Volume Analysis -->
+      <div class="cyber-card p-5">
+        <h3 class="mb-4 font-cyber text-lg font-semibold text-neon-blue">
+          <span class="lang-pt">Análise de Volume</span>
+          <span class="lang-en">Volume Analysis</span>
+          <span class="lang-fr">Analyse de Volume</span>
+        </h3>
+        <div class="chart-container h-80">
+          <canvas id="volumeChart"></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <!-- CTA Section -->
+    <section class="my-12 rounded-lg border border-neon-purple/30 bg-gradient-to-r from-cyber-black to-cyber-dark p-8 text-center">
+      <div class="mx-auto max-w-2xl">
+        <div class="mb-6 flex justify-center">
+          <div class="float-effect rounded-full border border-neon-purple bg-neon-purple/10 p-4">
+            <div class="h-16 w-16 rounded-full bg-neon-purple/20 p-4">
+              <div class="flex h-full w-full items-center justify-center">
+                <i class="fas fa-rocket text-2xl text-neon-purple"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 class="mb-3 font-cyber text-2xl font-bold text-neon-purple">
+          <span class="lang-pt neon-text">Alcance o próximo nível</span>
+          <span class="lang-en neon-text">Reach the next level</span>
+          <span class="lang-fr neon-text">Atteignez le niveau supérieur</span>
+        </h2>
+        
+        <p class="mb-8 text-gray-300">
+          <span class="lang-pt">Acesse sinais de alta precisão antes de todos com nosso acesso VIP</span>
+          <span class="lang-en">Access high precision signals before everyone else with our VIP access</span>
+          <span class="lang-fr">Accédez aux signaux de haute précision avant tout le monde avec notre accès VIP</span>
+        </p>
+        
+        <a href="/premium" class="inline-block rounded bg-neon-purple/20 px-8 py-3 font-bold text-neon-purple transition-all hover:bg-neon-purple/30 hover:shadow-lg hover:shadow-neon-purple/20">
+          <span class="lang-pt">Desbloquear VIP • $1.99</span>
+          <span class="lang-en">Unlock VIP • $1.99</span>
+          <span class="lang-fr">Débloquer VIP • $1.99</span>
+        </a>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="border-t border-neon-blue/10 bg-cyber-black py-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
+        <div class="text-center md:text-left">
+          <h3 class="font-cyber text-sm font-semibold text-neon-blue">CRIPTOSINAIS</h3>
+          <p class="text-xs text-gray-500">© 2025 Criptosinais. All rights reserved.</p>
+        </div>
+        
+        <div class="flex space-x-6">
+          <a href="https://t.me/cryptosignalshendrik_bot" class="text-gray-400 transition-colors hover:text-neon-blue">
+            <i class="fab fa-telegram"></i>
+          </a>
+          <a href="https://instagram.com/criptosinais77" class="text-gray-400 transition-colors hover:text-neon-blue">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="text-gray-400 transition-colors hover:text-neon-blue">
+            <i class="fab fa-twitter"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <script>
+    // Configuração da linguagem
+    document.addEventListener('DOMContentLoaded', function() {
+      // Detectar idioma do navegador
+      const browserLang = navigator.language.split('-')[0];
+      if(['pt', 'en', 'fr'].includes(browserLang)) {
+        setLanguage(browserLang);
+        document.getElementById('languageSelect').value = browserLang;
+      } else {
+        setLanguage('pt'); // Default para português
+      }
+      
+      // Mudar idioma quando selecionado
+      document.getElementById('languageSelect').addEventListener('change', function() {
+        setLanguage(this.value);
+      });
+      
+      // Inicializar os gráficos
+      initCharts();
+      
+      // Popular a tabela com dados simulados
+      populateTable();
+    });
+    
+    function setLanguage(lang) {
+      document.querySelectorAll('.lang-pt, .lang-en, .lang-fr').forEach(el => {
+        el.classList.remove('lang-active');
+      });
+      
+      document.querySelectorAll(`.lang-${lang}`).forEach(el => {
+        el.classList.add('lang-active');
+      });
+      
+      // Atualizar o atributo lang do HTML
+      document.documentElement.lang = lang;
+    }
+    
+    // Inicializar gráficos com aparência futurista
+    function initCharts() {
+      // Chart.js theme setup
+      Chart.defaults.color = '#a0a0c0';
+      Chart.defaults.font.family = "'Space Grotesk', monospace";
+      
+      // Market Trends Chart
+      const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+      new Chart(trendsCtx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+          datasets: [{
+            label: 'BTC',
+            data: [42000, 44500, 47000, 46800, 51200, 48500, 52000],
+            borderColor: '#00f0ff',
+            backgroundColor: 'rgba(0, 240, 255, 0.1)',
+            borderWidth: 2,
+            pointBackgroundColor: '#00f0ff',
+            tension: 0.3,
+            fill: true
+          },
+          {
+            label: 'ETH',
+            data: [3200, 3000, 3400, 3350, 3700, 3500, 3800],
+            borderColor: '#ff00ff',
+            backgroundColor: 'rgba(255, 0, 255, 0.1)',
+            borderWidth: 2,
+            pointBackgroundColor: '#ff00ff',
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                boxWidth: 10,
+                usePointStyle: true
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: 'rgba(0, 240, 255, 0.05)'
+              }
+            },
+            y: {
+              grid: {
+                color: 'rgba(0, 240, 255, 0.05)'
+              }
+            }
+          }
+        }
+      });
+      
+      // Volume Chart
+      const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+      new Chart(volumeCtx, {
+        type: 'bar',
+        data: {
+          labels: ['SOL', 'BTC', 'ETH', 'LINK', 'ADA', 'AVAX'],
+          datasets: [{
+            label: 'Volume (24h)',
+            data: [800, 1200, 1000, 650, 750, 900],
+            backgroundColor: [
+              'rgba(0, 240, 255, 0.7)',
+              'rgba(255, 0, 255, 0.7)',
+              'rgba(0, 255, 159, 0.7)',
+              'rgba(255, 255, 0, 0.7)',
+              'rgba(138, 43, 226, 0.7)',
+              'rgba(0, 191, 255, 0.7)'
+            ],
+            borderWidth: 0,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                display: false
+              }
+            },
+            y: {
+              grid: {
+                color: 'rgba(0, 240, 255, 0.05)'
+              }
+            }
+          }
+        }
+      });
+    }
+    
+    // Função para popular a tabela com dados reais via API
+    function populateTable() {
+      // Função para simular obtenção de dados da API
+      const cryptoData = [
+        { 
+          symbol: 'SOL', 
+          name: 'Solana', 
+          price: '$171.54', 
+          rsi: 64, 
+          change: '+4.23%', 
+          trend: 'Bullish', 
+          signal: 'BUY'
+        },
+        { 
+          symbol: 'BTC', 
+          name: 'Bitcoin', 
+          price: '$51,245.78', 
+          rsi: 58, 
+          change: '+1.75%', 
+          trend: 'Bullish', 
+          signal: 'HOLD'
+        },
+        { 
+          symbol: 'ETH', 
+          name: 'Ethereum', 
+          price: '$3,782.46', 
+          rsi: 62, 
+          change: '+2.12%', 
+          trend: 'Bullish', 
+          signal: 'BUY'
+        },
+        { 
+          symbol: 'BONK', 
+          name: 'Bonk', 
+          price: '$0.00002220', 
+          rsi: 71, 
+          change: '+6.15%', 
+          trend: 'Strong Bullish', 
+          signal: 'BUY'
+        },
+        { 
+          symbol: 'DOGE', 
+          name: 'Dogecoin', 
+          price: '$0.22800', 
+          rsi: 55, 
+          change: '+0.02%', 
+          trend: 'Neutral', 
+          signal: 'HOLD'
+        },
+        { 
+          symbol: 'ADA', 
+          name: 'Cardano', 
+          price: '$0.80845', 
+          rsi: 49, 
+          change: '-0.30%', 
+          trend: 'Neutral', 
+          signal: 'HOLD'
+        },
+        { 
+          symbol: 'FLOKI', 
+          name: 'Floki Inu', 
+          price: '$0.00010337', 
+          rsi: 52, 
+          change: '+0.13%', 
+          trend: 'Neutral', 
+          signal: 'HOLD'
+        },
+        { 
+          symbol: 'SHIB', 
+          name: 'Shiba Inu', 
+          price: '$0.00001584', 
+          rsi: 48, 
+          change: '-0.11%', 
+          trend: 'Neutral', 
+          signal: 'HOLD'
+        },
+      ];
+      
+      const tableBody = document.getElementById('crypto-signals-table');
+      tableBody.innerHTML = '';
+      
+      cryptoData.forEach(crypto => {
+        const row = document.createElement('tr');
+        
+        // Determinar classes CSS baseadas no sinal e tendência
+        let signalClass = '';
+        let trendIcon = '';
+        
+        if (crypto.signal === 'BUY') {
+          signalClass = 'status-buy';
+          trendIcon = '<i class="fas fa-arrow-up mr-1"></i>';
+        } else if (crypto.signal === 'SELL') {
+          signalClass = 'status-sell';
+          trendIcon = '<i class="fas fa-arrow-down mr-1"></i>';
+        } else {
+          signalClass = 'status-hold';
+          trendIcon = '<i class="fas fa-minus mr-1"></i>';
+        }
+        
+        // CSS para mudança de preço (positivo/negativo)
+        const changeClass = crypto.change.startsWith('+') ? 'text-neon-green' : 'text-neon-pink';
+        
+        // CSS para RSI
+        let rsiClass = 'text-gray-400';
+        if (crypto.rsi > 70) rsiClass = 'text-neon-pink';
+        else if (crypto.rsi < 30) rsiClass = 'text-neon-green';
+        else if (crypto.rsi >= 60) rsiClass = 'text-neon-yellow';
+        
+        row.innerHTML = `
+          <td class="py-4 px-4">
+            <div class="flex items-center">
+              <span class="font-cyber font-bold text-white">${crypto.symbol}</span>
+              <span class="ml-2 text-xs text-gray-400">${crypto.name}</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 font-cyber font-medium text-white">${crypto.price}</td>
+          <td class="py-4 px-4">
+            <div class="w-16 bg-cyber-gray rounded-full h-2">
+              <div class="h-full rounded-full ${rsiClass}" style="width: ${crypto.rsi}%; background-color: currentColor; opacity: 0.7"></div>
+            </div>
+            <span class="text-xs ${rsiClass} mt-1 inline-block">${crypto.rsi}</span>
+          </td>
+          <td class="py-4 px-4 font-medium ${changeClass}">${crypto.change}</td>
+          <td class="py-4 px-4 text-gray-300">
+            ${trendIcon}${crypto.trend}
+          </td>
+          <td class="py-4 px-4">
+            <span class="px-3 py-1 rounded-sm font-cyber font-bold ${signalClass}">
+              ${crypto.signal}
+            </span>
+          </td>
+        `;
+        
+        tableBody.appendChild(row);
+      });
+    }
+  </script>
+</body>
+</html>

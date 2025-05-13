@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criptosinais | Plataforma de Sinais Inteligentes</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    .hero-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+    }
+    .card-glow:hover {
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.7);
+      transform: scale(1.03);
+      transition: all 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-5 border-b border-gray-800 bg-black shadow-md">
+    <h1 class="text-2xl font-extrabold text-green-400 tracking-wide">🚀 Criptosinais</h1>
+    <nav class="space-x-6 text-sm">
+      <a href="#funcionalidades" class="hover:text-green-300 transition">Funcionalidades</a>
+      <a href="#preco" class="hover:text-green-300 transition">Preço</a>
+      <a href="#testemunhos" class="hover:text-green-300 transition">Clientes</a>
+      <a href="#acesso" class="bg-green-500 hover:bg-green-600 text-black font-semibold px-4 py-2 rounded-full transition">Começar</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero-gradient text-center px-6 py-24">
+    <img src="/mnt/data/A_logo_design_for_\"Criptosinais,\"_a_cryptocurrency.png" class="w-28 h-28 mx-auto mb-4 rounded-full border-4 border-green-400" alt="Logo Criptosinais" />
+    <h2 class="text-5xl font-extrabold mb-4 leading-tight">Sinais Inteligentes. Resultados Reais.</h2>
+    <p class="text-gray-300 text-lg max-w-2xl mx-auto mb-6">Acede a sinais profissionais com base em RSI, MACD, Volume e muito mais. Resultados consistentes para traders exigentes.</p>
+    <a href="#acesso" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-4 rounded-full text-lg">🧠 Aderir agora por $1.99</a>
+  </section>
+
+  <!-- Funcionalidades -->
+  <section id="funcionalidades" class="px-6 py-20 max-w-6xl mx-auto">
+    <h3 class="text-4xl font-bold mb-12 text-center">🔧 Funcionalidades Premium</h3>
+    <div class="grid md:grid-cols-3 gap-10">
+      <div class="bg-gray-900 p-6 rounded-xl border border-green-500 card-glow">
+        <h4 class="text-2xl font-bold mb-3">📈 Análise Técnica Avançada</h4>
+        <p class="text-gray-400">Integração com indicadores de mercado como RSI, MACD, médias móveis e muito mais.</p>
+      </div>
+      <div class="bg-gray-900 p-6 rounded-xl border border-green-500 card-glow">
+        <h4 class="text-2xl font-bold mb-3">📩 Alertas em Tempo Real</h4>
+        <p class="text-gray-400">Recebe sinais imediatos via Telegram antes das grandes movimentações.</p>
+      </div>
+      <div class="bg-gray-900 p-6 rounded-xl border border-green-500 card-glow">
+        <h4 class="text-2xl font-bold mb-3">🔒 Grupo VIP Exclusivo</h4>
+        <p class="text-gray-400">Acesso vitalício a um grupo seleto com sinais e relatórios detalhados semanais.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Preço -->
+  <section id="preco" class="px-6 py-20 text-center bg-gray-900">
+    <h3 class="text-4xl font-bold mb-6">💰 Preço Único. Valor Vitalício.</h3>
+    <p class="text-gray-400 mb-10">Aproveita a oferta limitada e transforma o teu trading com acesso total por apenas:</p>
+    <div class="inline-block bg-white text-black px-10 py-8 rounded-xl shadow-2xl">
+      <p class="text-4xl font-bold mb-2">$1.99</p>
+      <p class="text-sm mb-4 text-gray-700">Sem mensalidades. Sem renovação.</p>
+      <a href="https://tinyurl.com/2aqcbv5x" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full font-semibold">Começar Agora</a>
+    </div>
+  </section>
+
+  <!-- Testemunhos -->
+  <section id="testemunhos" class="px-6 py-20 max-w-5xl mx-auto">
+    <h3 class="text-4xl font-bold mb-12 text-center">📣 O que dizem os nossos traders</h3>
+    <div class="grid md:grid-cols-2 gap-8">
+      <blockquote class="bg-gray-800 p-6 rounded-xl border-l-4 border-green-400">
+        <p class="text-gray-300 italic">“Consegui lucros reais em menos de uma semana. Serviço honesto, direto e poderoso.”</p>
+        <footer class="text-green-300 mt-2">— Joana M., Lisboa</footer>
+      </blockquote>
+      <blockquote class="bg-gray-800 p-6 rounded-xl border-l-4 border-green-400">
+        <p class="text-gray-300 italic">“Já seguia sinais pagos, mas nenhum teve tanto impacto como os do Criptosinais. Top!”</p>
+        <footer class="text-green-300 mt-2">— Carlos V., Luanda</footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section id="acesso" class="px-6 py-24 text-center hero-gradient">
+    <h3 class="text-4xl font-bold mb-4">Pronto para transformar os teus resultados?</h3>
+    <p class="text-gray-300 mb-6">Clica no botão abaixo, garante o teu lugar e junta-te ao grupo VIP.</p>
+    <a href="https://tinyurl.com/2aqcbv5x" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-10 py-4 rounded-full text-lg">🚀 Começar Agora</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="px-6 py-12 text-center text-gray-500 text-sm bg-black border-t border-gray-800">
+    <p>© 2025 Criptosinais. Todos os direitos reservados.</p>
+  </footer>
+</body>
+</html>

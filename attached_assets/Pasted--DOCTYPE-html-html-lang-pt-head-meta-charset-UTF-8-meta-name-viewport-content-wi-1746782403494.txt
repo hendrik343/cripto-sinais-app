@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criptosinais | Plataforma de Sinais Inteligentes</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .hero-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+    }
+    .card-glow:hover {
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.7);
+      transform: scale(1.03);
+      transition: all 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <header class="flex items-center justify-between px-6 py-5 border-b border-gray-800 bg-black shadow-md">
+    <img src="/mnt/data/9164F03E-8B0F-4D7E-A3B4-EC637F7938D8.jpeg" alt="Logo Criptosinais" class="h-10 w-10 rounded-full">
+    <nav class="space-x-6 text-sm">
+      <a href="#funcionalidades" class="hover:text-green-300 transition">Funcionalidades</a>
+      <a href="#preco" class="hover:text-green-300 transition">Preço</a>
+      <a href="#testemunhos" class="hover:text-green-300 transition">Clientes</a>
+      <a href="#acesso" class="bg-green-500 hover:bg-green-600 text-black font-semibold px-4 py-2 rounded-full transition">Começar</a>
+    </nav>
+  </header>
+
+  <!-- Gráficos Dinâmicos -->
+  <section class="px-6 py-16 max-w-6xl mx-auto">
+    <h2 class="text-3xl font-bold mb-6 text-center">📊 Preço em Tempo Real</h2>
+    <canvas id="priceChart" class="bg-white rounded-lg p-4 mb-10"></canvas>
+
+    <h2 class="text-3xl font-bold mb-6 text-center">💵 Volume de Negociação</h2>
+    <canvas id="volumeChart" class="bg-white rounded-lg p-4 mb-10"></canvas>
+
+    <h2 class="text-3xl font-bold mb-6 text-center">📉 RSI (Índice de Força Relativa)</h2>
+    <canvas id="rsiChart" class="bg-white rounded-lg p-4"></canvas>
+  </section>
+
+  <script>
+    async function fetchChartData(coin) {
+      const res = await fetch(`https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&days=30`);
+      const data = await res.json();
+      return {
+        labels: data.prices.map(item => new Date(item[0]).toLocaleDateString()),
+        prices: data.prices.map(item => item[1]),
+        volumes: data.total_volumes.map(item => item[1])
+      };
+    }
+
+    function calculateRSI(prices, period = 14) {
+      let gains = [], losses = [], rsis = [];
+      for (let i = 1; i < prices.length; i++) {
+        const diff = prices[i] - prices[i - 1];
+        gains.push(diff > 0 ? diff : 0);
+        losses.push(diff < 0 ? Math.abs(diff) : 0);
+      }
+      for (let i = 0; i <= gains.length - period; i++) {
+        const avgGain = gains.slice(i, i + period).reduce((a, b) => a + b, 0) / period;
+        const avgLoss = losses.slice(i, i + period).reduce((a, b) => a + b, 0) / period;
+        const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
+        rsis.push(100 - 100 / (1 + rs));
+      }
+      return rsis;
+    }
+
+    async function renderCharts() {
+      const btc = await fetchChartData('bitcoin');
+      const pepe = await fetchChartData('pepe');
+      const shiba = await fetchChartData('shiba-inu');
+
+      // Gráfico de Preço
+      new Chart(document.getElementById('priceChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: btc.labels,
+          datasets: [
+            { label: 'Bitcoin', data: btc.prices, borderColor: 'gold', borderWidth: 2, fill: false },
+            { label: 'PEPE', data: pepe.prices, borderColor: 'lightgreen', borderWidth: 2, fill: false },
+            { label: 'Shiba Inu', data: shiba.prices, borderColor: 'pink', borderWidth: 2, fill: false }
+          ]
+        },
+        options: { responsive: true, plugins: { legend: { labels: { color: 'black' } } }, scales: { x: { ticks: { color: 'black' } }, y: { ticks: { color: 'black' } } } }
+      });
+
+      // Gráfico de Volume
+      new Chart(document.getElementById('volumeChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: btc.labels,
+          datasets: [
+            { label: 'Bitcoin', data: btc.volumes, backgroundColor: 'gold' },
+            { label: 'PEPE', data: pepe.volumes, backgroundColor: 'lightgreen' },
+            { label: 'Shiba Inu', data: shiba.volumes, backgroundColor: 'pink' }
+          ]
+        },
+        options: { responsive: true, plugins: { legend: { labels: { color: 'black' } } }, scales: { x: { ticks: { color: 'black' } }, y: { ticks: { color: 'black' } } } }
+      });
+
+      // RSI
+      const rsiLabels = btc.labels.slice(14);
+      new Chart(document.getElementById('rsiChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: rsiLabels,
+          datasets: [
+            { label: 'Bitcoin RSI', data: calculateRSI(btc.prices), borderColor: 'gold', borderWidth: 2, fill: false },
+            { label: 'PEPE RSI', data: calculateRSI(pepe.prices), borderColor: 'lightgreen', borderWidth: 2, fill: false },
+            { label: 'Shiba RSI', data: calculateRSI(shiba.prices), borderColor: 'pink', borderWidth: 2, fill: false }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { labels: { color: 'black' } } },
+          scales: { x: { ticks: { color: 'black' } }, y: { min: 0, max: 100, ticks: { color: 'black' } } }
+        }
+      });
+    }
+
+    renderCharts();
+  </script>
+</body>
+</html>

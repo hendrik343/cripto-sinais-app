@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Área Premium - Alertas Antecipados</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    // Simulação de variações reais com base em histórico temporário
+    const historicoPrecos = {
+      "SOL": 147.00,
+      "ADA": 0.67
+    };
+
+    function calcularTendencia(moeda, precoAtual) {
+      const anterior = historicoPrecos[moeda];
+      historicoPrecos[moeda] = precoAtual; // Atualiza histórico
+      if (!anterior) return ['ESTÁVEL', 'WAIT'];
+      const variacao = ((precoAtual - anterior) / anterior) * 100;
+      if (variacao > 1) return ['SUBIDA', 'BUY'];
+      else if (variacao < -1) return ['DESCIDA', 'SELL'];
+      else return ['ESTÁVEL', 'WAIT'];
+    }
+
+    function atualizarTabela() {
+      const tabela = document.getElementById('premium-alerts');
+      tabela.innerHTML = '';
+
+      const moedas = [
+        { nome: "SOL", preco: 147.83, rsi: 52.4, macd: "↑ Positiva" },
+        { nome: "ADA", preco: 0.6847, rsi: 48.2, macd: "↓ Negativa" }
+      ];
+
+      moedas.forEach(coin => {
+        const [tendencia, acao] = calcularTendencia(coin.nome, coin.preco);
+        const linha = `<tr>
+          <td class='py-2'>${coin.nome}</td>
+          <td>$${coin.preco.toFixed(4)}</td>
+          <td>${coin.rsi}</td>
+          <td>${coin.macd}</td>
+          <td class='${tendencia === 'SUBIDA' ? 'text-yellow-400' : tendencia === 'DESCIDA' ? 'text-red-400' : 'text-white'}'>${tendencia}</td>
+          <td class='${acao === 'BUY' ? 'text-green-500' : acao === 'SELL' ? 'text-red-500' : 'text-gray-400'} font-bold'>${acao}</td>
+          <td>${new Date().toLocaleString('pt-PT')}</td>
+        </tr>`;
+        tabela.innerHTML += linha;
+      });
+    }
+
+    window.onload = () => {
+      atualizarTabela();
+      setInterval(atualizarTabela, 120000); // Atualiza a cada 2 minutos
+    };
+  </script>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <div class="max-w-7xl mx-auto py-10 px-6">
+    <div class="flex justify-between items-center mb-10">
+      <h1 class="text-3xl font-bold text-green-400">🔐 Área Premium - Alertas Antecipados</h1>
+      <a href="/index.html" class="text-sm bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">← Voltar ao Público</a>
+    </div>
+
+    <div class="bg-gray-800 rounded-xl p-6 shadow-lg mb-8">
+      <h2 class="text-2xl font-semibold mb-2">📈 Sinais Técnicos Premium</h2>
+      <p class="text-gray-400 mb-4">Acesso exclusivo a sinais com base em RSI, MACD, Volume e Sentimento de Mercado. Atualizado a cada 2 minutos.</p>
+      <table class="w-full text-sm">
+        <thead class="text-green-300 border-b border-gray-700">
+          <tr>
+            <th class="text-left py-2">Moeda</th>
+            <th class="text-left py-2">Preço</th>
+            <th class="text-left py-2">RSI</th>
+            <th class="text-left py-2">MACD</th>
+            <th class="text-left py-2">Tendência</th>
+            <th class="text-left py-2">Ação</th>
+            <th class="text-left py-2">Última Atualização</th>
+          </tr>
+        </thead>
+        <tbody id="premium-alerts">
+          <!-- Conteúdo gerado por JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+        <h3 class="text-xl font-semibold mb-2">📁 Relatório Semanal</h3>
+        <p class="text-gray-400 mb-3">Faça o download da análise completa das criptomoedas monitoradas esta semana.</p>
+        <a href="/relatorios/analise-semanal.pdf" download class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">⬇️ Baixar PDF</a>
+      </div>
+
+      <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+        <h3 class="text-xl font-semibold mb-2">📩 Alertas por Telegram</h3>
+        <p class="text-gray-400 mb-3">Receba sinais antecipados diretamente no seu Telegram com o nosso bot premium.</p>
+        <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" class="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg">Entrar no Bot Telegram</a>
+      </div>
+    </div>
+
+    <footer class="text-center mt-12 text-sm text-gray-500">
+      © 2025 Crypto Signals Premium. Todos os direitos reservados.
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pré-Visualização Premium | Criptosinais</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .locked {
+      position: relative;
+      filter: blur(2px);
+    }
+    .locked::after {
+      content: "🔒 Acesso Premium";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <header class="flex items-center justify-between px-6 py-5 border-b border-gray-800 bg-black shadow-md">
+    <div class="flex items-center">
+      <img src="/static/images/logo.svg" alt="Logo Criptosinais" class="h-10 w-10 rounded-full mr-2">
+      <h1 class="text-2xl font-extrabold text-green-400 tracking-wide">Criptosinais</h1>
+    </div>
+    <nav class="space-x-4 text-sm">
+      <a href="/landing" class="hover:text-green-300 transition">Início</a>
+      <a href="/charts" class="hover:text-green-300 transition">Gráficos</a>
+    </nav>
+  </header>
+
+  <section class="text-center px-6 py-16 max-w-5xl mx-auto">
+    <h2 class="text-4xl font-bold mb-4 text-green-400">💎 Área Premium</h2>
+    <p class="text-gray-300 mb-10">Visualiza o que vais receber ao assinar — desbloqueia já para aceder a tudo!</p>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <a href="/premium" class="block">
+        <div class="bg-gray-800 p-6 rounded-xl text-center locked">
+          <i class="fas fa-bell text-3xl text-green-400 mb-2"></i>
+          <h3 class="text-xl font-bold mb-2">Sinais em Tempo Real</h3>
+          <p class="text-gray-400">Alertas de compra e venda com precisão profissional.</p>
+        </div>
+      </a>
+      <a href="/premium" class="block">
+        <div class="bg-gray-800 p-6 rounded-xl text-center locked">
+          <i class="fas fa-chart-line text-3xl text-green-400 mb-2"></i>
+          <h3 class="text-xl font-bold mb-2">Análises Técnicas</h3>
+          <p class="text-gray-400">RSI, MACD, Volume e muito mais.</p>
+        </div>
+      </a>
+      <a href="/premium" class="block">
+        <div class="bg-gray-800 p-6 rounded-xl text-center locked">
+          <i class="fab fa-telegram text-3xl text-green-400 mb-2"></i>
+          <h3 class="text-xl font-bold mb-2">Grupo VIP Telegram</h3>
+          <p class="text-gray-400">Acesso ao nosso grupo fechado com sinais exclusivos.</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="mt-12">
+      <a href="/premium" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-full text-lg">Obter Acesso Premium - $1.99</a>
+    </div>
+  </section>
+
+  <footer class="px-6 py-12 text-center text-gray-500 text-sm bg-black border-t border-gray-800">
+    <div class="flex items-center justify-center space-x-4 mb-4 social-links">
+      <a href="https://twitter.com/seuTwitter" target="_blank" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" aria-label="Telegram">
+        <i class="fab fa-telegram"></i>
+      </a>
+      <a href="https://instagram.com/criptosinais77" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+    <p>© 2025 Criptosinais. Todos os direitos reservados.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criptosinais Premium Preview</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #0f172a, #1e293b);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="text-white font-sans">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-4 border-b border-gray-700 bg-black bg-opacity-70 shadow-lg sticky top-0 z-50">
+    <h1 class="text-2xl font-bold text-green-400">💎 Criptosinais</h1>
+    <nav class="space-x-6">
+      <a href="/premium" class="hover:text-yellow-400 transition">Entrar</a>
+      <a href="https://instagram.com/criptosinais77" target="_blank" class="hover:text-pink-400"><i class="fab fa-instagram"></i></a>
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" class="hover:text-blue-400"><i class="fab fa-telegram"></i></a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="text-center py-20 px-4">
+    <h2 class="text-4xl font-extrabold mb-4 text-white tracking-tight">Área Premium</h2>
+    <p class="text-gray-400 max-w-xl mx-auto text-lg">Veja uma amostra do que terá acesso após a subscrição. Desbloqueie tudo agora.</p>
+  </section>
+
+  <!-- Feature Cards -->
+  <section class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4 pb-16">
+    <div class="glass-card rounded-2xl p-6 text-center shadow-xl transition hover:scale-105">
+      <i class="fas fa-bell text-3xl text-yellow-400 mb-4"></i>
+      <h3 class="text-xl font-semibold mb-2">Alertas em Tempo Real</h3>
+      <p class="text-gray-300">Receba alertas de compra e venda com precisão profissional.</p>
+    </div>
+
+    <div class="glass-card rounded-2xl p-6 text-center shadow-xl transition hover:scale-105">
+      <i class="fas fa-chart-line text-3xl text-green-400 mb-4"></i>
+      <h3 class="text-xl font-semibold mb-2">Análise Técnica</h3>
+      <p class="text-gray-300">Indicadores como RSI, MACD e Volume analisados em profundidade.</p>
+    </div>
+
+    <div class="glass-card rounded-2xl p-6 text-center shadow-xl transition hover:scale-105">
+      <i class="fab fa-telegram text-3xl text-blue-400 mb-4"></i>
+      <h3 class="text-xl font-semibold mb-2">Grupo VIP Telegram</h3>
+      <p class="text-gray-300">Acesso ao grupo privado com sinais e debates exclusivos.</p>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="text-center py-16 px-4 bg-black bg-opacity-20">
+    <h3 class="text-2xl font-bold mb-4">Desbloqueie o acesso completo por apenas <span class="text-yellow-400">$1.99</span></h3>
+    <a href="https://tinyurl.com/2aqcbv5x" class="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded-full shadow-lg transition">Aderir Agora</a>
+    <p class="text-gray-400 mt-4 text-sm">Pagamento único. Acesso vitalício.</p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center text-gray-500 text-sm py-6 border-t border-gray-700">
+    <p>© 2025 Criptosinais. Todos os direitos reservados.</p>
+  </footer>
+</body>
+</html>

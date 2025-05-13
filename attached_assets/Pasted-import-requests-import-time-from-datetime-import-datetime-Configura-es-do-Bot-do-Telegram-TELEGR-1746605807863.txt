@@ -1,0 +1,81 @@
+import requests
+import time
+from datetime import datetime
+
+# Configurações do Bot do Telegram
+TELEGRAM_TOKEN = "SEU_TOKEN_AQUI"
+CHAT_ID = "SEU_CHAT_ID_AQUI"
+
+# Lista de moedas com IDs atualizados do CoinGecko
+MOEDAS = {
+    "shiba-inu": "SHIB",
+    "floki": "FLOKI",
+    "dogecoin": "DOGE",
+    "bonk": "BONK",
+    "solana": "SOL",
+    "ripple": "XRP",
+    "cardano": "ADA",
+    "avalanche-2": "AVAX",
+    "chainlink": "LINK",
+    "matic-network": "MATIC",
+    "arbitrum": "ARB",
+    "optimism": "OP",
+    "render-token": "RNDR",
+    "the-graph": "GRT",
+    "aptos": "APT",
+    "internet-computer": "ICP",
+    "sei-network": "SEI",
+    "starknet": "STRK"
+}
+
+# Histórico de preços para comparação
+historico_precos = {}
+
+def get_preco_atual(moeda_id):
+    url = f"https://api.coingecko.com/api/v3/simple/price"
+    params = {
+        "ids": moeda_id,
+        "vs_currencies": "usd"
+    }
+    try:
+        response = requests.get(url, params=params)
+        data = response.json()
+        if moeda_id in data:
+            return data[moeda_id]["usd"]
+        else:
+            raise KeyError(f"{moeda_id} não encontrado na resposta.")
+    except Exception as e:
+        print(f"Erro ao obter preço de {moeda_id}: {e}")
+        return None
+
+def send_telegram(mensagem):
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    payload = {"chat_id": CHAT_ID, "text": mensagem}
+    try:
+        requests.post(url, json=payload)
+    except Exception as e:
+        print("Erro ao enviar para o Telegram:", e)
+
+def verificar_variacao(moeda_id, simbolo):
+    preco = get_preco_atual(moeda_id)
+    if preco is None:
+        return
+
+    anterior = historico_precos.get(moeda_id)
+    historico_precos[moeda_id] = preco  # Atualiza histórico
+
+    if anterior:
+        variacao = ((preco - anterior) / anterior) * 100
+        if abs(variacao) >= 3:  # Alerta se houver variação >= 3%
+            mensagem = f"[{simbolo}] {datetime.now().strftime('%H:%M:%S')}\n"
+            mensagem += f"Preço atual: ${preco:.5f}\n"
+            mensagem += f"Variação: {variacao:.2f}% desde a última leitura.\n"
+            mensagem += "SINAL: " + ("📈 ALTA forte!" if variacao > 0 else "📉 QUEDA forte!")
+            send_telegram(mensagem)
+
+# Loop principal: atualiza a cada 2 minutos
+while True:
+    for moeda_id, simbolo in MOEDAS.items():
+        verificar_variacao(moeda_id, simbolo)
+        time.sleep(2)  # Pausa entre moedas para evitar limite de chamadas
+    time.sleep(120)  # Espera 2 minutos antes do próximo ciclo

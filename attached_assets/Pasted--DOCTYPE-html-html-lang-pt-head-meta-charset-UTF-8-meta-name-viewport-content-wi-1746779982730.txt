@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criptosinais | Plataforma de Sinais Inteligentes</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .hero-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+    }
+    .card-glow:hover {
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.7);
+      transform: scale(1.03);
+      transition: all 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-5 border-b border-gray-800 bg-black shadow-md">
+    <img src="/mnt/data/9164F03E-8B0F-4D7E-A3B4-EC637F7938D8.jpeg" alt="Logo Criptosinais" class="h-10 w-10 rounded-full">
+    <nav class="space-x-6 text-sm">
+      <a href="#funcionalidades" class="hover:text-green-300 transition">Funcionalidades</a>
+      <a href="#preco" class="hover:text-green-300 transition">Preço</a>
+      <a href="#testemunhos" class="hover:text-green-300 transition">Clientes</a>
+      <a href="#acesso" class="bg-green-500 hover:bg-green-600 text-black font-semibold px-4 py-2 rounded-full transition">Começar</a>
+    </nav>
+  </header>
+
+  <!-- Funcionalidades com links atualizados -->
+  <section id="funcionalidades" class="px-6 py-20 max-w-6xl mx-auto">
+    <h3 class="text-4xl font-bold mb-12 text-center">🔧 Funcionalidades Premium</h3>
+    <div class="grid md:grid-cols-3 gap-10">
+      <a href="/analise-tecnica" class="bg-gray-900 p-6 rounded-xl border border-green-500 card-glow block">
+        <h4 class="text-2xl font-bold mb-3">📈 Análise Técnica Avançada</h4>
+        <p class="text-gray-400">Integração com indicadores de mercado como RSI, MACD, médias móveis e muito mais.</p>
+      </a>
+      <a href="/alertas-tempo-real" class="bg-gray-900 p-6 rounded-xl border border-green-500 card-glow block">
+        <h4 class="text-2xl font-bold mb-3">📩 Alertas em Tempo Real</h4>
+        <p class="text-gray-400">Recebe sinais imediatos via Telegram antes das grandes movimentações.</p>
+      </a>
+      <a href="/grupo-vip" class="bg-gray-900 p-6 rounded-xl border border-green-500 card-glow block">
+        <h4 class="text-2xl font-bold mb-3">🔒 Grupo VIP Exclusivo</h4>
+        <p class="text-gray-400">Acesso vitalício a um grupo seleto com sinais e relatórios detalhados semanais.</p>
+      </a>
+    </div>
+  </section>
+</body>
+</html>

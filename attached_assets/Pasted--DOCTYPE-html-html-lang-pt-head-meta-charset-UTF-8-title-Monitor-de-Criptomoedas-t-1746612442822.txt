@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Monitor de Criptomoedas</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <div class="max-w-6xl mx-auto py-10 px-6">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-4xl font-extrabold text-green-400 flex items-center gap-2">
+        <i class="ph ph-chart-line"></i> Monitor de Criptomoedas
+      </h1>
+      <span class="text-gray-400">Atualizações a cada <span class="text-white font-bold">2 minutos</span></span>
+    </div>
+
+    <div class="bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
+      <p class="text-sm text-gray-400 mb-3">⚙️ Monitorização baseada nos indicadores técnicos: <strong>RSI</strong>, <strong>MACD</strong>, <strong>Volume</strong>, <strong>Variação de Preço</strong> e <strong>Sentimento de Mercado</strong>.</p>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">📈 Atualização de Preços com Recomendações</h2>
+        <button onclick="loadAlerts()" class="text-sm px-4 py-1 bg-green-600 hover:bg-green-700 rounded-xl">🔄 Atualizar</button>
+      </div>
+      <table class="w-full table-auto text-sm" id="price-table">
+        <thead class="text-green-300 border-b border-gray-700">
+          <tr>
+            <th class="text-left py-2">Moeda</th>
+            <th class="text-left py-2">Preço (USD)</th>
+            <th class="text-left py-2">Variação</th>
+            <th class="text-left py-2">Tendência</th>
+            <th class="text-left py-2">Ação</th>
+            <th class="text-left py-2">Última Atualização</th>
+          </tr>
+        </thead>
+        <tbody id="alert-body">
+          <tr>
+            <td colspan="6" class="text-center py-6 text-gray-400">A carregar alertas...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="text-center text-sm text-gray-500">
+      Dados fornecidos pela CoinGecko API<br>
+      Última atualização: <span id="last-updated">--:--:--</span>
+    </footer>
+  </div>
+
+  <script>
+    function loadAlerts() {
+      fetch('/alerts')
+        .then(res => res.json())
+        .then(data => {
+          const tbody = document.getElementById('alert-body');
+          const now = new Date();
+          document.getElementById('last-updated').textContent = now.toLocaleTimeString('pt-PT');
+
+          if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-gray-400">Nenhum alerta por enquanto. As recomendações aparecerão aqui assim que forem geradas.</td></tr>';
+            return;
+          }
+
+          tbody.innerHTML = data.map(row => `
+            <tr class="border-b border-gray-700">
+              <td class="py-2">${row.symbol}</td>
+              <td class="py-2">$${parseFloat(row.price).toFixed(5)}</td>
+              <td class="py-2">${row.change}</td>
+              <td class="py-2">${row.tendencia}</td>
+              <td class="py-2">${row.acao}</td>
+              <td class="py-2">${row.time}</td>
+            </tr>
+          `).join('');
+        })
+        .catch(() => {
+          const tbody = document.getElementById('alert-body');
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-red-400">Não foi possível atualizar os preços. Tente novamente mais tarde.</td></tr>';
+        });
+    }
+
+    loadAlerts();
+    setInterval(loadAlerts, 120000);
+  </script>
+</body>
+</html>

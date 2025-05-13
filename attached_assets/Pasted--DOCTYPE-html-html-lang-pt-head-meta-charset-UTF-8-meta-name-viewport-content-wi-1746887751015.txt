@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Criptosinais</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 1.5rem;
+    }
+    .glow-button:hover {
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+  <!-- Header Moderno -->
+  <header class="flex justify-between items-center p-6 bg-black border-b border-gray-700">
+    <div class="text-xl font-bold text-yellow-400">🚀 Criptosinais Dashboard</div>
+    <nav class="space-x-4 text-sm">
+      <a href="/dashboard" class="hover:text-yellow-300">Dashboard</a>
+      <a href="/premium" class="hover:text-yellow-300">Premium</a>
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" class="hover:text-yellow-300">Telegram</a>
+    </nav>
+  </header>
+
+  <!-- Título principal -->
+  <section class="text-center mt-12">
+    <h1 class="text-4xl font-bold mb-2">📊 Top Daily Pumps</h1>
+    <p class="text-gray-400">Atualizado a cada 5 minutos com sinais de valorização iminente</p>
+  </section>
+
+  <!-- Tabela com as moedas em alta -->
+  <section class="max-w-5xl mx-auto mt-10">
+    <div class="overflow-x-auto">
+      <table class="w-full glass-card text-sm text-left">
+        <thead class="text-gray-300 border-b border-gray-700">
+          <tr>
+            <th class="py-3 px-4">Moeda</th>
+            <th class="py-3 px-4">Preço Atual</th>
+            <th class="py-3 px-4">RSI</th>
+            <th class="py-3 px-4">Volume</th>
+            <th class="py-3 px-4">Tendência</th>
+            <th class="py-3 px-4">Status</th>
+          </tr>
+        </thead>
+        <tbody id="pump-table-body" class="text-white">
+          <!-- Conteúdo será preenchido via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer class="text-center text-gray-500 text-sm mt-16 mb-8">
+    © 2025 Criptosinais. Todos os direitos reservados.
+  </footer>
+
+  <script>
+    // Simulação de dados - Substituir por chamada à API do backend
+    const coins = [
+      { nome: 'PEPE', preco: '$0.00000233', rsi: 28, volume: '+36%', tendencia: 'Alta', status: '🔥 Buy Soon' },
+      { nome: 'SHIB', preco: '$0.00001503', rsi: 31, volume: '+25%', tendencia: 'Alta', status: '✅ Pump Imminent' },
+      { nome: 'FLOKI', preco: '$0.00009963', rsi: 29, volume: '+30%', tendencia: 'Alta', status: '🚀 Monitorar' }
+    ];
+
+    const table = document.getElementById('pump-table-body');
+    coins.forEach(coin => {
+      const row = `<tr>
+        <td class="py-2 px-4 font-semibold">${coin.nome}</td>
+        <td class="py-2 px-4">${coin.preco}</td>
+        <td class="py-2 px-4">${coin.rsi}</td>
+        <td class="py-2 px-4">${coin.volume}</td>
+        <td class="py-2 px-4 text-green-400">${coin.tendencia}</td>
+        <td class="py-2 px-4">${coin.status}</td>
+      </tr>`;
+      table.innerHTML += row;
+    });
+  </script>
+
+</body>
+</html>

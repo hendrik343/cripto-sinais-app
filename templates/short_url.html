@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Encurtada - Crypto Signals</title>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <div class="max-w-3xl mx-auto py-10 px-6">
+    <div class="bg-gray-800 rounded-xl p-8 shadow-lg my-10 text-center">
+      <div class="text-8xl text-green-500 mb-6 flex justify-center">
+        <i class="ph ph-link"></i>
+      </div>
+      
+      <h1 class="text-3xl font-bold text-green-400 mb-6">URL Encurtada</h1>
+      
+      <p class="text-xl mb-6">
+        Use este link mais curto para compartilhar nosso serviço de sinais:
+      </p>
+      
+      <div class="bg-gray-900 rounded-lg p-6 mb-8">
+        <div class="bg-gray-800 p-4 rounded-lg flex items-center justify-between mb-4 border border-gray-700">
+          <span class="text-xl font-mono select-all">{{ short_url }}</span>
+          <button id="copyButton" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-bold" onclick="copyUrl()">
+            <i class="ph ph-copy mr-1"></i> Copiar
+          </button>
+        </div>
+        
+        <p id="copyMessage" class="text-green-400 hidden">
+          <i class="ph ph-check-circle"></i> URL copiada para a área de transferência!
+        </p>
+        
+        <div class="mt-6">
+          <p class="text-gray-400 text-sm">
+            Este link irá direcionar as pessoas para nossa plataforma de sinais de criptomoedas, onde elas poderão acessar alertas em tempo real e recomendações de trading.
+          </p>
+        </div>
+      </div>
+      
+      <div class="flex justify-center space-x-4">
+        <a href="/" class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-bold">
+          <i class="ph ph-house mr-1"></i> Página Inicial
+        </a>
+        <a href="/premium" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-bold">
+          <i class="ph ph-crown mr-1"></i> Área Premium
+        </a>
+      </div>
+    </div>
+    
+    <footer class="text-center mt-12 text-sm text-gray-500">
+      <p>© 2025 Crypto Signals Premium. Todos os direitos reservados.</p>
+    </footer>
+  </div>
+  
+  <script>
+    function copyUrl() {
+      const url = "{{ short_url }}";
+      navigator.clipboard.writeText(url).then(function() {
+        const copyMessage = document.getElementById('copyMessage');
+        const copyButton = document.getElementById('copyButton');
+        
+        // Mostrar mensagem de sucesso
+        copyMessage.classList.remove('hidden');
+        copyButton.innerHTML = '<i class="ph ph-check"></i> Copiado!';
+        copyButton.classList.replace('bg-green-600', 'bg-gray-600');
+        
+        // Resetar após 3 segundos
+        setTimeout(function() {
+          copyMessage.classList.add('hidden');
+          copyButton.innerHTML = '<i class="ph ph-copy mr-1"></i> Copiar';
+          copyButton.classList.replace('bg-gray-600', 'bg-green-600');
+        }, 3000);
+      });
+    }
+  </script>
+</body>
+</html>

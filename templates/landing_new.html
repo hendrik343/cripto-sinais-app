@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criptosinais | Plataforma de Sinais Inteligentes</title>
+  
+  <!-- TailwindCSS 3 com sistema de tema -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/static/css/tailwind-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            border: "hsl(var(--border))",
+            input: "hsl(var(--input))",
+            ring: "hsl(var(--ring))",
+            background: "hsl(var(--background))",
+            foreground: "hsl(var(--foreground))",
+            primary: {
+              DEFAULT: "hsl(var(--primary))",
+              foreground: "hsl(var(--primary-foreground))",
+            },
+            secondary: {
+              DEFAULT: "hsl(var(--secondary))",
+              foreground: "hsl(var(--secondary-foreground))",
+            },
+            destructive: {
+              DEFAULT: "hsl(var(--destructive))",
+              foreground: "hsl(var(--destructive-foreground))",
+            },
+            muted: {
+              DEFAULT: "hsl(var(--muted))",
+              foreground: "hsl(var(--muted-foreground))",
+            },
+            accent: {
+              DEFAULT: "hsl(var(--accent))",
+              foreground: "hsl(var(--accent-foreground))",
+            },
+            popover: {
+              DEFAULT: "hsl(var(--popover))",
+              foreground: "hsl(var(--popover-foreground))",
+            },
+            card: {
+              DEFAULT: "hsl(var(--card))",
+              foreground: "hsl(var(--card-foreground))",
+            },
+          },
+          borderRadius: {
+            lg: "var(--radius)",
+            md: "calc(var(--radius) - 2px)",
+            sm: "calc(var(--radius) - 4px)",
+          },
+        },
+      },
+    }
+  </script>
+  
+  <style>
+    .card-glow:hover {
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.7);
+      transform: scale(1.03);
+      transition: all 0.3s ease-in-out;
+    }
+    
+    .hero-gradient {
+      background: linear-gradient(135deg, hsl(222.2 84% 4.9%) 0%, hsl(217.2 32.6% 17.5%) 100%);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius);
+    }
+    
+    .lang-pt, .lang-en, .lang-fr {
+      display: none;
+    }
+    .lang-active {
+      display: block;
+    }
+    .flex.lang-active {
+      display: flex;
+    }
+  </style>
+</head>
+
+<body class="bg-background text-foreground min-h-screen">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-5 border-b border-border bg-card">
+    <div class="flex items-center">
+      <div class="relative mr-3">
+        <div class="absolute inset-0 bg-primary rounded-full opacity-20 blur-md"></div>
+        <img src="/static/images/logo.svg" alt="Logo Criptosinais" class="h-14 w-14 relative z-10">
+      </div>
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-wide text-primary">Criptosinais</h1>
+        <p class="text-xs text-muted-foreground">Monitoramento Inteligente de Criptomoedas</p>
+      </div>
+    </div>
+    
+    <div class="flex items-center">
+      <select id="languageSelect" class="bg-background text-foreground text-xs rounded-lg px-2 py-1 border border-input mr-4">
+        <option value="pt" selected>Português</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+      
+      <button id="theme-toggle" class="mr-4 text-muted-foreground hover:text-foreground">
+        <i class="fas fa-moon dark:hidden"></i>
+        <i class="fas fa-sun hidden dark:inline"></i>
+      </button>
+      
+      <nav class="space-x-4 text-sm">
+        <a href="#funcionalidades" class="hover:text-primary transition">
+          <span class="lang-pt">Funcionalidades</span>
+          <span class="lang-en">Features</span>
+          <span class="lang-fr">Fonctionnalités</span>
+        </a>
+        <a href="#preco" class="hover:text-primary transition">
+          <span class="lang-pt">Preço</span>
+          <span class="lang-en">Price</span>
+          <span class="lang-fr">Prix</span>
+        </a>
+        <a href="#testemunhos" class="hover:text-primary transition">
+          <span class="lang-pt">Clientes</span>
+          <span class="lang-en">Clients</span>
+          <span class="lang-fr">Clients</span>
+        </a>
+        <a href="#acesso" class="bg-primary text-primary-foreground font-semibold px-4 py-2 rounded-full transition shadow-md">
+          <span class="lang-pt">Começar</span>
+          <span class="lang-en">Start</span>
+          <span class="lang-fr">Commencer</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero-gradient text-center px-6 py-24">
+    <div class="w-28 h-28 mx-auto mb-4 rounded-full border-4 border-primary flex items-center justify-center bg-card">
+      <i class="fas fa-chart-line text-4xl text-primary"></i>
+    </div>
+    <h2 class="text-5xl font-extrabold mb-4 leading-tight">
+      <span class="lang-pt">Sinais Inteligentes. Resultados Reais.</span>
+      <span class="lang-en">Intelligent Signals. Real Results.</span>
+      <span class="lang-fr">Signaux Intelligents. Résultats Réels.</span>
+    </h2>
+    <p class="text-muted-foreground text-lg max-w-2xl mx-auto mb-6">
+      <span class="lang-pt">Acede a sinais profissionais com base em RSI, MACD, Volume e muito mais. Resultados consistentes para traders exigentes.</span>
+      <span class="lang-en">Access professional signals based on RSI, MACD, Volume and more. Consistent results for demanding traders.</span>
+      <span class="lang-fr">Accédez à des signaux professionnels basés sur RSI, MACD, Volume et plus encore. Des résultats constants pour les traders exigeants.</span>
+    </p>
+    <a href="#acesso" class="bg-accent-foreground hover:bg-accent-foreground/90 text-accent font-bold px-8 py-4 rounded-full text-lg">
+      <span class="lang-pt">🧠 Aderir agora por $1.99</span>
+      <span class="lang-en">🧠 Join now for $1.99</span>
+      <span class="lang-fr">🧠 Rejoignez maintenant pour $1.99</span>
+    </a>
+  </section>
+
+  <!-- Funcionalidades -->
+  <section id="funcionalidades" class="px-6 py-20 max-w-6xl mx-auto">
+    <h3 class="text-4xl font-bold mb-12 text-center">
+      <span class="lang-pt">🔧 Funcionalidades Premium</span>
+      <span class="lang-en">🔧 Premium Features</span>
+      <span class="lang-fr">🔧 Fonctionnalités Premium</span>
+    </h3>
+    <div class="grid md:grid-cols-3 gap-10">
+      <a href="/analise-tecnica" class="bg-card p-6 rounded-xl border border-primary card-glow block">
+        <h4 class="text-2xl font-bold mb-3">
+          <span class="lang-pt">📈 Análise Técnica Avançada</span>
+          <span class="lang-en">📈 Advanced Technical Analysis</span>
+          <span class="lang-fr">📈 Analyse Technique Avancée</span>
+        </h4>
+        <p class="text-muted-foreground">
+          <span class="lang-pt">Integração com indicadores de mercado como RSI, MACD, médias móveis e muito mais.</span>
+          <span class="lang-en">Integration with market indicators such as RSI, MACD, moving averages and much more.</span>
+          <span class="lang-fr">Intégration avec des indicateurs de marché tels que RSI, MACD, moyennes mobiles et bien plus.</span>
+        </p>
+      </a>
+      <a href="/alertas-tempo-real" class="bg-card p-6 rounded-xl border border-primary card-glow block">
+        <h4 class="text-2xl font-bold mb-3">
+          <span class="lang-pt">📩 Alertas em Tempo Real</span>
+          <span class="lang-en">📩 Real-Time Alerts</span>
+          <span class="lang-fr">📩 Alertes en Temps Réel</span>
+        </h4>
+        <p class="text-muted-foreground">
+          <span class="lang-pt">Recebe sinais imediatos via Telegram antes das grandes movimentações.</span>
+          <span class="lang-en">Receive immediate signals via Telegram before major market movements.</span>
+          <span class="lang-fr">Recevez des signaux immédiats via Telegram avant les grands mouvements du marché.</span>
+        </p>
+      </a>
+      <a href="/grupo-vip" class="bg-card p-6 rounded-xl border border-primary card-glow block">
+        <h4 class="text-2xl font-bold mb-3">
+          <span class="lang-pt">🔒 Grupo VIP Exclusivo</span>
+          <span class="lang-en">🔒 Exclusive VIP Group</span>
+          <span class="lang-fr">🔒 Groupe VIP Exclusif</span>
+        </h4>
+        <p class="text-muted-foreground">
+          <span class="lang-pt">Acesso vitalício a um grupo seleto com sinais e relatórios detalhados semanais.</span>
+          <span class="lang-en">Lifetime access to a select group with signals and detailed weekly reports.</span>
+          <span class="lang-fr">Accès à vie à un groupe sélect avec signaux et rapports hebdomadaires détaillés.</span>
+        </p>
+      </a>
+    </div>
+  </section>
+
+  <!-- Preço -->
+  <section id="preco" class="px-6 py-20 text-center bg-card">
+    <h3 class="text-4xl font-bold mb-6">
+      <span class="lang-pt">💰 Preço Único. Valor Vitalício.</span>
+      <span class="lang-en">💰 One-Time Price. Lifetime Value.</span>
+      <span class="lang-fr">💰 Prix Unique. Valeur à Vie.</span>
+    </h3>
+    <p class="text-muted-foreground mb-10">
+      <span class="lang-pt">Aproveita a oferta limitada e transforma o teu trading com acesso total por apenas:</span>
+      <span class="lang-en">Take advantage of the limited offer and transform your trading with full access for just:</span>
+      <span class="lang-fr">Profitez de l'offre limitée et transformez votre trading avec un accès complet pour seulement:</span>
+    </p>
+    <div class="inline-block glass-card px-10 py-8 rounded-xl shadow-2xl">
+      <p class="text-4xl font-bold mb-2 text-primary">$1.99</p>
+      <p class="text-sm mb-4 text-muted-foreground">
+        <span class="lang-pt">Sem mensalidades. Sem renovação.</span>
+        <span class="lang-en">No monthly fees. No renewal.</span>
+        <span class="lang-fr">Pas de frais mensuels. Pas de renouvellement.</span>
+      </p>
+      <a href="https://tinyurl.com/2aqcbv5x" class="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-full font-semibold">
+        <span class="lang-pt">Começar Agora</span>
+        <span class="lang-en">Start Now</span>
+        <span class="lang-fr">Commencer Maintenant</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Testemunhos -->
+  <section id="testemunhos" class="px-6 py-20 max-w-5xl mx-auto">
+    <h3 class="text-4xl font-bold mb-12 text-center">
+      <span class="lang-pt">📣 O que dizem os nossos traders</span>
+      <span class="lang-en">📣 What our traders say</span>
+      <span class="lang-fr">📣 Ce que disent nos traders</span>
+    </h3>
+    <div class="grid md:grid-cols-2 gap-8">
+      <blockquote class="bg-card p-6 rounded-xl border-l-4 border-primary">
+        <p class="text-muted-foreground italic">
+          <span class="lang-pt">"Consegui lucros reais em menos de uma semana. Serviço honesto, direto e poderoso."</span>
+          <span class="lang-en">"I achieved real profits in less than a week. Honest, straightforward and powerful service."</span>
+          <span class="lang-fr">"J'ai réalisé des profits réels en moins d'une semaine. Service honnête, direct et puissant."</span>
+        </p>
+        <footer class="text-primary mt-2">
+          <span class="lang-pt">— Joana M., Lisboa</span>
+          <span class="lang-en">— Joana M., Lisbon</span>
+          <span class="lang-fr">— Joana M., Lisbonne</span>
+        </footer>
+      </blockquote>
+      <blockquote class="bg-card p-6 rounded-xl border-l-4 border-primary">
+        <p class="text-muted-foreground italic">
+          <span class="lang-pt">"Já seguia sinais pagos, mas nenhum teve tanto impacto como os do Criptosinais. Top!"</span>
+          <span class="lang-en">"I already followed paid signals, but none had as much impact as Criptosinais. Top!"</span>
+          <span class="lang-fr">"Je suivais déjà des signaux payants, mais aucun n'a eu autant d'impact que Criptosinais. Top!"</span>
+        </p>
+        <footer class="text-primary mt-2">
+          <span class="lang-pt">— Carlos V., Luanda</span>
+          <span class="lang-en">— Carlos V., Luanda</span>
+          <span class="lang-fr">— Carlos V., Luanda</span>
+        </footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section id="acesso" class="px-6 py-24 text-center hero-gradient">
+    <h3 class="text-4xl font-bold mb-4">
+      <span class="lang-pt">Pronto para transformar os teus resultados?</span>
+      <span class="lang-en">Ready to transform your results?</span>
+      <span class="lang-fr">Prêt à transformer vos résultats?</span>
+    </h3>
+    <p class="text-muted-foreground mb-6">
+      <span class="lang-pt">Clica no botão abaixo, garante o teu lugar e junta-te ao grupo VIP.</span>
+      <span class="lang-en">Click the button below, secure your spot and join the VIP group.</span>
+      <span class="lang-fr">Cliquez sur le bouton ci-dessous, assurez votre place et rejoignez le groupe VIP.</span>
+    </p>
+    <a href="https://tinyurl.com/2aqcbv5x" class="bg-accent-foreground hover:bg-accent-foreground/90 text-accent font-bold px-10 py-4 rounded-full text-lg shadow-md">
+      <span class="lang-pt">🚀 Começar Agora</span>
+      <span class="lang-en">🚀 Start Now</span>
+      <span class="lang-fr">🚀 Commencer Maintenant</span>
+    </a>
+    
+    <div class="mt-10">
+      <p class="text-muted-foreground mb-3">
+        <span class="lang-pt">Acesse também nosso canal no Telegram:</span>
+        <span class="lang-en">Also access our Telegram channel:</span>
+        <span class="lang-fr">Accédez également à notre canal Telegram:</span>
+      </p>
+      <a href="https://t.me/cryptosignalshendrik_bot" class="inline-flex items-center text-primary hover:text-primary/90">
+        <i class="fab fa-telegram mr-2"></i> 
+        <span class="lang-pt">Bot Telegram</span>
+        <span class="lang-en">Telegram Bot</span>
+        <span class="lang-fr">Bot Telegram</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="px-6 py-12 text-center text-muted-foreground text-sm bg-card border-t border-border">
+    <div class="flex items-center justify-center space-x-4 mb-4 social-links">
+      <a href="https://twitter.com/seuTwitter" target="_blank" aria-label="Twitter" class="hover:text-foreground">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://t.me/cryptosignalshendrik_bot" target="_blank" aria-label="Telegram" class="hover:text-foreground">
+        <i class="fab fa-telegram"></i>
+      </a>
+      <a href="https://instagram.com/criptosinais77" target="_blank" aria-label="Instagram" class="hover:text-foreground">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+    <p>
+      <span class="lang-pt">© 2025 Criptosinais. Todos os direitos reservados.</span>
+      <span class="lang-en">© 2025 Criptosinais. All rights reserved.</span>
+      <span class="lang-fr">© 2025 Criptosinais. Tous droits réservés.</span>
+    </p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Detectar idioma do navegador
+      const browserLang = navigator.language.split('-')[0];
+      if(['pt', 'en', 'fr'].includes(browserLang)) {
+        setLanguage(browserLang);
+        document.getElementById('languageSelect').value = browserLang;
+      } else {
+        setLanguage('pt'); // Default para português
+      }
+      
+      // Mudar idioma quando selecionado
+      document.getElementById('languageSelect').addEventListener('change', function() {
+        setLanguage(this.value);
+      });
+      
+      // Alternar entre tema claro e escuro
+      document.getElementById('theme-toggle').addEventListener('click', function() {
+        document.documentElement.classList.toggle('dark');
+      });
+    });
+    
+    function setLanguage(lang) {
+      document.querySelectorAll('.lang-pt, .lang-en, .lang-fr').forEach(el => {
+        el.classList.remove('lang-active');
+      });
+      
+      document.querySelectorAll(`.lang-${lang}`).forEach(el => {
+        el.classList.add('lang-active');
+      });
+      
+      // Atualizar o atributo lang do HTML
+      document.documentElement.lang = lang;
+    }
+  </script>
+</body>
+</html>
