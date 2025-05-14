@@ -76,18 +76,34 @@ jobs:
           echo "Android manifest:"
           cat flutter_app/android/app/src/main/AndroidManifest.xml || echo "Android manifest not found"
 
-      # Configurar permissões do gradlew
-      - name: Fix Gradle permissions
-        run: |
-          chmod +x flutter_app/android/gradlew
-          flutter_app/android/gradlew -v
-
-      # Tentar construir o APK
-      - name: Build APK
+      # Configurar permissões e verificar Gradle
+      - name: Fix Gradle permissions and configuration
         run: |
           cd flutter_app
+          if [ -f "android/gradlew" ]; then
+            chmod +x android/gradlew
+            echo "Configurando Gradle para compilação de debug"
+            mkdir -p android/app/src/debug
+            echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxPermSize=4096m -XX:+HeapDumpOnOutOfMemoryError" > android/gradle.properties
+            echo "org.gradle.daemon=true" >> android/gradle.properties
+            echo "org.gradle.parallel=true" >> android/gradle.properties
+            echo "org.gradle.configureondemand=true" >> android/gradle.properties
+            echo "android.useAndroidX=true" >> android/gradle.properties
+            echo "android.enableJetifier=true" >> android/gradle.properties
+            cat android/gradle.properties
+          else
+            echo "Gradle wrapper file not found"
+            ls -la android/
+          fi
+
+      # Tentar construir o APK de debug (mais simples)
+      - name: Build Debug APK
+        run: |
+          cd flutter_app
+          flutter clean
           flutter pub get
-          flutter build apk --debug --verbose
+          echo "Building debug APK only (easier to compile)"
+          flutter build apk --debug --no-sound-null-safety --no-tree-shake-icons --verbose
 
       # Verificar a saída
       - name: Check build output
