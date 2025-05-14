@@ -27,6 +27,7 @@ jobs:
         run: |
           mkdir -p assets/images assets/animations assets/fonts
           touch assets/fonts/CriptoIcons.ttf
+          echo "flutter.sdk=/home/runner/flutter" > android/local.properties
           flutter create --platforms=android .
         working-directory: flutter_app
           
