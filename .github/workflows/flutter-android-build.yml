@@ -36,13 +36,26 @@ jobs:
         run: flutter pub get
         working-directory: flutter_app
           
-      - name: Check directory structure
-        run: find . -name gradlew
+      - name: Check initial directory structure
+        run: |
+          echo "Checking for gradlew files before any operations:"
+          find . -name gradlew
+          ls -la flutter_app || echo "flutter_app directory not found"
+          ls -la flutter_app/android || echo "flutter_app/android directory not found"
 
-      - name: Create Gradle wrapper if needed
+      - name: Create/Update Android files
         run: |
           cd flutter_app
-          flutter create --platforms=android .
+          flutter clean
+          flutter pub get
+          flutter create --platforms=android --no-overwrite .
+          
+      - name: Verify gradlew was created
+        run: |
+          echo "Checking for gradlew files after creation:"
+          find . -name gradlew
+          ls -la flutter_app/android || echo "android directory still not found"
+          ls -la flutter_app/android/gradlew || echo "gradlew file not created"
           
       - name: Fix Gradle wrapper permissions
         run: |
@@ -50,7 +63,9 @@ jobs:
             chmod +x flutter_app/android/gradlew
             echo "Gradle wrapper permissions fixed"
           else
-            echo "Gradle wrapper not found, skipping permission fix"
+            mkdir -p flutter_app/android/app/src/main/java/io/flutter/app
+            echo "Script file not found - creating gradle directory structure"
+            ls -la flutter_app
           fi
 
       - name: Run Flutter diagnostics
