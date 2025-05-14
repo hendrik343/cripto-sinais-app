@@ -14,4 +14,23 @@
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+    
+    <!-- Material 3 theme para suporte completo -->
+    <style name="Theme.Material3.DayNight.NoActionBar" parent="@style/Theme.Material3.Dark.NoActionBar"/>
+    
+    <!-- Tema Material 3 Light -->
+    <style name="Theme.Material3.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/notification_color</item>
+        <item name="colorSecondary">@color/notification_color</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+    
+    <!-- Tema Material 3 Dark -->
+    <style name="Theme.Material3.Dark.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/notification_color</item>
+        <item name="colorSecondary">@color/notification_color</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
 </resources>
