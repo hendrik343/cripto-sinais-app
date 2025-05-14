@@ -38,7 +38,6 @@ flutter:
   assets:
     - assets/images/
     - assets/animations/
-    - assets/fonts/CriptoIcons.ttf
 
   fonts:
     - family: CriptoIcons

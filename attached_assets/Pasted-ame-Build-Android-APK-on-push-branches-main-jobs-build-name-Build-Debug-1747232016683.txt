@@ -1,4 +1,4 @@
-name: Build Android APK
+ame: Build Android APK
 
 on:
   push:
@@ -23,25 +23,17 @@ jobs:
         run: flutter pub get
         working-directory: flutter_app
 
-      - name: Garantir estrutura de diretórios (sem recriar o projeto)
+      - name: Create directories and project files
         run: |
           mkdir -p assets/images assets/animations assets/fonts
           touch assets/fonts/CriptoIcons.ttf
-          
-          # Verificar se pubspec.yaml existe, caso contrário criar estrutura mínima
-          if [ ! -f "pubspec.yaml" ]; then
-            echo "Criando estrutura mínima do projeto..."
-            flutter create --platforms=android .
-          else
-            echo "✅ Estrutura do projeto já existe, apenas garantindo diretórios de assets"
-          fi
+          flutter create --platforms=android .
         working-directory: flutter_app
 
       - name: Criar local.properties com caminho do Flutter
         working-directory: flutter_app
         run: |
           echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
-
       - name: Copiar google-services.json para android/app/
         working-directory: flutter_app
         run: |
@@ -51,7 +43,6 @@ jobs:
           else
             echo "⚠️ google-services.json não encontrado na raiz. Firebase pode não funcionar."
           fi
-
       - name: Verificar e dar permissão ao gradlew
         working-directory: flutter_app
         run: |
@@ -61,7 +52,6 @@ jobs:
             echo "❌ gradlew não encontrado!"
             exit 1
           fi
-
       - name: Flutter diagnostics
         run: |
           flutter doctor -v
@@ -85,10 +75,8 @@ jobs:
           echo "android.nonFinalResIds=false" >> android/gradle.properties
           echo "org.gradle.parallel=true" >> android/gradle.properties
           echo "org.gradle.caching=true" >> android/gradle.properties
-
           echo "🚀 Construindo APK..."
           flutter build apk --debug --verbose --no-tree-shake-icons
-
       - name: Verificar APK gerado
         run: ls -la build/app/outputs/flutter-apk/
         working-directory: flutter_app
