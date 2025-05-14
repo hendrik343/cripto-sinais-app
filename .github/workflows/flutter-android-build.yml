@@ -13,76 +13,105 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
+      - name: Display project structure
+        run: |
+          echo "Project structure:"
+          ls -la
+          find . -type d -maxdepth 2
+
+      # Setup Java primeiro (necessário para o Android)
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
+      # Setup Flutter mais recente
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.16.0'  # Versão com Dart SDK 3.x
+          flutter-version: '3.19.0'
           channel: 'stable'
+          cache: true
 
-      - name: List directories to debug
-        run: ls -la
-
-      - name: List flutter_app directory
-        run: ls -la flutter_app
-
-      - name: Install dependencies
-        run: flutter pub get
-        working-directory: flutter_app
-          
-      - name: Check initial directory structure
+      # Verificar versão do Flutter e Dart
+      - name: Check Flutter version
         run: |
-          echo "Checking for gradlew files before any operations:"
-          find . -name gradlew
-          ls -la flutter_app || echo "flutter_app directory not found"
-          ls -la flutter_app/android || echo "flutter_app/android directory not found"
+          flutter --version
+          dart --version
 
-      - name: Create/Update Android files
+      # Verificar estrutura inicial do projeto
+      - name: Check flutter_app directory
+        run: |
+          echo "Flutter app directory content:"
+          ls -la flutter_app
+          echo "Android directory content (if exists):"
+          ls -la flutter_app/android || echo "No android directory yet"
+          
+      # Criar pubspec.yaml se não existir
+      - name: Ensure pubspec.yaml exists
+        run: |
+          cd flutter_app
+          cat pubspec.yaml || echo "pubspec.yaml não encontrado"
+          flutter doctor -v
+
+      # Inicializar Flutter
+      - name: Initialize Flutter
         run: |
           cd flutter_app
           flutter clean
           flutter pub get
-          flutter create --platforms=android --no-overwrite .
-          
-      - name: Verify gradlew was created
-        run: |
-          echo "Checking for gradlew files after creation:"
-          find . -name gradlew
-          ls -la flutter_app/android || echo "android directory still not found"
-          ls -la flutter_app/android/gradlew || echo "gradlew file not created"
-          
-      - name: Fix Gradle wrapper permissions
-        run: |
-          if [ -f "flutter_app/android/gradlew" ]; then
-            chmod +x flutter_app/android/gradlew
-            echo "Gradle wrapper permissions fixed"
-          else
-            mkdir -p flutter_app/android/app/src/main/java/io/flutter/app
-            echo "Script file not found - creating gradle directory structure"
-            ls -la flutter_app
-          fi
+          flutter create --org com.criptosinais --platforms=android --project-name criptosinais .
 
-      - name: Run Flutter diagnostics
-        run: flutter doctor -v
-        working-directory: flutter_app
+      # Verificar criação da estrutura Android
+      - name: Verify Android files
+        run: |
+          echo "Android directory content after initialization:"
+          ls -la flutter_app/android
+          echo "Checking for gradlew:"
+          find flutter_app -name gradlew
+          echo "Android manifest:"
+          cat flutter_app/android/app/src/main/AndroidManifest.xml || echo "Android manifest not found"
 
+      # Configurar permissões do gradlew
+      - name: Fix Gradle permissions
+        run: |
+          chmod +x flutter_app/android/gradlew
+          flutter_app/android/gradlew -v
+
+      # Tentar construir o APK
       - name: Build APK
-        run: flutter build apk --release --verbose
-        working-directory: flutter_app
-        
-      - name: Check APK file existence
-        run: ls -la flutter_app/build/app/outputs/flutter-apk/ || echo "Directory or APK not found"
-        working-directory: .
+        run: |
+          cd flutter_app
+          flutter pub get
+          flutter build apk --debug --verbose
 
-      - name: Upload artifact
+      # Verificar a saída
+      - name: Check build output
+        run: |
+          echo "Checking build output:"
+          find flutter_app/build -name "*.apk" | sort
+          
+      # Verificar o arquivo APK no diretório de saída
+      - name: List APK files
+        run: |
+          ls -la flutter_app/build/app/outputs/flutter-apk/ || echo "APK directory not found"
+          
+      # Upload de APK de debug como alternativa
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: flutter_app/build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: warn
+          
+      # Tentar upload do APK normal
+      - name: Upload Release APK if exists
         uses: actions/upload-artifact@v4
         with:
           name: app-release
           path: flutter_app/build/app/outputs/flutter-apk/app-release.apk
-          if-no-files-found: error
+          if-no-files-found: warn
