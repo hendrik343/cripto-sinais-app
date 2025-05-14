@@ -14,10 +14,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.9'  # Versão mais recente e estável
+          flutter-version: '3.7.12'  # Versão mais estável para compilação
+          channel: 'stable'
 
       - name: List directories to debug
         run: ls -la
@@ -28,15 +35,27 @@ jobs:
       - name: Install dependencies
         run: |
           cd flutter_app
+          flutter --version
           flutter pub get
+          
+      - name: Fix Gradle wrapper permissions
+        run: |
+          cd flutter_app/android
+          chmod +x ./gradlew
 
       - name: Build APK
         run: |
           cd flutter_app
+          flutter doctor -v
           flutter build apk --release --verbose
+        
+      - name: Check APK file existence
+        run: |
+          ls -la flutter_app/build/app/outputs/flutter-apk/ || echo "Directory or APK not found"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release
           path: flutter_app/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
