@@ -73,7 +73,14 @@ jobs:
         run: flutter clean
         working-directory: flutter_app
 
-      - name: Build Debug APK with Gradle optimizations
+      - name: Criar arquivo key.jks para build
+        working-directory: flutter_app
+        run: |
+          # Cria um arquivo de chave vazio para teste
+          touch android/app/key.jks
+          echo "✅ Arquivo de chave criado para teste"
+
+      - name: Build Debug & Release APKs with Gradle optimizations
         working-directory: flutter_app
         run: |
           echo "Configurando gradle..."
@@ -86,8 +93,11 @@ jobs:
           echo "org.gradle.parallel=true" >> android/gradle.properties
           echo "org.gradle.caching=true" >> android/gradle.properties
 
-          echo "🚀 Construindo APK..."
+          echo "🚀 Construindo APK Debug..."
           flutter build apk --debug --verbose --no-tree-shake-icons --no-shrink
+          
+          echo "🚀 Construindo APK Release..."
+          flutter build apk --release --verbose --no-tree-shake-icons --no-shrink
 
       - name: Verificar APK gerado
         run: ls -la build/app/outputs/flutter-apk/
