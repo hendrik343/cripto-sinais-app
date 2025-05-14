@@ -27,7 +27,7 @@ jobs:
         run: flutter create --platforms=android .
         working-directory: flutter_app
           
-      - name: Grant permission to gradlew
+      - name: Verificar e dar permissão ao gradlew
         working-directory: flutter_app
         run: |
           if [ -f "android/gradlew" ]; then
