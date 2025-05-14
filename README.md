@@ -47,3 +47,5 @@ Configure as seguintes variáveis de ambiente:
 
 ```bash
 python crypto_price_bot.py
+# trigger
+# trigger
