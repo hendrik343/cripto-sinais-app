@@ -72,6 +72,26 @@ jobs:
       - name: Clean Flutter
         run: flutter clean
         working-directory: flutter_app
+        
+      - name: Otimizar recursos de imagem
+        working-directory: flutter_app
+        run: |
+          echo "🖼️ Otimizando recursos de imagem..."
+          # Encontrar todas as imagens PNG
+          find . -name "*.png" -type f -print0 | while IFS= read -r -d $'\0' file; do
+            echo "Otimizando $file"
+            # Compressão básica com OptiPNG (instalado por padrão nas ações do GitHub)
+            optipng -quiet -strip all -o7 "$file" || echo "Falha ao otimizar $file, continuando..."
+          done
+          
+          # Encontrar todas as imagens JPEG
+          find . -name "*.jpg" -name "*.jpeg" -type f -print0 | while IFS= read -r -d $'\0' file; do
+            echo "Otimizando $file"
+            # Compressão básica para JPEGs
+            jpegoptim --strip-all --max=85 "$file" || echo "Falha ao otimizar $file, continuando..."
+          done
+          
+          echo "✅ Otimização de recursos concluída"
 
       - name: Criar arquivo key.jks para build
         working-directory: flutter_app
