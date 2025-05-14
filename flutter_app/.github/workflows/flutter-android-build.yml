@@ -27,24 +27,31 @@ jobs:
         run: |
           mkdir -p assets/images assets/animations assets/fonts
           touch assets/fonts/CriptoIcons.ttf
-          echo "flutter.sdk=/home/runner/flutter" > android/local.properties
-          
-          # Copiar google-services.json se não existir no diretório correto
-          if [ ! -f "android/app/google-services.json" ]; then
-            echo "Copiando google-services.json para android/app/"
-            cp ../../google-services.json android/app/ || echo "⚠️ Arquivo google-services.json não encontrado na raiz"
-          fi
-          
           flutter create --platforms=android .
         working-directory: flutter_app
-          
+
+      - name: Criar local.properties com caminho do Flutter
+        working-directory: flutter_app
+        run: |
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+
+      - name: Copiar google-services.json para android/app/
+        working-directory: flutter_app
+        run: |
+          if [ -f "../../google-services.json" ]; then
+            cp ../../google-services.json android/app/google-services.json
+            echo "✅ google-services.json copiado com sucesso!"
+          else
+            echo "⚠️ google-services.json não encontrado na raiz. Firebase pode não funcionar."
+          fi
+
       - name: Verificar e dar permissão ao gradlew
         working-directory: flutter_app
         run: |
           if [ -f "android/gradlew" ]; then
             chmod +x android/gradlew
           else
-            echo "❌ gradlew not found in android/"
+            echo "❌ gradlew não encontrado!"
             exit 1
           fi
 
@@ -54,12 +61,13 @@ jobs:
           flutter config --no-analytics
           flutter devices
         working-directory: flutter_app
-        
+
       - name: Clean Flutter
         run: flutter clean
         working-directory: flutter_app
-        
-      - name: Build Debug APK with additional flags
+
+      - name: Build Debug APK with Gradle optimizations
+        working-directory: flutter_app
         run: |
           echo "Configurando gradle..."
           echo "org.gradle.jvmargs=-Xmx4G -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParallelGC" > android/gradle.properties
@@ -70,12 +78,11 @@ jobs:
           echo "android.nonFinalResIds=false" >> android/gradle.properties
           echo "org.gradle.parallel=true" >> android/gradle.properties
           echo "org.gradle.caching=true" >> android/gradle.properties
-          
-          echo "Construindo APK..."
-          flutter build apk --debug --verbose --no-tree-shake-icons
-        working-directory: flutter_app
 
-      - name: Check if APK exists
+          echo "🚀 Construindo APK..."
+          flutter build apk --debug --verbose --no-tree-shake-icons
+
+      - name: Verificar APK gerado
         run: ls -la build/app/outputs/flutter-apk/
         working-directory: flutter_app
 
