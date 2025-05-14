@@ -18,19 +18,10 @@
     
     <!-- Tema Principal da Aplicação CriptoSinais -->
     <style name="Theme.CriptoSinais" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorPrimaryDark">@color/primary_dark_color</item>
-        <item name="colorAccent">@color/accent_color</item>
-        <item name="android:colorBackground">@color/background_color</item>
-        <item name="colorSurface">@color/surface_color</item>
-        <item name="colorError">@color/error_color</item>
-        <item name="colorOnPrimary">@color/on_primary_color</item>
-        <item name="colorOnBackground">@color/on_background_color</item>
-        <item name="colorOnSurface">@color/on_surface_color</item>
-        <item name="colorOnError">@color/on_error_color</item>
-        <item name="android:statusBarColor">@color/primary_dark_color</item>
-        <item name="android:navigationBarColor">@color/background_color</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="android:statusBarColor">@color/purple_700</item>
     </style>
     
     <!-- Material 3 theme para retrocompatibilidade -->
@@ -38,17 +29,17 @@
     
     <!-- Tema Material 3 Light -->
     <style name="Theme.Material3.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorSecondary">@color/accent_color</item>
-        <item name="android:statusBarColor">@color/primary_dark_color</item>
-        <item name="android:navigationBarColor">@color/background_color</item>
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="android:statusBarColor">@color/purple_700</item>
     </style>
     
     <!-- Tema Material 3 Dark -->
     <style name="Theme.Material3.Dark.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorSecondary">@color/accent_color</item>
-        <item name="android:statusBarColor">@color/primary_dark_color</item>
-        <item name="android:navigationBarColor">@color/background_color</item>
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="android:statusBarColor">@color/purple_700</item>
     </style>
 </resources>
