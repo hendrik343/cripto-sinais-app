@@ -96,6 +96,15 @@ jobs:
             ls -la android/
           fi
 
+      # Preparar recursos de notificação e ícones 
+      - name: Verify notification resources
+        run: |
+          cd flutter_app
+          echo "Verificando recursos de notificação e ícones..."
+          ls -la android/app/src/main/res/drawable/ic_notification.xml || echo "Recurso ic_notification.xml não existe"
+          ls -la android/app/src/main/res/values/colors.xml || echo "Arquivo colors.xml não existe"
+          cat android/app/src/main/res/values/colors.xml
+          
       # Tentar construir o APK de debug (mais simples)
       - name: Build Debug APK
         run: |
@@ -103,7 +112,7 @@ jobs:
           flutter clean
           flutter pub get
           echo "Building debug APK only (easier to compile)"
-          flutter build apk --debug --no-sound-null-safety --no-tree-shake-icons --verbose
+          flutter build apk --debug --split-debug-info=./debug-info --no-sound-null-safety --no-tree-shake-icons --verbose
 
       # Verificar a saída
       - name: Check build output
