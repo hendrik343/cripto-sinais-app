@@ -28,6 +28,13 @@ jobs:
           mkdir -p assets/images assets/animations assets/fonts
           touch assets/fonts/CriptoIcons.ttf
           echo "flutter.sdk=/home/runner/flutter" > android/local.properties
+          
+          # Copiar google-services.json se não existir no diretório correto
+          if [ ! -f "android/app/google-services.json" ]; then
+            echo "Copiando google-services.json para android/app/"
+            cp ../../google-services.json android/app/ || echo "⚠️ Arquivo google-services.json não encontrado na raiz"
+          fi
+          
           flutter create --platforms=android .
         working-directory: flutter_app
           
