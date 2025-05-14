@@ -589,65 +589,11 @@
         if (lang === 'en') errorMsg = "Error loading data. Please try again later.";
         if (lang === 'fr') errorMsg = "Erreur lors du chargement des données. Veuillez réessayer plus tard.";
         
-        const table = document.getElementById('top-pumps-table');
-        if (table) {
-          // Remover o indicador de carregamento e mostrar a mensagem de erro
-          table.innerHTML = `
-            <tr class="border-b border-gray-700">
-              <td colspan="5" class="text-center py-4">
-                <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>
-                <span class="text-red-400">${errorMsg}</span>
-              </td>
-            </tr>
-          `;
-        }
-        
-        // Atualizar indicador de última atualização mesmo em caso de erro
-        updateLastRefreshTime('error');
-      }
-    }
-    
-    // Função para atualizar o texto de última atualização
-    function updateLastRefreshTime(status = 'success') {
-      const now = new Date();
-      const horario = now.toLocaleTimeString();
-      const texto = document.getElementById("ultimaAtualizacaoTexto");
-      const icone = document.getElementById("iconeAtualizacao");
-      
-      if (icone) {
-        // Remover a animação de carregamento
-        icone.classList.remove('animate-spin');
-        icone.classList.remove('hidden');
-        
-        // Mudar o ícone com base no status
-        if (status === 'error') {
-          icone.innerHTML = '<i class="fas fa-times-circle text-red-500"></i>';
-        } else {
-          icone.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
-        }
-      }
-      
-      if (texto) {
-        // Determina o texto baseado no idioma atual
-        if (document.documentElement.lang === 'pt') {
-          texto.textContent = status === 'error' 
-            ? `Falha na atualização: ${horario}`
-            : `Última atualização: ${horario}`;
-        } else if (document.documentElement.lang === 'fr') {
-          texto.textContent = status === 'error'
-            ? `Échec de la mise à jour: ${horario}`
-            : `Dernière mise à jour: ${horario}`;
-        } else {
-          texto.textContent = status === 'error'
-            ? `Update failed: ${horario}`
-            : `Last update: ${horario}`;
-        }
-      }
-      
-      // Remover qualquer indicador de carregamento residual
-      const placeholder = document.querySelector('#top-pumps-table .placeholder-row');
-      if (placeholder) {
-        placeholder.style.display = 'none';
+        document.getElementById('top-pumps-table').innerHTML = `
+          <tr class="border-b border-gray-700">
+            <td colspan="5" class="text-center py-4 text-red-400">${errorMsg}</td>
+          </tr>
+        `;
       }
     }
     
