@@ -23,27 +23,19 @@ jobs:
         run: flutter pub get
         working-directory: flutter_app
 
-      - name: Find gradlew file
-        run: |
-          echo "Procurando pelo gradlew:"
-          find . -name gradlew
-          ls -la flutter_app/android || echo "Android directory not found"
-        
       - name: Create Android project files if needed
         run: flutter create --platforms=android .
         working-directory: flutter_app
           
       - name: Grant permission to gradlew
+        working-directory: flutter_app
         run: |
           if [ -f "android/gradlew" ]; then
             chmod +x android/gradlew
-            echo "Permission granted to android/gradlew"
           else
-            echo "Gradlew file not found in expected location"
-            mkdir -p android/app/src/main
-            echo "Created Android directories"
+            echo "❌ gradlew not found in android/"
+            exit 1
           fi
-        working-directory: flutter_app
 
       - name: Build Debug APK
         run: flutter build apk --debug
