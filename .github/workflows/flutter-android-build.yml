@@ -7,136 +7,29 @@ on:
 
 jobs:
   build:
-    name: Build APK
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
-      - name: Display project structure
-        run: |
-          echo "Project structure:"
-          ls -la
-          find . -type d -maxdepth 2
-
-      # Setup Java primeiro (necessário para o Android)
-      - name: Set up Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      # Setup Flutter mais recente
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.0'
-          channel: 'stable'
-          cache: true
+          flutter-version: '3.16.0'
 
-      # Verificar versão do Flutter e Dart
-      - name: Check Flutter version
-        run: |
-          flutter --version
-          dart --version
+      - name: Get dependencies
+        run: flutter pub get
+        working-directory: flutter_app
 
-      # Verificar estrutura inicial do projeto
-      - name: Check flutter_app directory
-        run: |
-          echo "Flutter app directory content:"
-          ls -la flutter_app
-          echo "Android directory content (if exists):"
-          ls -la flutter_app/android || echo "No android directory yet"
-          
-      # Criar pubspec.yaml se não existir
-      - name: Ensure pubspec.yaml exists
-        run: |
-          cd flutter_app
-          cat pubspec.yaml || echo "pubspec.yaml não encontrado"
-          flutter doctor -v
+      - name: Grant gradlew permission
+        run: chmod +x android/gradlew
+        working-directory: flutter_app
 
-      # Inicializar Flutter
-      - name: Initialize Flutter
-        run: |
-          cd flutter_app
-          flutter clean
-          flutter pub get
-          flutter create --org com.criptosinais --platforms=android --project-name criptosinais .
-
-      # Verificar criação da estrutura Android
-      - name: Verify Android files
-        run: |
-          echo "Android directory content after initialization:"
-          ls -la flutter_app/android
-          echo "Checking for gradlew:"
-          find flutter_app -name gradlew
-          echo "Android manifest:"
-          cat flutter_app/android/app/src/main/AndroidManifest.xml || echo "Android manifest not found"
-
-      # Configurar permissões e verificar Gradle
-      - name: Fix Gradle permissions and configuration
-        run: |
-          cd flutter_app
-          if [ -f "android/gradlew" ]; then
-            chmod +x android/gradlew
-            echo "Configurando Gradle para compilação de debug"
-            mkdir -p android/app/src/debug
-            echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxPermSize=4096m -XX:+HeapDumpOnOutOfMemoryError" > android/gradle.properties
-            echo "org.gradle.daemon=true" >> android/gradle.properties
-            echo "org.gradle.parallel=true" >> android/gradle.properties
-            echo "org.gradle.configureondemand=true" >> android/gradle.properties
-            echo "android.useAndroidX=true" >> android/gradle.properties
-            echo "android.enableJetifier=true" >> android/gradle.properties
-            cat android/gradle.properties
-          else
-            echo "Gradle wrapper file not found"
-            ls -la android/
-          fi
-
-      # Preparar recursos de notificação e ícones 
-      - name: Verify notification resources
-        run: |
-          cd flutter_app
-          echo "Verificando recursos de notificação e ícones..."
-          ls -la android/app/src/main/res/drawable/ic_notification.xml || echo "Recurso ic_notification.xml não existe"
-          ls -la android/app/src/main/res/values/colors.xml || echo "Arquivo colors.xml não existe"
-          cat android/app/src/main/res/values/colors.xml
-          
-      # Tentar construir o APK de debug (mais simples)
       - name: Build Debug APK
-        run: |
-          cd flutter_app
-          flutter clean
-          flutter pub get
-          echo "Building debug APK only (easier to compile)"
-          flutter build apk --debug --split-debug-info=./debug-info --no-sound-null-safety --no-tree-shake-icons --verbose
+        run: flutter build apk --debug
+        working-directory: flutter_app
 
-      # Verificar a saída
-      - name: Check build output
-        run: |
-          echo "Checking build output:"
-          find flutter_app/build -name "*.apk" | sort
-          
-      # Verificar o arquivo APK no diretório de saída
-      - name: List APK files
-        run: |
-          ls -la flutter_app/build/app/outputs/flutter-apk/ || echo "APK directory not found"
-          
-      # Upload de APK de debug como alternativa
-      - name: Upload Debug APK
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
           path: flutter_app/build/app/outputs/flutter-apk/app-debug.apk
-          if-no-files-found: warn
-          
-      # Tentar upload do APK normal
-      - name: Upload Release APK if exists
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release
-          path: flutter_app/build/app/outputs/flutter-apk/app-release.apk
-          if-no-files-found: warn
