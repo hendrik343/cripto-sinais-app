@@ -87,7 +87,7 @@ jobs:
           echo "org.gradle.caching=true" >> android/gradle.properties
 
           echo "🚀 Construindo APK..."
-          flutter build apk --debug --verbose --no-tree-shake-icons
+          flutter build apk --debug --verbose --no-tree-shake-icons --no-shrink
 
       - name: Verificar APK gerado
         run: ls -la build/app/outputs/flutter-apk/
