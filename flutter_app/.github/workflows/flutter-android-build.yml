@@ -73,12 +73,28 @@ jobs:
         run: flutter clean
         working-directory: flutter_app
 
-      - name: Criar arquivo key.jks para build
+      - name: Configurar chave de assinatura
         working-directory: flutter_app
         run: |
-          # Cria um arquivo de chave vazio para teste
-          touch android/app/key.jks
-          echo "✅ Arquivo de chave criado para teste"
+          # Para builds de teste, criamos uma chave fictícia
+          if [[ "$GITHUB_REF" != "refs/tags/"* ]]; then
+            echo "Criando chave fictícia para build de testes"
+            touch android/app/key.jks
+            echo "✅ Chave de teste criada"
+          else
+            # Para lançamentos oficiais, usar chave real dos secrets
+            if [ -n "${{ secrets.KEY_JKS_BASE64 }}" ]; then
+              echo "Usando chave de assinatura oficial para lançamento"
+              echo "${{ secrets.KEY_JKS_BASE64 }}" | base64 --decode > android/app/key.jks
+              # Substituir senhas no build.gradle
+              sed -i 's/storePassword "SENHA"/storePassword "${{ secrets.KEYSTORE_PASSWORD }}"/g' android/app/build.gradle
+              sed -i 's/keyPassword "SENHA"/keyPassword "${{ secrets.KEY_PASSWORD }}"/g' android/app/build.gradle
+              echo "✅ Chave de assinatura e senhas configuradas"
+            else
+              echo "⚠️ Chave de assinatura não encontrada nos secrets, usando chave de teste"
+              touch android/app/key.jks
+            fi
+          fi
 
       - name: Build Debug & Release APKs with Gradle optimizations
         working-directory: flutter_app
@@ -103,8 +119,14 @@ jobs:
         run: ls -la build/app/outputs/flutter-apk/
         working-directory: flutter_app
 
-      - name: Upload APK artifact
+      - name: Upload Debug APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-debug.apk
           path: flutter_app/build/app/outputs/flutter-apk/app-debug.apk
+          
+      - name: Upload Release APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release.apk
+          path: flutter_app/build/app/outputs/flutter-apk/app-release.apk
