@@ -33,25 +33,24 @@ jobs:
         run: ls -la flutter_app
 
       - name: Install dependencies
-        run: |
-          cd flutter_app
-          flutter --version
-          flutter pub get
+        run: flutter pub get
+        working-directory: flutter_app
           
       - name: Fix Gradle wrapper permissions
-        run: |
-          cd flutter_app/android
-          chmod +x ./gradlew
+        run: chmod +x ./gradlew
+        working-directory: flutter_app/android
+
+      - name: Run Flutter diagnostics
+        run: flutter doctor -v
+        working-directory: flutter_app
 
       - name: Build APK
-        run: |
-          cd flutter_app
-          flutter doctor -v
-          flutter build apk --release --verbose
+        run: flutter build apk --release --verbose
+        working-directory: flutter_app
         
       - name: Check APK file existence
-        run: |
-          ls -la flutter_app/build/app/outputs/flutter-apk/ || echo "Directory or APK not found"
+        run: ls -la flutter_app/build/app/outputs/flutter-apk/ || echo "Directory or APK not found"
+        working-directory: .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
