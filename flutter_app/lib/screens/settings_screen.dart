@@ -334,7 +334,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             ),
                             SizedBox(height: 16),
-                            ..._availableCoins.map(_buildFavoriteCoinTile),
+                            // Agrupando em uma grade para evitar sobreposição
+                            GridView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2, // 2 itens por linha
+                                childAspectRatio: 3.0, // Ajuste da proporção altura/largura
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                              ),
+                              itemCount: _availableCoins.length,
+                              itemBuilder: (context, index) {
+                                return _buildFavoriteCoinTile(_availableCoins[index]);
+                              },
+                            ),
                           ],
                         ),
                       ),
