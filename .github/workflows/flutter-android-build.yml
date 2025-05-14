@@ -23,8 +23,11 @@ jobs:
         run: flutter pub get
         working-directory: flutter_app
 
-      - name: Create Android project files if needed
-        run: flutter create --platforms=android .
+      - name: Create directories and project files
+        run: |
+          mkdir -p assets/images assets/animations assets/fonts
+          touch assets/fonts/CriptoIcons.ttf
+          flutter create --platforms=android .
         working-directory: flutter_app
           
       - name: Verificar e dar permissão ao gradlew
@@ -37,8 +40,19 @@ jobs:
             exit 1
           fi
 
-      - name: Build Debug APK
-        run: flutter build apk --debug
+      - name: Flutter diagnostics
+        run: |
+          flutter doctor -v
+          flutter config --no-analytics
+          flutter devices
+        working-directory: flutter_app
+        
+      - name: Clean Flutter
+        run: flutter clean
+        working-directory: flutter_app
+        
+      - name: Build Debug APK with additional flags
+        run: flutter build apk --debug --verbose --no-tree-shake-icons --no-sound-null-safety
         working-directory: flutter_app
 
       - name: Check if APK exists

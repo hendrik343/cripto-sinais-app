@@ -1,0 +1,66 @@
+Build Debug APK
+failed 3 minutes ago in 2m 32s
+
+2s
+1s
+30s
+12s
+2s
+0s
+1m 43s
+Run flutter build apk --debug
+
+Running Gradle task 'assembleDebug'...                          
+Warning: The plugin path_provider_android requires Android SDK version 34.
+For more information about build configuration, see https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+Warning: The plugin shared_preferences_android requires Android SDK version 34.
+For more information about build configuration, see https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+Warning: The plugin url_launcher_android requires Android SDK version 34.
+For more information about build configuration, see https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+One or more plugins require a higher Android SDK version.
+Fix this issue by adding the following to /home/runner/work/cripto-sinais-app/cripto-sinais-app/flutter_app/android/app/build.gradle:
+android {
+  compileSdkVersion 34
+  ...
+}
+
+Checking the license for package Android SDK Build-Tools 30.0.3 in /usr/local/lib/android/sdk/licenses
+License for package Android SDK Build-Tools 30.0.3 accepted.
+Preparing "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)".
+"Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" ready.
+Installing Android SDK Build-Tools 30.0.3 in /usr/local/lib/android/sdk/build-tools/30.0.3
+"Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" complete.
+"Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" finished.
+Checking the license for package Android SDK Platform 33 in /usr/local/lib/android/sdk/licenses
+License for package Android SDK Platform 33 accepted.
+Preparing "Install Android SDK Platform 33 (revision: 3)".
+"Install Android SDK Platform 33 (revision: 3)" ready.
+Installing Android SDK Platform 33 in /usr/local/lib/android/sdk/platforms/android-33
+"Install Android SDK Platform 33 (revision: 3)" complete.
+"Install Android SDK Platform 33 (revision: 3)" finished.
+Error: unable to find directory entry in pubspec.yaml: /home/runner/work/cripto-sinais-app/cripto-sinais-app/flutter_app/assets/images/
+Error: unable to find directory entry in pubspec.yaml: /home/runner/work/cripto-sinais-app/cripto-sinais-app/flutter_app/assets/animations/
+Error: unable to locate asset entry in pubspec.yaml: "assets/fonts/CriptoIcons.ttf".
+Target debug_android_application failed: Exception: Failed to bundle asset files.
+
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Script '/opt/hostedtoolcache/flutter/stable-3.16.0-x64/packages/flutter_tools/gradle/src/main/groovy/flutter.groovy' line: 1350
+
+* What went wrong:
+Execution failed for task ':app:compileFlutterBuildDebug'.
+> Process 'command '/opt/hostedtoolcache/flutter/stable-3.16.0-x64/bin/flutter'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 1m 42s
+Running Gradle task 'assembleDebug'...                            102.6s
+Gradle task assembleDebug failed with exit code 1
+Error: Process completed with exit code 1.
