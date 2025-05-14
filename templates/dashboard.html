@@ -503,19 +503,25 @@
     async function loadTopPumps() {
       try {
         // Mostrar indicador de carregamento
-        document.querySelector('#top-pumps-table .placeholder-row').style.display = 'table-row';
+        const placeholder = document.querySelector('#top-pumps-table .placeholder-row');
+        if (placeholder) {
+          placeholder.style.display = 'table-row';
+        }
         
         // Fazer a requisição para a API
+        console.log('Fetching data from /api/top_pumps...');
         const response = await fetch('/api/top_pumps');
         
         if (!response.ok) {
           throw new Error(`API returned status ${response.status}`);
         }
         
+        console.log('Data received successfully');
         const data = await response.json();
         const table = document.getElementById('top-pumps-table');
         
-        // Limpar a tabela
+        // Limpar a tabela (remove o spinner de carregamento)
+        console.log('Clearing table and updating with new data');
         table.innerHTML = '';
         
         // Se não houver dados, exibir mensagem
