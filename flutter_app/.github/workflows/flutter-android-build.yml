@@ -53,7 +53,7 @@ jobs:
         working-directory: flutter_app
         
       - name: Build Debug APK with additional flags
-        run: flutter build apk --debug --verbose --no-tree-shake-icons --no-sound-null-safety
+        run: flutter build apk --debug --verbose --no-tree-shake-icons
         working-directory: flutter_app
 
       - name: Check if APK exists
