@@ -53,7 +53,19 @@ jobs:
         working-directory: flutter_app
         
       - name: Build Debug APK with additional flags
-        run: flutter build apk --debug --verbose --no-tree-shake-icons
+        run: |
+          echo "Configurando gradle..."
+          echo "org.gradle.jvmargs=-Xmx4G -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParallelGC" > android/gradle.properties
+          echo "android.useAndroidX=true" >> android/gradle.properties
+          echo "android.enableJetifier=true" >> android/gradle.properties
+          echo "android.defaults.buildfeatures.buildconfig=true" >> android/gradle.properties
+          echo "android.nonTransitiveRClass=false" >> android/gradle.properties
+          echo "android.nonFinalResIds=false" >> android/gradle.properties
+          echo "org.gradle.parallel=true" >> android/gradle.properties
+          echo "org.gradle.caching=true" >> android/gradle.properties
+          
+          echo "Construindo APK..."
+          flutter build apk --debug --verbose --no-tree-shake-icons
         working-directory: flutter_app
 
       - name: Check if APK exists
