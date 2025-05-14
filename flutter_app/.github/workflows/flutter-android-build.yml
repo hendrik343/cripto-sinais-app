@@ -7,27 +7,54 @@ on:
 
 jobs:
   build:
+    name: Build Debug APK
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      
-      - uses: subosito/flutter-action@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.16.0'
+
+      - name: Get dependencies
+        run: flutter pub get
+        working-directory: flutter_app
+
+      - name: Find gradlew file
+        run: |
+          echo "Procurando pelo gradlew:"
+          find . -name gradlew
+          ls -la flutter_app/android || echo "Android directory not found"
+        
+      - name: Create Android project files if needed
+        run: flutter create --platforms=android .
+        working-directory: flutter_app
           
-      - run: flutter pub get
+      - name: Grant permission to gradlew
+        run: |
+          if [ -f "android/gradlew" ]; then
+            chmod +x android/gradlew
+            echo "Permission granted to android/gradlew"
+          else
+            echo "Gradlew file not found in expected location"
+            mkdir -p android/app/src/main
+            echo "Created Android directories"
+          fi
         working-directory: flutter_app
-        
-      - run: chmod +x android/gradlew
+
+      - name: Build Debug APK
+        run: flutter build apk --debug
         working-directory: flutter_app
-        
-      - run: flutter build apk --debug
+
+      - name: Check if APK exists
+        run: ls -la build/app/outputs/flutter-apk/
         working-directory: flutter_app
-        
-      - run: ls -la build/app/outputs/flutter-apk/
-        working-directory: flutter_app
-        
-      - uses: actions/upload-artifact@v4
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
         with:
           name: app-debug.apk
           path: flutter_app/build/app/outputs/flutter-apk/app-debug.apk
