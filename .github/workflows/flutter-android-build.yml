@@ -23,7 +23,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.7.12'  # Versão mais estável para compilação
+          flutter-version: '3.16.0'  # Versão com Dart SDK 3.x
           channel: 'stable'
 
       - name: List directories to debug
