@@ -36,9 +36,22 @@ jobs:
         run: flutter pub get
         working-directory: flutter_app
           
+      - name: Check directory structure
+        run: find . -name gradlew
+
+      - name: Create Gradle wrapper if needed
+        run: |
+          cd flutter_app
+          flutter create --platforms=android .
+          
       - name: Fix Gradle wrapper permissions
-        run: chmod +x ./gradlew
-        working-directory: flutter_app/android
+        run: |
+          if [ -f "flutter_app/android/gradlew" ]; then
+            chmod +x flutter_app/android/gradlew
+            echo "Gradle wrapper permissions fixed"
+          else
+            echo "Gradle wrapper not found, skipping permission fix"
+          fi
 
       - name: Run Flutter diagnostics
         run: flutter doctor -v
