@@ -7,9 +7,12 @@ on:
 
 jobs:
   build:
+    name: Build Debug APK
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -20,7 +23,7 @@ jobs:
         run: flutter pub get
         working-directory: flutter_app
 
-      - name: Grant gradlew permission
+      - name: Grant permission to gradlew
         run: chmod +x android/gradlew
         working-directory: flutter_app
 
@@ -28,8 +31,12 @@ jobs:
         run: flutter build apk --debug
         working-directory: flutter_app
 
-      - name: Upload artifact
+      - name: Check if APK exists
+        run: ls -la build/app/outputs/flutter-apk/
+        working-directory: flutter_app
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
+          name: app-debug.apk
           path: flutter_app/build/app/outputs/flutter-apk/app-debug.apk
