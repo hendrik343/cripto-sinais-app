@@ -115,7 +115,26 @@ init_db()
 # Rotas do site
 @app.route("/")
 def index():
+    # Verifica se é um health check (sem user agent ou outros headers específicos)
+    user_agent = request.headers.get('User-Agent', '')
+    if not user_agent or 'kube-probe' in user_agent or 'health' in request.args:
+        # Retorna resposta simplificada para health checks
+        return jsonify({
+            "status": "online",
+            "message": "Crypto Price Monitor API is running"
+        })
+    # Renderiza a página normal para navegadores
     return render_template("index.html")
+
+# Rota específica para health checks
+@app.route("/health")
+def health_check():
+    """Endpoint para verificações de saúde (health checks)"""
+    return jsonify({
+        "status": "online",
+        "version": "1.0.0",
+        "message": "API de monitoramento de criptomoedas está funcionando corretamente"
+    })
 
 @app.route("/index_multilang")
 def index_multilang():
