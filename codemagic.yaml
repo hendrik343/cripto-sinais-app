@@ -1,13 +1,29 @@
 workflows:
-build-android:
-  name: Build Android APK
-  environment:
-    flutter: stable
-  scripts:
-    - name: Get dependencies
-      script: flutter pub get
-    - name: Build APK
-      script: flutter build apk --release
-  artifacts:
-    - build/app/outputs/flutter-apk/app-release.apk
-    
+  build-android:
+    name: Build Android APK
+    environment:
+      flutter: stable
+    scripts:
+      - name: Get dependencies
+        script: flutter pub get
+      - name: Build APK
+        script: flutter build apk --release
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
+  
+  deploy-python:
+    name: Deploy Python API
+    instance_type: linux
+    environment:
+      python: 3.11
+    scripts:
+      - name: Install dependencies
+        script: pip install -r requirements.txt
+      - name: Run tests
+        script: python -m pytest
+      - name: Start server
+        script: gunicorn --bind 0.0.0.0:$PORT wsgi:app
+    artifacts:
+      - app_api.py
+      - wsgi.py
+      - minimal_app.py

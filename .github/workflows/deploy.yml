@@ -1,0 +1,35 @@
+name: Deploy API to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Python API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Run tests
+        run: |
+          python -m pytest
+      
+      - name: Deploy to Platform
+        env:
+          PORT: ${{ secrets.PORT || 8080 }}
+        run: |
+          # Comandos específicos para o deployment
+          # Utilizando a porta dinâmica fornecida pela plataforma
+          gunicorn --bind 0.0.0.0:$PORT wsgi:app
