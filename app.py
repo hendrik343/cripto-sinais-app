@@ -1,11 +1,37 @@
-from flask import Flask, jsonify, redirect, render_template_string
+from flask import Flask, jsonify, redirect, render_template_string, request, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 import os
 import logging
+import requests
+from datetime import datetime
+import io
+import csv
 
 # 🔧 Configuração básica
 app = Flask(__name__)
 PORT = int(os.environ.get("PORT", 5000))
+
+# Definir SECRET_KEY para sessões
+app.secret_key = os.environ.get("SESSION_SECRET", "cripto_sinais_secret")
+
+# Configurações para logo e URLs
+DEFAULT_LOGO = "static/img/logo.png"
+EXTERNAL_LOGO = "static/img/logo-alt.png"
+USE_EXTERNAL_LOGO = False
+SHORT_URL = os.environ.get('REPLIT_DOMAINS', '').split(",")[0]
+PAYPAL_EMAIL = os.environ.get("PAYPAL_EMAIL", "hdhh9855@gmail.com")
+LOGO_CONFIG = {
+    "logo_path": EXTERNAL_LOGO if USE_EXTERNAL_LOGO else DEFAULT_LOGO,
+    "use_external_logo": USE_EXTERNAL_LOGO
+}
+
+# Configurações para o bot Telegram
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
+
+# Configurações de email
+EMAIL_USER = os.environ.get("EMAIL_USER", "")
+EMAIL_PASS = os.environ.get("EMAIL_PASS", "")
 
 # 📦 Base de dados PostgreSQL (usando variável de ambiente)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///database.db")
@@ -21,6 +47,61 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
 
+# 🧱 Modelo para armazenar preços de criptomoedas
+class CryptoPrice(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    coin_id = db.Column(db.String(64), nullable=False, index=True)
+    symbol = db.Column(db.String(16), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    previous_price = db.Column(db.Float, nullable=True)
+    percent_change = db.Column(db.Float, nullable=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    recommendation = db.Column(db.String(20), nullable=True)
+    
+    @classmethod
+    def get_latest_prices(cls):
+        """Get the latest price record for each cryptocurrency"""
+        from sqlalchemy import func, desc
+        subquery = db.session.query(
+            cls.coin_id,
+            func.max(cls.timestamp).label('max_time')
+        ).group_by(cls.coin_id).subquery()
+        
+        return db.session.query(cls).join(
+            subquery,
+            db.and_(
+                cls.coin_id == subquery.c.coin_id,
+                cls.timestamp == subquery.c.max_time
+            )
+        ).all()
+    
+    @classmethod
+    def store_price(cls, coin_id, symbol, price, previous_price=None):
+        """Store a new price record"""
+        percent_change = None
+        recommendation = None
+        
+        if previous_price and previous_price > 0:
+            percent_change = ((price - previous_price) / previous_price) * 100
+            
+            if abs(percent_change) >= 3.0:
+                recommendation = "COMPRA" if percent_change > 0 else "VENDA"
+            else:
+                recommendation = "AGUARDAR"
+        
+        new_price = cls(
+            coin_id=coin_id,
+            symbol=symbol,
+            price=price,
+            previous_price=previous_price,
+            percent_change=percent_change,
+            recommendation=recommendation
+        )
+        
+        db.session.add(new_price)
+        db.session.commit()
+        return new_price
+
 # 🌱 Inicialização
 with app.app_context():
     try:
@@ -29,7 +110,12 @@ with app.app_context():
     except Exception as e:
         logger.error(f"Erro ao criar tabelas: {e}")
 
-# ✅ Rota health check
+# ✅ Rota health check API
+@app.route("/api/status")
+def api_status():
+    return jsonify({"message": "API online!", "status": "online"})
+
+# ✅ Rota principal com HTML
 @app.route("/")
 def index():
     html = """
@@ -39,11 +125,11 @@ def index():
         <title>CriptoSinais - Dashboard</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
         <style>
           body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0f172a;
+            background: #121212;
             color: #e2e8f0;
             padding: 40px;
           }
@@ -55,14 +141,6 @@ def index():
           .card-header {
             background: rgba(15, 23, 42, 0.7);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          }
-          .btn-primary {
-            background-color: #3b82f6;
-            border-color: #3b82f6;
-          }
-          .btn-primary:hover {
-            background-color: #2563eb;
-            border-color: #2563eb;
           }
         </style>
       </head>
@@ -79,17 +157,60 @@ def index():
                 <div class="card-body">
                   <p>Status: <span class="badge bg-success">Online</span></p>
                   <p>Base de dados: <span class="badge bg-success">Conectada</span></p>
-                  <p>Bot Telegram: <span class="badge bg-success">Ativo</span></p>
+                  <p>Bot Telegram: <span class="badge bg-warning" id="telegramStatus">Verificando...</span></p>
                   <p>API CoinGecko: <span class="badge bg-success">Conectada</span></p>
+                </div>
+              </div>
+              
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="mb-0">Criptomoedas Monitoradas</h5>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-3 mb-2"><span class="badge bg-info">SHIB</span></div>
+                    <div class="col-md-3 mb-2"><span class="badge bg-info">FLOKI</span></div>
+                    <div class="col-md-3 mb-2"><span class="badge bg-info">DOGE</span></div>
+                    <div class="col-md-3 mb-2"><span class="badge bg-info">BONK</span></div>
+                    <div class="col-md-3 mb-2"><span class="badge bg-info">SOL</span></div>
+                    <div class="col-md-3 mb-2"><span class="badge bg-info">XRP</span></div>
+                    <div class="col-md-3 mb-2"><span class="badge bg-info">ADA</span></div>
+                    <div class="col-md-3 mb-2"><span class="badge bg-info">AVAX</span></div>
+                  </div>
                 </div>
               </div>
               
               <div class="d-grid gap-2">
                 <a href="/dashboard" class="btn btn-primary btn-lg">Acessar Dashboard Completo</a>
+                <a href="/api/status" class="btn btn-secondary">Verificar API</a>
               </div>
             </div>
           </div>
         </div>
+        
+        <script>
+          // Verificar status do Telegram
+          fetch('/api/telegram-status')
+              .then(response => response.json())
+              .then(data => {
+                  const statusElement = document.getElementById('telegramStatus');
+                  console.log("Telegram update status:", data);
+                  
+                  if (data.status === 'online') {
+                      statusElement.className = 'badge bg-success';
+                      statusElement.textContent = 'Conectado';
+                  } else {
+                      statusElement.className = 'badge bg-danger';
+                      statusElement.textContent = 'Desconectado';
+                  }
+              })
+              .catch(error => {
+                  console.error('Erro ao verificar status do Telegram:', error);
+                  const statusElement = document.getElementById('telegramStatus');
+                  statusElement.className = 'badge bg-danger';
+                  statusElement.textContent = 'Erro';
+              });
+        </script>
       </body>
     </html>
     """
