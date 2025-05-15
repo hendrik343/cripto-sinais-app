@@ -115,16 +115,19 @@ init_db()
 # Rotas do site
 @app.route("/")
 def index():
-    # Retorna uma mensagem simples em texto para health checks
-    if request.headers.get('Accept') == 'application/json':
-        # Para clientes que especificamente solicitam JSON
+    # Verifica se é um health check (pedindo JSON ou sem user agent)
+    user_agent = request.headers.get('User-Agent', '')
+    
+    # Para health checks ou quando requisitado explicitamente
+    if 'curl' in user_agent or 'kube-probe' in user_agent or 'health' in request.args or request.headers.get('Accept') == 'application/json':
+        # Retorna resposta simplificada para health checks em JSON
         return jsonify({
             "status": "online",
-            "message": "✅ API CriptoSinais está no ar!"
+            "message": "API online!"
         })
     
-    # Resposta padrão em texto para health checks e outros clientes
-    return "✅ API CriptoSinais está no ar!"
+    # Renderiza a página normal para navegadores
+    return render_template("index.html")
 
 # Rota específica para health checks
 @app.route("/health")
