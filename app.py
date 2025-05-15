@@ -117,12 +117,15 @@ init_db()
 def index():
     # Verifica se é um health check (sem user agent ou outros headers específicos)
     user_agent = request.headers.get('User-Agent', '')
-    if not user_agent or 'kube-probe' in user_agent or 'health' in request.args:
-        # Retorna resposta simplificada para health checks
+    
+    # Para health checks ou quando requisitado explicitamente
+    if not user_agent or 'kube-probe' in user_agent or 'health' in request.args or request.headers.get('Accept') == 'application/json':
+        # Retorna resposta simplificada para health checks em JSON
         return jsonify({
             "status": "online",
-            "message": "Crypto Price Monitor API is running"
+            "message": "🚀 API CriptoSinais está ativa!"
         })
+    
     # Renderiza a página normal para navegadores
     return render_template("index.html")
 
