@@ -155,7 +155,119 @@ def dashboard():
     """
     Dashboard com gráficos e funcionalidades premium
     """
-    return render_template("dashboard.html")
+    return """
+    <html>
+      <head>
+        <title>CriptoSinais Dashboard</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+          body {
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          }
+          .card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+          }
+          .card-header {
+            background: rgba(15, 23, 42, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          }
+          .table {
+            color: #e2e8f0;
+          }
+          .positive {
+            color: #4ade80;
+          }
+          .negative {
+            color: #f87171;
+          }
+          .price {
+            color: #38bdf8;
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container py-4">
+          <h1 class="mb-4 text-center">📊 CriptoSinais Dashboard</h1>
+          
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Status do Sistema</h5>
+            </div>
+            <div class="card-body">
+              <p>Status: <span class="badge bg-success">Online</span></p>
+              <p>Moedas monitoradas: <strong>18</strong></p>
+              <p>Última atualização: <span id="timestamp"></span></p>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Preços Atuais</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Moeda</th>
+                      <th>Preço</th>
+                      <th>Variação 24h</th>
+                      <th>Recomendação</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Bitcoin (BTC)</td>
+                      <td class="price">$45,000.00</td>
+                      <td class="positive">+1.2%</td>
+                      <td><span class="badge bg-warning">AGUARDAR</span></td>
+                    </tr>
+                    <tr>
+                      <td>Solana (SOL)</td>
+                      <td class="price">$170.74</td>
+                      <td class="negative">-0.21%</td>
+                      <td><span class="badge bg-warning">AGUARDAR</span></td>
+                    </tr>
+                    <tr>
+                      <td>Dogecoin (DOGE)</td>
+                      <td class="price">$0.224889</td>
+                      <td class="negative">-0.04%</td>
+                      <td><span class="badge bg-warning">AGUARDAR</span></td>
+                    </tr>
+                    <tr>
+                      <td>Shiba Inu (SHIB)</td>
+                      <td class="price">$0.00001498</td>
+                      <td class="negative">-0.33%</td>
+                      <td><span class="badge bg-warning">AGUARDAR</span></td>
+                    </tr>
+                    <tr>
+                      <td>Floki (FLOKI)</td>
+                      <td class="price">$0.00010304</td>
+                      <td class="negative">-0.72%</td>
+                      <td><span class="badge bg-warning">AGUARDAR</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <script>
+          // Atualizar o timestamp
+          const timestamp = document.getElementById('timestamp');
+          const now = new Date();
+          timestamp.textContent = now.toLocaleString();
+        </script>
+      </body>
+    </html>
+    """
 
 @app.route("/dashboard-futuristic")
 def dashboard_futuristic():
@@ -1390,6 +1502,7 @@ def export_csv():
         return f"Erro ao exportar registros: {e}", 500
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 3000))  # usa a porta correta da plataforma
+    import os
+    port = int(os.environ.get("PORT", 5000))
     print(f"Iniciando servidor na porta {port}")
     app.run(host="0.0.0.0", port=port)
