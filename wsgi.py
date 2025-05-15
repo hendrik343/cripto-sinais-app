@@ -3,39 +3,9 @@ Arquivo WSGI para deployment da aplicação CriptoSinais
 Este arquivo é o ponto de entrada para servidores WSGI como Gunicorn
 """
 
-import os
-import logging
-import sys
+from index import app  # Pegar app diretamente do index.py
 
-# Configurar logging básico
-logging.basicConfig(level=logging.INFO, stream=sys.stdout,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger('main')
-
-# Tentar importar a aplicação completa (app.py)
-try:
-    logger.info("Tentando importar a aplicação API (app_api.py)...")
-    from app_api import app
-    logger.info("Aplicação API (app_api.py) importada com sucesso")
-except Exception as e:
-    # Em caso de erro, tente a aplicação completa
-    logger.warning(f"Erro ao importar app_api.py: {e}")
-    try:
-        logger.info("Tentando importar a aplicação completa (app.py)...")
-        from app import app
-        logger.info("Aplicação principal (app.py) importada com sucesso")
-    except Exception as e:
-        # Em último caso, importe a aplicação minimalista
-        logger.warning(f"Erro ao importar aplicação completa: {e}")
-        logger.info("Importando aplicação minimalista (minimal_app.py)...")
-        from minimal_app import app
-        logger.info("Aplicação minimalista importada com sucesso")
-
-# Verificar a porta para o servidor
-port = int(os.environ.get("PORT", 8080))
-logger.info(f"Configurado para usar a porta {port}")
-
-# Disponibiliza o objeto 'app' para servidores WSGI
 if __name__ == "__main__":
-    logger.info(f"Iniciando servidor na porta {port}")
+    import os
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
