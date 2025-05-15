@@ -1,5 +1,5 @@
 import os
-from flask import Flask, redirect, render_template, jsonify
+from flask import Flask, redirect, render_template, jsonify, request
 import logging
 
 # Configuração de logging

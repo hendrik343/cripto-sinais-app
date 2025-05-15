@@ -1,1 +1,1 @@
-web: gunicorn wsgi:app --bind 0.0.0.0:$PORT --log-level info --timeout 120
+web: gunicorn main:app --bind 0.0.0.0:$PORT --log-level info --timeout 120
