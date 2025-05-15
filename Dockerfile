@@ -31,5 +31,9 @@ ENV TZ=UTC
 RUN useradd -m appuser
 USER appuser
 
+# Usar um script de shell para expandir as variáveis de ambiente
+COPY start_server.sh /app/start_server.sh
+RUN chmod +x /app/start_server.sh
+
 # Executar o script de inicialização
-CMD ["./run.sh"]
+CMD ["/app/start_server.sh"]

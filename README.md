@@ -99,6 +99,25 @@ A aplicação suporta health checks nas seguintes rotas:
 - **/premium** - Área de assinantes com análises avançadas
 - **/api/crypto-signals** - API de sinais para integrações externas
 
+## Resolução de Problemas de Deployment
+
+### Problema com a porta de escuta
+Se o servidor estiver escutando na porta errada:
+- Verifique se a variável de ambiente `PORT` está definida
+- Use o arquivo `wsgi.py` para iniciar o aplicativo, não app.py diretamente
+- Execute o servidor com o comando: `gunicorn wsgi:app --bind 0.0.0.0:$PORT`
+
+### Falha em Health Checks
+Se os health checks estiverem falhando:
+- Acesse a rota `/health` para verificar se o aplicativo está respondendo corretamente
+- Confirme que a rota raiz `/` está retornando um status JSON quando solicitado por ferramentas de monitoramento
+- Verifique os logs do Gunicorn para erros de inicialização
+
+### Problemas com o banco de dados
+- Verifique se a variável `DATABASE_URL` está corretamente definida
+- Confirme que as tabelas foram criadas executando o endpoint `/api/status`
+- Os logs iniciais da aplicação mostram se a conexão com o banco foi bem-sucedida
+
 ## Contato e Suporte
 
 - **Telegram:** @cryptosignalshendrik_bot
