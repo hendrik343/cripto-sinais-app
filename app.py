@@ -112,20 +112,17 @@ def init_db():
 # Tentar inicializar o banco de dados na inicialização
 init_db()
 
-# Rotas do site
-@app.route("/")
+# Health check simples na raiz
+@app.route('/')
 def index():
-    # Para verificações de saúde (health checks)
-    if 'curl' in request.headers.get('User-Agent', '') or request.args.get('health'):
-        return jsonify({
-            "status": "online", 
-            "message": "API online!"
-        })
-    
-    # Redirecionamento para o dashboard
-    return redirect('/index_html')
+    return jsonify({"message": "API online!", "status": "online"})
 
-# Rota alternativa para garantir o acesso à página HTML
+# Rota específica para preview da app no browser
+@app.route('/preview')
+def preview():
+    return redirect("/dashboard")
+
+# Página inicial (acessível diretamente)
 @app.route("/index_html")
 def index_html():
     return render_template("index.html")
@@ -1394,4 +1391,5 @@ def export_csv():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 3000))  # usa a porta correta da plataforma
+    print(f"Iniciando servidor na porta {port}")
     app.run(host="0.0.0.0", port=port)
