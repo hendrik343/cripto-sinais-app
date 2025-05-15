@@ -112,7 +112,7 @@ with app.app_context():
 
 # ✅ Rota health check API
 @app.route("/api/status")
-def api_status_check():
+def api_status():
     return jsonify({"message": "API online!", "status": "online"})
 
 # ✅ Rota principal com HTML
