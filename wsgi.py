@@ -14,15 +14,22 @@ logger = logging.getLogger('main')
 
 # Tentar importar a aplicação completa (app.py)
 try:
-    logger.info("Tentando importar a aplicação completa (app.py)...")
-    from app import app
-    logger.info("Aplicação principal (app.py) importada com sucesso")
+    logger.info("Tentando importar a aplicação API (app_api.py)...")
+    from app_api import app
+    logger.info("Aplicação API (app_api.py) importada com sucesso")
 except Exception as e:
-    # Em caso de erro, importe a aplicação minimalista
-    logger.warning(f"Erro ao importar aplicação completa: {e}")
-    logger.info("Importando aplicação minimalista (minimal_app.py)...")
-    from minimal_app import app
-    logger.info("Aplicação minimalista importada com sucesso")
+    # Em caso de erro, tente a aplicação completa
+    logger.warning(f"Erro ao importar app_api.py: {e}")
+    try:
+        logger.info("Tentando importar a aplicação completa (app.py)...")
+        from app import app
+        logger.info("Aplicação principal (app.py) importada com sucesso")
+    except Exception as e:
+        # Em último caso, importe a aplicação minimalista
+        logger.warning(f"Erro ao importar aplicação completa: {e}")
+        logger.info("Importando aplicação minimalista (minimal_app.py)...")
+        from minimal_app import app
+        logger.info("Aplicação minimalista importada com sucesso")
 
 # Verificar a porta para o servidor
 port = int(os.environ.get("PORT", 8080))
