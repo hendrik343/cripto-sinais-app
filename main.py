@@ -14,9 +14,12 @@ app.secret_key = os.environ.get("SESSION_SECRET", "dev_secret_key")
 
 # Rota básica para health checks
 @app.route('/')
-def health_check():
+def health_check_root():
     """Endpoint para verificações de saúde (health checks)"""
-    return "API online!"
+    return jsonify({
+        "status": "online",
+        "message": "API online!"
+    })
 
 # Rota alternativa para o dashboard
 @app.route('/dashboard')
@@ -41,9 +44,9 @@ def health():
 # Tentativa de importar as rotas da aplicação principal
 try:
     logger.info("Tentando importar a aplicação completa (app.py)...")
-    from app import app as main_app
-    # Importar todas as rotas e vistas da aplicação principal
-    from app import *
+    # Importar usando um módulo auxiliar para evitar conflitos
+    import app as app_module
+    # Registrar blueprint ou adicionar rotas se necessário
     logger.info("Aplicação principal (app.py) importada com sucesso")
 except Exception as e:
     logger.error(f"Erro ao importar app.py: {e}")
