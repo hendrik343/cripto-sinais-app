@@ -3,7 +3,13 @@ Arquivo WSGI para deployment da aplicação CriptoSinais
 Este arquivo é o ponto de entrada para servidores WSGI como Gunicorn
 """
 
-from index import app  # Pegar app diretamente do index.py
+try:
+    from app import app  # Tentar importar do app.py primeiro
+except ImportError:
+    try:
+        from index import app  # Fallback para index.py
+    except ImportError:
+        from main import app  # Último fallback para main.py
 
 if __name__ == "__main__":
     import os
