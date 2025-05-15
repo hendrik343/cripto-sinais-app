@@ -119,7 +119,10 @@ def index():
     user_agent = request.headers.get('User-Agent', '')
     if not user_agent or 'kube-probe' in user_agent or 'health' in request.args:
         # Retorna resposta simplificada para health checks
-        return "✅ CriptoSinais API está ativa!"
+        return jsonify({
+            "status": "online",
+            "message": "Crypto Price Monitor API is running"
+        })
     # Renderiza a página normal para navegadores
     return render_template("index.html")
 
