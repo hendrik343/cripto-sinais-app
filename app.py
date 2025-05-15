@@ -115,32 +115,20 @@ init_db()
 # Rotas do site
 @app.route("/")
 def index():
-    # Verifica o tipo de request para diagnóstico
-    user_agent = request.headers.get('User-Agent', 'Sem User-Agent')
-    accept_header = request.headers.get('Accept', 'Sem Accept-Header')
-    
-    # Log para diagnóstico
-    print(f"DEBUG - Request para /: User-Agent: {user_agent}, Accept: {accept_header}")
-    
-    # Retorna a página HTML para o preview e navegadores normais
-    if 'Mozilla' in user_agent or 'Chrome' in user_agent or 'Safari' in user_agent or 'Firefox' in user_agent:
-        try:
-            return render_template("index.html")
-        except Exception as e:
-            return f"Erro ao renderizar index.html: {str(e)}"
-    
-    # Apenas para chamadas explicitamente API
-    if 'curl' in user_agent or 'wget' in user_agent or 'health' in request.args:
+    # Para verificações de saúde (health checks)
+    if 'curl' in request.headers.get('User-Agent', '') or request.args.get('health'):
         return jsonify({
-            "status": "online",
+            "status": "online", 
             "message": "API online!"
         })
     
-    # Forçar retornar HTML para qualquer outro caso (incluindo o preview)
-    try:
-        return render_template("index.html")
-    except Exception as e:
-        return f"<html><body><h1>CriptoSinais</h1><p>Erro ao renderizar template: {str(e)}</p></body></html>"
+    # Redirecionamento para o dashboard
+    return redirect('/index_html')
+
+# Rota alternativa para garantir o acesso à página HTML
+@app.route("/index_html")
+def index_html():
+    return render_template("index.html")
 
 # Rota específica para health checks
 @app.route("/health")
