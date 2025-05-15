@@ -1,1 +1,1 @@
-web: gunicorn main:app --bind 0.0.0.0:$PORT --log-level info --timeout 120
+web: python app_simples.py
