@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, request, redirect
 
 app = Flask(__name__)
 
@@ -9,119 +9,1027 @@ def index():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>CriptoSinais</title>
+        <title>CriptoSinais Futuristic Dashboard</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #0f172a;
-                color: white;
+            @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+            
+            :root {
+                --neon-purple: #8b5cf6;
+                --neon-blue: #3b82f6;
+                --neon-green: #10b981;
+                --neon-pink: #ec4899;
+                --neon-text: #f0abfc;
+                --bg-dark: #030712;
+                --bg-panel: rgba(15, 23, 42, 0.7);
+                --border-glow: 0 0 10px var(--neon-purple), 0 0 20px rgba(139, 92, 246, 0.3);
+            }
+            
+            * {
                 margin: 0;
-                padding: 20px;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: 'Rajdhani', sans-serif;
+                background-color: var(--bg-dark);
+                color: #e2e8f0;
+                background-image: 
+                    linear-gradient(rgba(3, 7, 18, 0.7), rgba(3, 7, 18, 0.9)),
+                    url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGcgZmlsbD0iIzFhMWQyZCIgZmlsbC1vcGFjaXR5PSIwLjEiPgogICAgPHBhdGggZD0iTTQwIDEwMHMxIDAgMSAxdjEwMHMwIDEtMSAxaC00MHMtMS0xLTEtdi0xMDBzMC0xIDEtMXoiLz4KICAgIDxwYXRoIGQ9Ik0xNDAgMTAwczEgMCAxIDF2MTAwczAgMS0xIDFoLTQwcy0xLTEtMS0xdi0xMDBzMC0xIDEtMXoiLz4KICAgIDxwYXRoIGQ9Ik04MCAyMDBzMSAwIDEgMXYxMDBzMCAxLTEgMWgtNDBzLTEtMS0xLTF2LTEwMHMwLTEgMS0xeiIvPgogICAgPHBhdGggZD0iTTE4MCAyMDBzMSAwIDEgMXYxMDBzMCAxLTEgMWgtNDBzLTEtMS0xLTF2LTEwMHMwLTEgMS0xeiIvPgogIDwvZz4KPC9zdmc+');
                 min-height: 100vh;
+            }
+            
+            .page-wrapper {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                overflow-x: hidden;
+            }
+            
+            header {
+                background: rgba(15, 23, 42, 0.9);
+                padding: 1rem 2rem;
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                position: relative;
+                z-index: 100;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .logo {
+                font-family: 'Orbitron', sans-serif;
+                font-weight: 700;
+                font-size: 1.8rem;
+                color: white;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                position: relative;
+                text-shadow: 0 0 10px rgba(139, 92, 246, 0.7);
+            }
+            
+            .logo::before {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 4px;
+                background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+                bottom: -8px;
+                left: 0;
+                border-radius: 2px;
+            }
+            
+            .main-container {
+                flex: 1;
+                padding: 2rem;
                 display: flex;
                 justify-content: center;
                 align-items: center;
             }
-            .container {
-                background-color: rgba(30, 41, 59, 0.8);
-                border-radius: 10px;
-                padding: 40px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-                max-width: 800px;
+            
+            .dashboard {
+                max-width: 1200px;
                 width: 100%;
-                text-align: center;
+                background: rgba(15, 23, 42, 0.6);
+                backdrop-filter: blur(10px);
+                border-radius: 12px;
+                padding: 2rem;
+                border: 1px solid rgba(139, 92, 246, 0.2);
+                box-shadow: var(--border-glow);
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                position: relative;
+                overflow: hidden;
             }
-            h1 {
-                color: #fcd34d;
-                margin-bottom: 20px;
+            
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 1rem;
             }
-            .status {
-                display: inline-block;
-                background-color: #22c55e;
+            
+            .stat-card {
+                background: var(--bg-panel);
+                border-radius: 10px;
+                padding: 1.5rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                position: relative;
+                overflow: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .stat-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+            }
+            
+            .stat-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: linear-gradient(0deg, var(--neon-purple), var(--neon-blue));
+                border-radius: 4px 0 0 4px;
+            }
+            
+            .stat-title {
+                font-size: 0.9rem;
+                color: var(--neon-text);
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+            }
+            
+            .stat-value {
+                font-size: 1.8rem;
+                font-weight: 700;
+                margin-bottom: 0.25rem;
+                font-family: 'Orbitron', sans-serif;
+            }
+            
+            .stat-subtitle {
+                font-size: 0.9rem;
+                color: #94a3b8;
+            }
+            
+            .crypto-table-container {
+                background: var(--bg-panel);
+                border-radius: 10px;
+                padding: 1.5rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                overflow: hidden;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+                position: relative;
+            }
+            
+            .crypto-table-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 4px;
+                background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+                border-radius: 4px 4px 0 0;
+            }
+            
+            .table-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1.5rem;
+                padding-bottom: 0.5rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .table-title {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 1.2rem;
+                font-weight: 700;
                 color: white;
-                padding: 8px 20px;
-                border-radius: 50px;
-                font-weight: bold;
-                margin: 20px 0;
+                letter-spacing: 1px;
             }
-            table {
+            
+            .crypto-table {
                 width: 100%;
                 border-collapse: collapse;
-                margin: 20px 0;
             }
-            th {
-                background-color: rgba(15, 23, 42, 0.7);
-                padding: 12px;
+            
+            .crypto-table th {
                 text-align: left;
-                color: #a3e635;
-            }
-            td {
-                padding: 12px;
+                padding: 1rem 0.5rem;
+                color: var(--neon-text);
+                font-weight: 600;
+                letter-spacing: 1px;
+                font-size: 0.9rem;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                text-align: left;
             }
+            
+            .crypto-table td {
+                padding: 1rem 0.5rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+            
+            .crypto-table tr:last-child td {
+                border-bottom: none;
+            }
+            
+            .crypto-table tr {
+                transition: background-color 0.3s ease;
+            }
+            
+            .crypto-table tr:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+            
+            .coin-cell {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+            
+            .coin-name {
+                font-weight: 600;
+            }
+            
+            .coin-symbol {
+                color: #94a3b8;
+                font-size: 0.9rem;
+            }
+            
             .price {
-                color: #38bdf8;
-                font-weight: bold;
+                font-family: 'Orbitron', sans-serif;
+                font-weight: 700;
+                color: var(--neon-blue);
             }
+            
             .positive {
-                color: #4ade80;
+                color: var(--neon-green);
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+                font-weight: 600;
             }
+            
             .negative {
-                color: #f87171;
+                color: var(--neon-pink);
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+                font-weight: 600;
             }
-            .hot {
-                background-color: #8b5cf6;
+            
+            .badge {
+                background-color: var(--neon-purple);
                 color: white;
-                padding: 2px 8px;
-                border-radius: 20px;
-                font-size: 12px;
-                margin-left: 5px;
+                padding: 0.25rem 0.5rem;
+                border-radius: 4px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+                margin-left: 0.5rem;
+            }
+            
+            .action-btn {
+                background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+                color: white;
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-family: 'Rajdhani', sans-serif;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-size: 0.9rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+            }
+            
+            .action-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+            }
+            
+            .updated-time {
+                margin-top: 2rem;
+                font-size: 0.9rem;
+                color: #94a3b8;
+                text-align: center;
+                font-family: 'Orbitron', sans-serif;
+                letter-spacing: 1px;
+            }
+            
+            .neon-glow {
+                position: absolute;
+                width: 300px;
+                height: 300px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.1) 40%, transparent 70%);
+                pointer-events: none;
+                z-index: -1;
+            }
+            
+            .glow-1 {
+                top: -100px;
+                right: -100px;
+            }
+            
+            .glow-2 {
+                bottom: -150px;
+                left: -100px;
+                background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, rgba(236, 72, 153, 0.1) 40%, transparent 70%);
+            }
+            
+            .cyber-circuit {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+                z-index: -1;
+                opacity: 0.1;
+                background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgogIDxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB4PSIwIiB5PSIwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSgzMCkiPgogICAgPGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iNDAiIHkyPSI0MCIgc3Ryb2tlPSIjOGI1Y2Y2IiBzdHJva2Utd2lkdGg9IjEiLz4KICAgIDxsaW5lIHgxPSIwIiB5MT0iNDAiIHgyPSI0MCIgeTI9IjAiIHN0cm9rZT0iIzNiODJmNiIgc3Ryb2tlLXdpZHRoPSIwLjUiLz4KICA8L3BhdHRlcm4+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPgo8L3N2Zz4=');
+            }
+            
+            .menu {
+                display: flex;
+                gap: 1.5rem;
+            }
+            
+            .menu-item {
+                color: white;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 1rem;
+                letter-spacing: 1px;
+                transition: all 0.3s ease;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                text-transform: uppercase;
+            }
+            
+            .menu-item:hover {
+                color: var(--neon-purple);
+                background: rgba(139, 92, 246, 0.1);
+            }
+            
+            .premium-btn {
+                background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+                color: white;
+                padding: 0.5rem 1.25rem;
+                border-radius: 6px;
+                font-weight: 600;
+                box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+            }
+            
+            .premium-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 0 15px rgba(139, 92, 246, 0.7);
+                color: white;
+                background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+            }
+            
+            @keyframes pulse {
+                0% { opacity: 0.8; }
+                50% { opacity: 1; }
+                100% { opacity: 0.8; }
+            }
+            
+            .status-indicator {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: 0.9rem;
+                color: #94a3b8;
+                font-family: 'Orbitron', sans-serif;
+            }
+            
+            .status-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background-color: var(--neon-green);
+                animation: pulse 2s infinite;
+            }
+            
+            @media (max-width: 768px) {
+                .stats-grid {
+                    grid-template-columns: 1fr;
+                }
+                
+                .dashboard {
+                    padding: 1.5rem;
+                }
+                
+                .menu {
+                    display: none;
+                }
             }
         </style>
     </head>
     <body>
-        <div class="container">
-            <h1>CriptoSinais Dashboard</h1>
-            <div class="status">Servidor Online</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Moeda</th>
-                        <th>Preço</th>
-                        <th>Variação</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Bitcoin (BTC)</td>
-                        <td class="price">$45,000.00</td>
-                        <td class="positive">+1.2%</td>
-                    </tr>
-                    <tr>
-                        <td>Solana (SOL)</td>
-                        <td class="price">$170.74</td>
-                        <td class="negative">-0.21%</td>
-                    </tr>
-                    <tr>
-                        <td>Dogecoin (DOGE)</td>
-                        <td class="price">$0.224889</td>
-                        <td class="negative">-0.04%</td>
-                    </tr>
-                    <tr>
-                        <td>Shiba Inu (SHIB)</td>
-                        <td class="price">$0.00001498</td>
-                        <td class="negative">-0.33%</td>
-                    </tr>
-                    <tr>
-                        <td>Floki <span class="hot">HOT</span></td>
-                        <td class="price">$0.00010304</td>
-                        <td class="negative">-0.72%</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="page-wrapper">
+            <header>
+                <div class="logo">CriptoSinais</div>
+                <div class="menu">
+                    <a href="/" class="menu-item">Dashboard</a>
+                    <a href="/dashboard" class="menu-item">Análise</a>
+                    <a href="/premium" class="menu-item premium-btn">Premium</a>
+                </div>
+            </header>
+            
+            <div class="main-container">
+                <div class="dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-title">Total monitorado</div>
+                            <div class="stat-value">18</div>
+                            <div class="stat-subtitle">Criptomoedas</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-title">Maior alta 24h</div>
+                            <div class="stat-value">+1.2%</div>
+                            <div class="stat-subtitle">Bitcoin (BTC)</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-title">Maior queda 24h</div>
+                            <div class="stat-value">-0.72%</div>
+                            <div class="stat-subtitle">Floki (FLOKI)</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-title">Status</div>
+                            <div class="stat-value">
+                                <div class="status-indicator">
+                                    <div class="status-dot"></div> 
+                                    Online
+                                </div>
+                            </div>
+                            <div class="stat-subtitle">Monitoramento em tempo real</div>
+                        </div>
+                    </div>
+                    
+                    <div class="crypto-table-container">
+                        <div class="table-header">
+                            <div class="table-title">TOP CRIPTOMOEDAS</div>
+                            <button class="action-btn">
+                                <i class="fas fa-sync-alt"></i> Atualizar
+                            </button>
+                        </div>
+                        
+                        <table class="crypto-table">
+                            <thead>
+                                <tr>
+                                    <th>Moeda</th>
+                                    <th>Preço</th>
+                                    <th>Variação 24h</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="coin-cell">
+                                            <div>
+                                                <div class="coin-name">Bitcoin</div>
+                                                <div class="coin-symbol">BTC</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="price">$45,000.00</td>
+                                    <td class="positive">
+                                        <i class="fas fa-caret-up"></i> +1.2%
+                                    </td>
+                                    <td>
+                                        <button class="action-btn">
+                                            <i class="fas fa-chart-line"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="coin-cell">
+                                            <div>
+                                                <div class="coin-name">Solana</div>
+                                                <div class="coin-symbol">SOL</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="price">$170.74</td>
+                                    <td class="negative">
+                                        <i class="fas fa-caret-down"></i> -0.21%
+                                    </td>
+                                    <td>
+                                        <button class="action-btn">
+                                            <i class="fas fa-chart-line"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="coin-cell">
+                                            <div>
+                                                <div class="coin-name">Dogecoin</div>
+                                                <div class="coin-symbol">DOGE</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="price">$0.224889</td>
+                                    <td class="negative">
+                                        <i class="fas fa-caret-down"></i> -0.04%
+                                    </td>
+                                    <td>
+                                        <button class="action-btn">
+                                            <i class="fas fa-chart-line"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="coin-cell">
+                                            <div>
+                                                <div class="coin-name">Shiba Inu</div>
+                                                <div class="coin-symbol">SHIB</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="price">$0.00001498</td>
+                                    <td class="negative">
+                                        <i class="fas fa-caret-down"></i> -0.33%
+                                    </td>
+                                    <td>
+                                        <button class="action-btn">
+                                            <i class="fas fa-chart-line"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="coin-cell">
+                                            <div>
+                                                <div class="coin-name">Floki <span class="badge">HOT</span></div>
+                                                <div class="coin-symbol">FLOKI</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="price">$0.00010304</td>
+                                    <td class="negative">
+                                        <i class="fas fa-caret-down"></i> -0.72%
+                                    </td>
+                                    <td>
+                                        <button class="action-btn">
+                                            <i class="fas fa-chart-line"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="updated-time">
+                        ÚLTIMA ATUALIZAÇÃO: 09:45:00
+                    </div>
+                    
+                    <div class="neon-glow glow-1"></div>
+                    <div class="neon-glow glow-2"></div>
+                    <div class="cyber-circuit"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+@app.route('/dashboard')
+def dashboard():
+    return redirect('/')
+    
+@app.route('/premium')
+def premium():
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>CriptoSinais Premium</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+            
+            :root {
+                --neon-purple: #8b5cf6;
+                --neon-blue: #3b82f6;
+                --neon-green: #10b981;
+                --neon-pink: #ec4899;
+                --neon-yellow: #fcd34d;
+                --neon-text: #f0abfc;
+                --bg-dark: #030712;
+                --bg-panel: rgba(15, 23, 42, 0.7);
+                --border-glow: 0 0 10px var(--neon-purple), 0 0 20px rgba(139, 92, 246, 0.3);
+            }
+            
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: 'Rajdhani', sans-serif;
+                background-color: var(--bg-dark);
+                color: #e2e8f0;
+                background-image: 
+                    linear-gradient(rgba(3, 7, 18, 0.7), rgba(3, 7, 18, 0.9)),
+                    url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGcgZmlsbD0iIzFhMWQyZCIgZmlsbC1vcGFjaXR5PSIwLjEiPgogICAgPHBhdGggZD0iTTQwIDEwMHMxIDAgMSAxdjEwMHMwIDEtMSAxaC00MHMtMS0xLTEtdi0xMDBzMC0xIDEtMXoiLz4KICAgIDxwYXRoIGQ9Ik0xNDAgMTAwczEgMCAxIDF2MTAwczAgMS0xIDFoLTQwcy0xLTEtMS0xdi0xMDBzMC0xIDEtMXoiLz4KICAgIDxwYXRoIGQ9Ik04MCAyMDBzMSAwIDEgMXYxMDBzMCAxLTEgMWgtNDBzLTEtMS0xLTF2LTEwMHMwLTEgMS0xeiIvPgogICAgPHBhdGggZD0iTTE4MCAyMDBzMSAwIDEgMXYxMDBzMCAxLTEgMWgtNDBzLTEtMS0xLTF2LTEwMHMwLTEgMS0xeiIvPgogIDwvZz4KPC9zdmc+');
+                min-height: 100vh;
+            }
+            
+            .page-wrapper {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                overflow-x: hidden;
+            }
+            
+            header {
+                background: rgba(15, 23, 42, 0.9);
+                padding: 1rem 2rem;
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                position: relative;
+                z-index: 100;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .logo {
+                font-family: 'Orbitron', sans-serif;
+                font-weight: 700;
+                font-size: 1.8rem;
+                color: white;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                position: relative;
+                text-shadow: 0 0 10px rgba(139, 92, 246, 0.7);
+            }
+            
+            .logo::before {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 4px;
+                background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+                bottom: -8px;
+                left: 0;
+                border-radius: 2px;
+            }
+            
+            .main-container {
+                flex: 1;
+                padding: 2rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .premium-container {
+                max-width: 1000px;
+                width: 100%;
+                background: rgba(15, 23, 42, 0.6);
+                backdrop-filter: blur(10px);
+                border-radius: 12px;
+                padding: 3rem;
+                border: 1px solid rgba(139, 92, 246, 0.2);
+                box-shadow: var(--border-glow);
+                position: relative;
+                overflow: hidden;
+                text-align: center;
+            }
+            
+            .premium-title {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 2.5rem;
+                font-weight: 900;
+                color: white;
+                text-transform: uppercase;
+                margin-bottom: 1rem;
+                text-shadow: 0 0 10px rgba(139, 92, 246, 0.7);
+                letter-spacing: 2px;
+            }
+            
+            .premium-subtitle {
+                color: var(--neon-text);
+                font-size: 1.2rem;
+                margin-bottom: 2rem;
+                font-weight: 500;
+            }
+            
+            .premium-badge {
+                display: inline-block;
+                background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+                color: white;
+                padding: 0.5rem 1.5rem;
+                border-radius: 50px;
+                font-weight: 700;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                margin-bottom: 2rem;
+                font-family: 'Orbitron', sans-serif;
+                box-shadow: 0 0 15px rgba(139, 92, 246, 0.7);
+            }
+            
+            .features-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 2rem;
+                margin: 2rem 0;
+            }
+            
+            .feature-card {
+                background: rgba(15, 23, 42, 0.7);
+                border-radius: 10px;
+                padding: 1.5rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                text-align: left;
+                transition: all 0.3s ease;
+            }
+            
+            .feature-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+            }
+            
+            .feature-icon {
+                color: var(--neon-purple);
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+            
+            .feature-title {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 1.2rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+                color: white;
+            }
+            
+            .feature-desc {
+                color: #94a3b8;
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+            
+            .price-section {
+                background: rgba(15, 23, 42, 0.8);
+                border-radius: 10px;
+                padding: 2rem;
+                margin: 3rem 0;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .price-box {
+                display: inline-block;
+                padding: 2rem;
+                position: relative;
+                z-index: 1;
+            }
+            
+            .price-title {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 1.1rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                color: var(--neon-text);
+                margin-bottom: 0.5rem;
+                letter-spacing: 1px;
+            }
+            
+            .price-amount {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 3.5rem;
+                font-weight: 900;
+                color: var(--neon-yellow);
+                text-shadow: 0 0 10px rgba(252, 211, 77, 0.5);
+                margin-bottom: 1rem;
+            }
+            
+            .price-period {
+                color: #94a3b8;
+                font-size: 1rem;
+                font-weight: 500;
+                margin-top: -0.5rem;
+                display: block;
+            }
+            
+            .price-description {
+                color: white;
+                margin-bottom: 2rem;
+                font-size: 1.1rem;
+            }
+            
+            .cta-button {
+                display: inline-block;
+                background: linear-gradient(135deg, var(--neon-yellow), var(--neon-pink));
+                color: white;
+                padding: 1rem 3rem;
+                border-radius: 50px;
+                font-family: 'Orbitron', sans-serif;
+                font-weight: 700;
+                font-size: 1.2rem;
+                text-transform: uppercase;
+                border: none;
+                cursor: pointer;
+                letter-spacing: 2px;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 0 20px rgba(252, 211, 77, 0.5);
+                text-decoration: none;
+            }
+            
+            .cta-button:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0 30px rgba(252, 211, 77, 0.7);
+            }
+            
+            .cta-button::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(
+                    to bottom right,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.3) 100%
+                );
+                transform: rotate(45deg);
+                z-index: 1;
+                animation: shine 3s infinite;
+            }
+            
+            @keyframes shine {
+                0% {
+                    left: -100%;
+                    top: -100%;
+                }
+                100% {
+                    left: 100%;
+                    top: 100%;
+                }
+            }
+            
+            .cta-button span {
+                position: relative;
+                z-index: 2;
+            }
+            
+            .menu {
+                display: flex;
+                gap: 1.5rem;
+            }
+            
+            .menu-item {
+                color: white;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 1rem;
+                letter-spacing: 1px;
+                transition: all 0.3s ease;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                text-transform: uppercase;
+            }
+            
+            .menu-item:hover {
+                color: var(--neon-purple);
+                background: rgba(139, 92, 246, 0.1);
+            }
+            
+            .premium-btn {
+                background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+                color: white;
+                padding: 0.5rem 1.25rem;
+                border-radius: 6px;
+                font-weight: 600;
+                box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+            }
+            
+            .premium-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 0 15px rgba(139, 92, 246, 0.7);
+                color: white;
+                background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+            }
+            
+            .neon-glow {
+                position: absolute;
+                width: 300px;
+                height: 300px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(252, 211, 77, 0.2) 0%, rgba(252, 211, 77, 0.1) 40%, transparent 70%);
+                pointer-events: none;
+                z-index: -1;
+            }
+            
+            .glow-1 {
+                top: -100px;
+                right: -100px;
+            }
+            
+            .glow-2 {
+                bottom: -150px;
+                left: -100px;
+                background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, rgba(236, 72, 153, 0.1) 40%, transparent 70%);
+            }
+            
+            @media (max-width: 768px) {
+                .features-grid {
+                    grid-template-columns: 1fr;
+                }
+                
+                .premium-container {
+                    padding: 2rem 1.5rem;
+                }
+                
+                .menu {
+                    display: none;
+                }
+                
+                .price-amount {
+                    font-size: 2.5rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page-wrapper">
+            <header>
+                <div class="logo">CriptoSinais</div>
+                <div class="menu">
+                    <a href="/" class="menu-item">Dashboard</a>
+                    <a href="/dashboard" class="menu-item">Análise</a>
+                    <a href="/premium" class="menu-item premium-btn">Premium</a>
+                </div>
+            </header>
+            
+            <div class="main-container">
+                <div class="premium-container">
+                    <div class="premium-badge">Acesso VIP</div>
+                    <h1 class="premium-title">CriptoSinais Premium</h1>
+                    <p class="premium-subtitle">Desbloqueie recursos exclusivos e aumente suas chances de sucesso com criptomoedas</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3 class="feature-title">Alertas Antecipados</h3>
+                            <p class="feature-desc">Receba alertas antes que as movimentações significativas aconteçam no mercado, possibilitando tempo de reação.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3 class="feature-title">Análise Técnica Avançada</h3>
+                            <p class="feature-desc">Acesso a gráficos profissionais com indicadores RSI, MACD e Bandas de Bollinger em tempo real.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3 class="feature-title">Grupo VIP no Telegram</h3>
+                            <p class="feature-desc">Entre no grupo exclusivo com outros traders e receba sinais de compra e venda 24/7.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <h3 class="feature-title">Suporte Prioritário</h3>
+                            <p class="feature-desc">Receba atendimento diferenciado com respostas às suas dúvidas em tempo recorde.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="price-section">
+                        <div class="price-box">
+                            <div class="price-title">Oferta Exclusiva</div>
+                            <div class="price-amount">$1.99<span class="price-period">pagamento único</span></div>
+                            <p class="price-description">Acesso vitalício a todos os recursos premium</p>
+                            <a href="/payment" class="cta-button"><span>QUERO SER PREMIUM</span></a>
+                        </div>
+                    </div>
+                    
+                    <div class="neon-glow glow-1"></div>
+                    <div class="neon-glow glow-2"></div>
+                </div>
+            </div>
         </div>
     </body>
     </html>
