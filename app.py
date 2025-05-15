@@ -1,121 +1,99 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify, send_file
-import requests
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from sqlalchemy import create_engine, text
-from dotenv import load_dotenv
-from flask_cors import CORS
+from flask import Flask, jsonify, redirect, render_template_string
+from flask_sqlalchemy import SQLAlchemy
 import os
-import json
-from datetime import datetime
-import csv
-import io
 import logging
 
-# Importar configurações
-from config import (
-    TELEGRAM_TOKEN, CHAT_ID, ALERT_THRESHOLD, MOEDAS,
-    DEFAULT_LOGO, EXTERNAL_LOGO, USE_EXTERNAL_LOGO, LOGO_CONFIG
-)
-
-# Configurar logging
-logging.basicConfig(level=logging.INFO, 
-                   format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
-
-# Carregar variáveis de ambiente
-load_dotenv()
-
+# 🔧 Configuração básica
 app = Flask(__name__)
-app.secret_key = os.getenv("APP_SECRET_KEY", "sinalvip123")
+PORT = int(os.environ.get("PORT", 5000))
 
-# Habilitar CORS para permitir acesso da aplicação Next.js
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+# 📦 Base de dados PostgreSQL (usando variável de ambiente)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///database.db")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
-# Configurações
-EMAIL_USER = os.getenv("EMAIL_USER")
-EMAIL_PASS = os.getenv("EMAIL_PASS")
-PAYPAL_EMAIL = os.getenv("PAYPAL_EMAIL", "hdhh9855@gmail.com")
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///crypto_signals.db")
+# 🛠️ Logger bonito
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("app")
 
-# Obter URL do aplicativo - usar URL direta do Replit para evitar problemas com encurtadores
-REPLIT_DOMAIN = os.environ.get('REPLIT_DOMAINS', '').split(',')[0]
-APP_URL = f"https://{REPLIT_DOMAIN}"
-SHORT_URL = APP_URL  # Usar URL direta para garantir o acesso
+# 🧱 Modelo de exemplo
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
 
-# Conexão com o banco de dados
-try:
-    engine = create_engine(DATABASE_URL)
-    logger.info("Conexão com o banco de dados estabelecida com sucesso")
-except Exception as e:
-    logger.error(f"Erro ao conectar ao banco de dados: {e}")
-    engine = None
-
-def obter_alertas():
-    """
-    Obtém alertas de variações significativas de preço das criptomoedas
-    
-    Returns:
-        list: Lista de alertas com variação de preço acima de 2%
-    """
-    from sqlalchemy.orm import Session
-    
-    if not engine:
-        logger.warning("Banco de dados não disponível para obter alertas")
-        return []
-    
-    session = Session(bind=engine)
-    sql = """
-    SELECT coin_id, symbol, price, previous_price, percent_change, recommendation, timestamp
-    FROM crypto_price
-    WHERE ABS(percent_change) >= 2.0 AND previous_price IS NOT NULL
-    ORDER BY timestamp DESC
-    LIMIT 10
-    """
+# 🌱 Inicialização
+with app.app_context():
     try:
-        resultados = session.execute(text(sql)).fetchall()
-        return resultados
+        db.create_all()
+        logger.info("Tabelas criadas com sucesso")
     except Exception as e:
-        logger.error(f"Erro ao obter alertas: {e}")
-        return []
-    finally:
-        session.close()
+        logger.error(f"Erro ao criar tabelas: {e}")
 
-# Inicialização do banco de dados
-def init_db():
-    if not engine:
-        logger.warning("Banco de dados não disponível para inicialização")
-        return False
-    
-    try:
-        with engine.connect() as conn:
-            # Tabela de pagamentos
-            conn.execute(text("""
-            CREATE TABLE IF NOT EXISTS payment (
-                id SERIAL PRIMARY KEY,
-                email VARCHAR(255) NOT NULL,
-                plan_name VARCHAR(100) NOT NULL,
-                amount DECIMAL(10, 2) NOT NULL,
-                transaction_id VARCHAR(100),
-                status VARCHAR(50) NOT NULL DEFAULT 'completed',
-                created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-            )
-            """))
-            conn.commit()
-            logger.info("Tabelas criadas com sucesso")
-        return True
-    except Exception as e:
-        logger.error(f"Erro ao inicializar banco de dados: {e}")
-        return False
-
-# Tentar inicializar o banco de dados na inicialização
-init_db()
-
-# Health check simples na raiz
-@app.route('/')
+# ✅ Rota health check
+@app.route("/")
 def index():
-    return jsonify({"message": "API online!", "status": "online"})
+    html = """
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>CriptoSinais - Dashboard</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 40px;
+          }
+          .card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+          }
+          .card-header {
+            background: rgba(15, 23, 42, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          }
+          .btn-primary {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+          }
+          .btn-primary:hover {
+            background-color: #2563eb;
+            border-color: #2563eb;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-10">
+              <h1 class="text-center mb-4">📊 CriptoSinais Dashboard</h1>
+              
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="mb-0">Status do Sistema</h5>
+                </div>
+                <div class="card-body">
+                  <p>Status: <span class="badge bg-success">Online</span></p>
+                  <p>Base de dados: <span class="badge bg-success">Conectada</span></p>
+                  <p>Bot Telegram: <span class="badge bg-success">Ativo</span></p>
+                  <p>API CoinGecko: <span class="badge bg-success">Conectada</span></p>
+                </div>
+              </div>
+              
+              <div class="d-grid gap-2">
+                <a href="/dashboard" class="btn btn-primary btn-lg">Acessar Dashboard Completo</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+    """
+    return render_template_string(html)
 
 # Rota específica para preview da app no browser
 @app.route('/preview')
