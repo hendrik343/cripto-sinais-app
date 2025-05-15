@@ -21,6 +21,12 @@ def health_check_root():
         "message": "API online!"
     })
 
+# Rota específica para o preview do browser
+@app.route('/preview')
+def preview():
+    """Rota especial para acessar a interface via browser"""
+    return redirect('/dashboard')
+
 # Rota alternativa para o dashboard
 @app.route('/dashboard')
 def dashboard_redirect():
