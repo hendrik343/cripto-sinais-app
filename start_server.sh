@@ -7,5 +7,5 @@ fi
 
 echo "Iniciando servidor na porta $PORT..."
 
-# Inicia o Gunicorn na porta definida usando o ponto de entrada WSGI
-exec gunicorn --bind "0.0.0.0:$PORT" --log-level info --timeout 120 wsgi:app
+# Inicia o Gunicorn na porta definida usando a aplicação minimalista
+exec gunicorn --bind "0.0.0.0:$PORT" --log-level info --timeout 120 minimal_app:app
